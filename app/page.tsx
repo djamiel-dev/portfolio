@@ -1,21 +1,25 @@
+import { Footer } from "@/components/Footer";
+import { Hero } from "@/components/Hero";
+import { Nav } from "@/components/Nav";
+import { WorkGrid } from "@/components/WorkGrid";
+import styles from "./page.module.css";
+
 export default function Home() {
   return (
-    <main style={{ maxWidth: "var(--page-max)", margin: "0 auto", padding: "4rem var(--page-gutter)" }}>
-      <p className="mono" style={{ fontSize: "0.75rem", color: "var(--muted)" }}>
-        [00] Setup
-      </p>
-      <h1
-        style={{
-          marginTop: "1rem",
-          fontSize: "2.375rem",
-          fontWeight: 700,
-          lineHeight: 1.08,
-          letterSpacing: "-0.03em",
-          textTransform: "uppercase",
-        }}
-      >
-        Djamiel – <span style={{ color: "var(--brand)" }}>homepage</span> coming in step 3
-      </h1>
-    </main>
+    <>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
+      <div id="top" className={styles.shell}>
+        <div className={styles.frame}>
+          <Nav />
+          <main id="main">
+            <Hero />
+            <WorkGrid />
+          </main>
+        </div>
+      </div>
+      <Footer />
+    </>
   );
 }
