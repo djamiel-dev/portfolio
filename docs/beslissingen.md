@@ -64,3 +64,9 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Gevonden:** Next.js-versie was 96px smaller (referentie telt de zijmarge op bij de maximale breedte, mijn CSS trok hem eraf). Opgelost; desktop wijkt nu ≤2px af. Bonus: in de referentie is het deeltjesveld bij reduced motion leeg (het ene stilstaande beeld wordt gewist bij resize); in de Next.js-versie staat de bol er wel.
 - **Bewust anders:** mobiele nav één regel, compactere hero, kaartvolgorde 01–04 (zie stap 3).
 - **Tijd:** ca. 15 min.
+
+### Stap 5 – Kwaliteit
+- **AI deed:** scripts voor axe + Lighthouse (`npm run audit`) en een toetsenbordtest (`npm run keyboard`). Eerste meting: axe 1 fout, Lighthouse mobiel Performance 88 / Accessibility 96 / Best Practices 96.
+- **Opgelost:** label "[05] AI workflows" (donker op oranje, 3,9:1) → donker label met oranje rand en oranje vierkantje; ontbrekend favicon (404 in console); deeltjesveld start pas als de browser idle is (blokkeertijd mobiel 420 ms → binnen norm); footerlinks naar 44px. Daarna overal 100 en 0 axe-fouten.
+- **Open, voor jou:** tabvolgorde kaarten (01, 03, 02, 04) en hover-contrast. Zie `docs/definition-of-done.md`.
+- **Tijd:** ca. 20 min.

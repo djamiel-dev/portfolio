@@ -280,15 +280,28 @@ export function ParticleField({ className, onStageChange }: Props) {
     resize();
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(canvas);
+    // Start once the browser is idle, so the field does not compete with page load
+    let inView = false;
+    let ready = false;
     const visibilityObserver = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) start();
+      inView = entry.isIntersecting;
+      if (inView && ready) start();
       else stop();
     });
     visibilityObserver.observe(canvas);
+    const onReady = () => {
+      ready = true;
+      if (inView) start();
+    };
+    // Safari has no requestIdleCallback; fall back to a short timeout
+    const hasIdle = typeof window.requestIdleCallback === "function";
+    const idleId = hasIdle ? window.requestIdleCallback(onReady, { timeout: 1500 }) : setTimeout(onReady, 300);
     host.addEventListener("pointermove", onPointerMove);
     host.addEventListener("pointerleave", onPointerLeave);
 
     return () => {
+      if (hasIdle) window.cancelIdleCallback(idleId as number);
+      else clearTimeout(idleId);
       stop();
       resizeObserver.disconnect();
       visibilityObserver.disconnect();

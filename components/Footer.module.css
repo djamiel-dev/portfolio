@@ -79,8 +79,17 @@
   right: 3%;
   transform: rotate(-5deg);
   border-color: var(--brand);
+}
+
+/* Orange square instead of an orange fill: ink on brand fails contrast at 12px */
+.tag5::before {
+  content: "";
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  margin-right: 0.5rem;
+  vertical-align: 0.1em;
   background: var(--brand);
-  color: var(--ink);
 }
 
 .intro {
@@ -164,7 +173,7 @@
 .column a {
   display: inline-flex;
   align-items: center;
-  min-height: 2.5rem;
+  min-height: var(--tap);
   color: var(--disabled);
   text-decoration: none;
 }
