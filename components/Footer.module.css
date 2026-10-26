@@ -5,7 +5,7 @@
 }
 
 .inner {
-  max-width: var(--page-max);
+  max-width: calc(var(--page-max) + 2 * var(--page-gutter)); /* content width stays 80rem */
   margin: 0 auto;
   padding: clamp(6rem, 11vw, 9rem) var(--page-gutter) 2.5rem;
 }
