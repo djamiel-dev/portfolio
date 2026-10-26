@@ -74,3 +74,20 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 ### Overgang naar verkenning (26 okt)
 - **Besloten:** versie J is een vertrekpunt, geen eindbeeld. Volgende fase is verkenning richting award-niveau design, niet finetunen. Aanpak: eerst referenties verzamelen en meten, dan drie echt verschillende concepten als losse routes op een aparte branch, toetsen aan het primaire gebruik (recruiter via sollicitatiemail), dan kiezen.
 - **Skills:** Impeccable en Emil Kowalski geïnstalleerd in het project. De installer zette Emil eerst in een map voor andere tools; handmatig naar `.claude/skills/` verplaatst.
+
+## Verkenning (vanaf 26 okt)
+
+### Stap 1 – Referenties analyseren
+- **AI deed:** de zeven referenties (Belle Duffner, Aziz Khaldi, Heron, Shopify Editions, Kigo, Carter Ogunsola, Mike Wilcock) echt in de browser doorlopen en gemeten: fonts, kleuren, techniek, laad-, scroll-, hover- en paginawisselgedrag. Gemene deler: één idee stuurt de vormtaal, en "iets wordt gemaakt terwijl je kijkt" (5 van 7). Grootste les: Heron's stijl komt uit het domein van de klant; versie J nam het uiterlijk over, niet dat principe. Ontdekt: Aziz' 3D-object is een video; Belle en Mike tonen op mobiel na 3–5 s nog een (bijna) leeg eerste scherm. Volledige analyse: `docs/verkenning/01-referenties.md`.
+- **Ik besliste:** akkoord met de analyse, zonder aanpassingen.
+- **Tijd:** ca. 30 min.
+
+### Stap 2 – Critique versie J (Impeccable)
+- **AI deed:** critique met de Impeccable-skill: twee losse beoordelaars (ontwerpreview en automatische detector + browser) die elkaars werk niet zagen, daarna samengevoegd en kernclaims nagemeten in de code. Oordeel: uitwisselbaar; Heron-uiterlijk op Belle-skelet met Aziz-footer, alleen het deeltjesveld is eigen maar bouwt niets herkenbaars. Score 22/32 (acceptabel). Grootste punten: geleende beeldtaal, hero-animatie te traag en abstract (31,5 s per cyclus), geen werk boven de vouw, hover-contrast 3,4:1. Detector: 0 codefouten, 4 browsermeldingen (2 bewuste tokens, 2 echte tekstbreuken op mobiel). Volledig: `docs/verkenning/02-critique-versie-j.md`.
+- **Ik besliste:** één concept mag dicht bij de huidige stijl blijven, twee moeten er ver vanaf staan; het deeltjesveld blijft in één concept (vergelijken); elk concept kiest een eigen manier om werk te tonen; de kleine fixes (hover-contrast, aria-current, regelafbrekingen) gaan mee in de nieuwe richting in plaats van apart op main.
+- **Tijd:** ca. 15 min.
+
+### Stap 3 – Drie concepten
+- **AI deed:** productwaarheid vastgelegd in `PRODUCT.md` (alleen uit CLAUDE.md), zeven eigen richtingen gerangschikt en Impeccable's worp gedaan: zes "uitdagers" uit de catalogus afgewogen. Het Crouwel-raster won van de aangewezen richting (expositie), het vertrekbord was gelijkwaardig, vier andere zijn afgewezen maar leveren elk één regel (zeker vs. aangenomen, geen knopkaders, sporen blijven, eigen tint per case). Resultaat: A Bouwraster (dichtbij J, met deeltjesveld), B Onderzoeksmuur, C Vertrekbord, elk met een eigen manier om werk te tonen. Volledig: `docs/verkenning/03-concepten.md`.
+- **Ik besliste:** akkoord met alle drie en met PRODUCT.md; alle drie bouwen als /explore/a, /b en /c.
+- **Tijd:** ca. 25 min.
