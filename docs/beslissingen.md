@@ -91,3 +91,9 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **AI deed:** productwaarheid vastgelegd in `PRODUCT.md` (alleen uit CLAUDE.md), zeven eigen richtingen gerangschikt en Impeccable's worp gedaan: zes "uitdagers" uit de catalogus afgewogen. Het Crouwel-raster won van de aangewezen richting (expositie), het vertrekbord was gelijkwaardig, vier andere zijn afgewezen maar leveren elk één regel (zeker vs. aangenomen, geen knopkaders, sporen blijven, eigen tint per case). Resultaat: A Bouwraster (dichtbij J, met deeltjesveld), B Onderzoeksmuur, C Vertrekbord, elk met een eigen manier om werk te tonen. Volledig: `docs/verkenning/03-concepten.md`.
 - **Ik besliste:** akkoord met alle drie en met PRODUCT.md; alle drie bouwen als /explore/a, /b en /c.
 - **Tijd:** ca. 25 min.
+
+### Stap 4 – Drie concepten gebouwd
+- **AI deed:** branch `explore` met `/explore` (overzicht) en `/explore/a`, `/b`, `/c`; gedeelde case-inhoud in `content/explore.ts` met eerlijke statussen (alleen case 01 is echt live). A: deeltjes vliegen in ±1,5 s in rastercellen en vormen de naam, alle vier de cases naast de zin. B: onderzoeksmuur waarin notities via CSS-scrollanimaties (zonder JavaScript) naar het product toe schuiven. C: vertrekbord dat bij binnenkomst klappert en daaronder een echte tabel blijft. Alle drie werken zonder JavaScript en bij reduced motion in hun eindtoestand.
+- **Gevonden en opgelost tijdens het bouwen:** AI verzon eerst een AI-notitie voor de making-of die niet gebeurd was, vervangen door een echte uit dit logboek. A's animatie telde frames in plaats van tijd, waardoor hij op een trage telefoon of in een achtergrondtab bleef hangen; nu tijdgebaseerd. C's tegels braken op mobiel midden in een woord af; nu per woord.
+- **Ik besliste:** [volgt na het bekijken]
+- **Tijd:** ca. 50 min.
