@@ -70,3 +70,7 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Opgelost:** label "[05] AI workflows" (donker op oranje, 3,9:1) → donker label met oranje rand en oranje vierkantje; ontbrekend favicon (404 in console); deeltjesveld start pas als de browser idle is (blokkeertijd mobiel 420 ms → binnen norm); footerlinks naar 44px. Daarna overal 100 en 0 axe-fouten.
 - **Open, voor jou:** tabvolgorde kaarten (01, 03, 02, 04) en hover-contrast. Zie `docs/definition-of-done.md`.
 - **Tijd:** ca. 20 min.
+
+### Overgang naar verkenning (26 okt)
+- **Besloten:** versie J is een vertrekpunt, geen eindbeeld. Volgende fase is verkenning richting award-niveau design, niet finetunen. Aanpak: eerst referenties verzamelen en meten, dan drie echt verschillende concepten als losse routes op een aparte branch, toetsen aan het primaire gebruik (recruiter via sollicitatiemail), dan kiezen.
+- **Skills:** Impeccable en Emil Kowalski geïnstalleerd in het project. De installer zette Emil eerst in een map voor andere tools; handmatig naar `.claude/skills/` verplaatst.
