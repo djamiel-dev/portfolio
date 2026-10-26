@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Djamiel – AI-native product designer</title>
+<!--
+  Design reference for the portfolio homepage (version J "Draftsman").
+  Style tokens taken from heronaiapp.com, layout after belleduffner.com.
+  Placeholders in [brackets] still need real content.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0;background:#F5F5EE}
+a{color:#282828}a:hover{color:#FA3600}
+a:focus-visible{outline:2px solid #FA3600;outline-offset:3px}
+@media (max-width: 900px){
+.deco{display:none !important}
+.tags{position:static !important;display:flex !important;flex-wrap:wrap;justify-content:center;gap:0.5rem;margin:0 0 2rem !important}
+.tags li{position:static !important;transform:none !important}
+.offset{margin-top:0 !important}
+}
+</style>
+</head>
+<body>
+<div id="top" style="background: #F5F5EE; color: #282828; font-family: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif; font-weight: 500">
+
+<div style="max-width: 80rem; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem)">
+<div style="position: relative; border-left: 1px solid #B3B3AF; border-right: 1px solid #B3B3AF">
+
+<header style="position: relative; display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; border-bottom: 1px solid #B3B3AF">
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; font-family: 'Geist Mono', monospace; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.02em">
+<a href="#work" aria-current="page" style="display: inline-flex; align-items: center; gap: 0.5rem; min-height: 3.5rem; padding: 0 clamp(0.75rem, 2vw, 1.75rem); color: #282828; text-decoration: none"><span aria-hidden="true" style="display: block; width: 0.375rem; height: 0.375rem; background: #FA3600"></span>Work</a>
+<a href="#contact" style="display: inline-flex; align-items: center; min-height: 3.5rem; padding: 0 clamp(0.75rem, 2vw, 1.75rem); color: #626260; text-decoration: none">Contact</a>
+<a href="#top" aria-label="Djamiel, home" style="display: inline-flex; align-items: center; gap: 0.625rem; min-height: 3.5rem; padding: 0 clamp(1rem, 3vw, 2.5rem); border-left: 1px solid #B3B3AF; border-right: 1px solid #B3B3AF; color: #282828; text-decoration: none; font-family: 'Inter Tight', sans-serif; font-weight: 700; font-size: 1.125rem; letter-spacing: -0.02em"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#282828" stroke-width="1.5" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"></path><path d="M3 7l9 5 9-5"></path><path d="M12 12v10"></path></svg>DJAMIEL</a>
+<a href="#about" style="display: inline-flex; align-items: center; min-height: 3.5rem; padding: 0 clamp(0.75rem, 2vw, 1.75rem); color: #626260; text-decoration: none">About</a>
+<a href="#resume" style="display: inline-flex; align-items: center; min-height: 3.5rem; padding: 0 clamp(0.75rem, 2vw, 1.75rem); color: #626260; text-decoration: none">Resume ↗</a>
+</nav>
+<span aria-hidden="true" style="position: absolute; bottom: -0.5rem; left: -0.5rem; width: 1rem; height: 1rem; line-height: 1rem; text-align: center; font-family: 'Geist Mono', monospace; font-size: 1rem; color: #282828; background: #F5F5EE">+</span>
+<span aria-hidden="true" style="position: absolute; bottom: -0.5rem; right: -0.5rem; width: 1rem; height: 1rem; line-height: 1rem; text-align: center; font-family: 'Geist Mono', monospace; font-size: 1rem; color: #282828; background: #F5F5EE">+</span>
+</header>
+
+<section aria-labelledby="hero-h" style="padding: clamp(1rem, 2.5vw, 2rem)">
+<div id="hero-stage" style="position: relative; min-height: 44rem; box-sizing: border-box; border: 1px solid #B3B3AF; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding: 2rem clamp(1rem, 4vw, 3rem) 8rem; overflow: hidden">
+<canvas id="field" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block"></canvas>
+
+<span aria-hidden="true" style="position: absolute; top: 0.875rem; left: 1rem; font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase; color: #626260">[00] Index</span>
+<div aria-hidden="true" style="position: absolute; top: 0.875rem; right: 1rem; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase; color: #282828">
+<span>[<span id="stage-num">01</span>] <span id="stage-name">Problem</span></span>
+<div style="display: flex; gap: 0.25rem">
+<span class="bar" style="display: block; width: 1.25rem; height: 2px; background: #FA3600"></span>
+<span class="bar" style="display: block; width: 1.25rem; height: 2px; background: #B3B3AF"></span>
+<span class="bar" style="display: block; width: 1.25rem; height: 2px; background: #B3B3AF"></span>
+<span class="bar" style="display: block; width: 1.25rem; height: 2px; background: #B3B3AF"></span>
+<span class="bar" style="display: block; width: 1.25rem; height: 2px; background: #B3B3AF"></span>
+</div>
+</div>
+
+<div style="position: relative; z-index: 1; max-width: 54rem; text-align: center; display: flex; flex-direction: column; align-items: center">
+<h1 id="hero-h" style="margin: 0; font-size: clamp(1.625rem, 2.7vw, 2.375rem); font-weight: 700; line-height: 1.08; text-transform: uppercase; letter-spacing: -0.03em; color: #72726F; text-wrap: balance"><span style="color: #282828">AI-native product designer</span> who <span data-stage="1" style="color: #282828; transition: color 500ms">researches</span>, <span data-stage="2" style="color: #282828; transition: color 500ms">designs</span> and <span data-stage="3" style="color: #282828; transition: color 500ms">builds</span>, from <span data-stage="0" style="color: #FA3600; transition: color 500ms">real problem</span> to <span data-stage="4" style="color: #282828; transition: color 500ms">live product</span>.</h1>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem 1.5rem; margin-top: 1.75rem">
+<a href="#contact" style="display: inline-flex; align-items: stretch; min-height: 2.75rem; border: 1px solid #282828; background: #282828; color: #F5F5EE; text-decoration: none; font-family: 'Geist Mono', monospace; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.02em"><span style="display: flex; align-items: center; padding: 0 1.125rem">Let's talk</span><span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 2.75rem; background: #FA3600; color: #282828"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></span></a>
+</div>
+</div>
+</div>
+</section>
+
+<section id="work" aria-labelledby="work-h" style="position: relative; border-top: 1px solid #B3B3AF; padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 2.5vw, 2rem) clamp(6rem, 10vw, 9rem)">
+<span aria-hidden="true" style="position: absolute; top: -0.5rem; left: -0.5rem; width: 1rem; height: 1rem; line-height: 1rem; text-align: center; font-family: 'Geist Mono', monospace; color: #282828; background: #F5F5EE">+</span>
+<span aria-hidden="true" style="position: absolute; top: -0.5rem; right: -0.5rem; width: 1rem; height: 1rem; line-height: 1rem; text-align: center; font-family: 'Geist Mono', monospace; color: #282828; background: #F5F5EE">+</span>
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem 2rem; margin-bottom: 2.5rem">
+<h2 id="work-h" style="margin: 0; font-family: 'Geist Mono', monospace; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; color: #282828">Selected work</h2>
+<span style="font-family: 'Geist Mono', monospace; font-size: 0.75rem; text-transform: uppercase; color: #626260">[04]</span>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 3rem 2rem">
+
+<div style="flex: 1 1 26rem; min-width: 0; display: flex; flex-direction: column; gap: 3.5rem">
+
+<a href="#case-1" style="display: flex; flex-direction: column; gap: 1rem; text-decoration: none; color: #282828">
+<div style="border: 1px solid #B3B3AF; background: #F5F5EE">
+<div style="display: flex; justify-content: space-between; align-items: center; min-height: 2.5rem; padding: 0 0.875rem; border-bottom: 1px dashed #B3B3AF; font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase"><span>Collaborative Strength</span><span style="color: #626260">[01]</span></div>
+<div style="position: relative; aspect-ratio: 4 / 3; box-sizing: border-box; padding: 1rem; background: #ECECE4; display: flex; align-items: center; justify-content: center">
+<span style="font-family: 'Geist Mono', monospace; font-size: 0.75rem; text-transform: uppercase; color: #626260; text-align: center">[Loop: live site on desktop and phone]</span>
+<span aria-hidden="true" style="position: absolute; bottom: 0.75rem; left: 0.75rem; padding: 0.25rem 0.5rem; background: #282828; color: #F5F5EE; font-family: 'Geist Mono', monospace; font-size: 0.625rem; text-transform: uppercase">Live · Next.js</span>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 1.5rem">
+<h3 style="flex: 1 1 16rem; margin: 0; font-size: 1.25rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em">[Outcome: what the site solves for the coach and his athletes]</h3>
+<p style="margin: 0; font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase; color: #626260">Powerlifting coach · Freelance [Year]</p>
+</div>
+</a>
+
+<a href="#case-3" style="display: flex; flex-direction: column; gap: 1rem; text-decoration: none; color: #282828">
+<div style="border: 1px solid #B3B3AF; background: #F5F5EE">
+<div style="display: flex; justify-content: space-between; align-items: center; min-height: 2.5rem; padding: 0 0.875rem; border-bottom: 1px dashed #B3B3AF; font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase"><span>Incentive portal</span><span style="color: #626260">[03]</span></div>
+<div style="aspect-ratio: 16 / 10; box-sizing: border-box; padding: 1rem; background: #ECECE4; display: flex; align-items: center; justify-content: center">
+<span style="font-family: 'Geist Mono', monospace; font-size: 0.75rem; text-transform: uppercase; color: #626260; text-align: center">[Screens: rewards, points and undo]</span>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 1.5rem">
+<h3 style="flex: 1 1 16rem; margin: 0; font-size: 1.25rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em">[Outcome: what the portal solves for its users]</h3>
+<p style="margin: 0; font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase; color: #626260">[Company] · Internship [Year]</p>
+</div>
+</a>
+
+</div>
+
+<div class="offset" style="flex: 1 1 26rem; min-width: 0; margin-top: 9rem; display: flex; flex-direction: column; gap: 3.5rem">
+
+<a href="#case-2" style="display: flex; flex-direction: column; gap: 1rem; text-decoration: none; color: #282828">
+<div style="border: 1px solid #B3B3AF; background: #F5F5EE">
+<div style="display: flex; justify-content: space-between; align-items: center; min-height: 2.5rem; padding: 0 0.875rem; border-bottom: 1px dashed #B3B3AF; font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase"><span>Lash studio</span><span style="color: #626260">[02]</span></div>
+<div style="aspect-ratio: 16 / 10; box-sizing: border-box; padding: 1rem; background: #ECECE4; display: flex; align-items: center; justify-content: center">
+<span style="font-family: 'Geist Mono', monospace; font-size: 0.75rem; text-transform: uppercase; color: #626260; text-align: center">[Loop: booking flow on phone]</span>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 1.5rem">
+<h3 style="flex: 1 1 16rem; margin: 0; font-size: 1.25rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em">[Outcome: what online booking changed for the studio]</h3>
+<p style="margin: 0; font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase; color: #626260">Lash studio · Project [Year]</p>
+</div>
+</a>
+
+<a href="#making-of" style="display: flex; flex-direction: column; gap: 1rem; text-decoration: none; color: #282828">
+<div style="border: 1px solid #B3B3AF; background: #F5F5EE">
+<div style="display: flex; justify-content: space-between; align-items: center; min-height: 2.5rem; padding: 0 0.875rem; border-bottom: 1px dashed #B3B3AF; font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase"><span>This portfolio</span><span style="color: #626260">[04]</span></div>
+<div style="position: relative; aspect-ratio: 4 / 3; box-sizing: border-box; padding: 1rem; background: #282828; display: flex; align-items: center; justify-content: center">
+<span style="font-family: 'Geist Mono', monospace; font-size: 0.75rem; text-transform: uppercase; color: #B4B4B0; text-align: center">[From sketch to Figma to code]</span>
+<span aria-hidden="true" style="position: absolute; top: 0.75rem; right: 0.75rem; width: 0.5rem; height: 0.5rem; background: #FA3600"></span>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.25rem 1.5rem">
+<h3 style="flex: 1 1 16rem; margin: 0; font-size: 1.25rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em">How I designed and built this site with AI</h3>
+<p style="margin: 0; font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase; color: #626260">Making of · 2026</p>
+</div>
+</a>
+
+</div>
+</div>
+</section>
+
+</div>
+</div>
+
+<footer id="contact" style="background: #282828; color: #F5F5EE; border-radius: 50% 50% 0 0 / 5rem 5rem 0 0">
+<div style="max-width: 80rem; margin: 0 auto; padding: clamp(6rem, 11vw, 9rem) clamp(1rem, 4vw, 3rem) 2.5rem">
+<div style="position: relative; display: flex; flex-direction: column; align-items: center; text-align: center">
+<h2 style="margin: 0; max-width: 46rem; font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 700; line-height: 0.95; text-transform: uppercase; letter-spacing: -0.04em">Let's build something that <span style="color: #FA3600">works.</span></h2>
+<ul class="tags" aria-label="What I do" style="list-style: none; margin: 0; padding: 0; position: absolute; inset: 0; font-family: 'Geist Mono', monospace; font-size: 0.75rem; text-transform: uppercase">
+<li style="position: absolute; top: -2.5rem; left: 14%; transform: rotate(-6deg); padding: 0.5rem 0.875rem; border: 1px solid #B4B4B0; background: #282828">[01] Research</li>
+<li style="position: absolute; top: 38%; left: 4%; transform: rotate(4deg); padding: 0.5rem 0.875rem; border: 1px solid #B4B4B0; background: #282828">[02] UX design</li>
+<li style="position: absolute; bottom: -2.75rem; left: 30%; transform: rotate(-3deg); padding: 0.5rem 0.875rem; border: 1px solid #B4B4B0; background: #282828">[03] UI design</li>
+<li style="position: absolute; top: -2.25rem; right: 12%; transform: rotate(5deg); padding: 0.5rem 0.875rem; border: 1px solid #B4B4B0; background: #282828">[04] Front-end</li>
+<li style="position: absolute; top: 46%; right: 3%; transform: rotate(-5deg); padding: 0.5rem 0.875rem; background: #FA3600; color: #282828">[05] AI workflows</li>
+</ul>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 4.5rem">
+<p style="margin: 0; max-width: 30rem; font-size: 1.0625rem; line-height: 1.5; color: #B4B4B0">Good products are never built alone. Looking for a designer who also builds? Let's make the next one together.</p>
+<p style="margin: 1.25rem 0 0; max-width: 30rem; font-size: 1.0625rem; line-height: 1.5; color: #B4B4B0">Reach me by <a href="#email" style="color: #F5F5EE; text-underline-offset: 0.2em">sending an email</a> or <a href="#call" style="color: #F5F5EE; text-underline-offset: 0.2em">booking a call</a>.</p>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 2.5rem; margin-top: clamp(4rem, 8vw, 7rem); padding-top: 2rem; border-top: 1px solid #414140">
+<div style="display: flex; flex-direction: column; gap: 0.75rem">
+<span style="display: inline-flex; align-items: center; gap: 0.625rem; font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#F5F5EE" stroke-width="1.5" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"></path><path d="M3 7l9 5 9-5"></path><path d="M12 12v10"></path></svg>DJAMIEL</span>
+<span style="font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase; color: #B4B4B0">© 2026 Djamiel · Tilburg, NL</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 2rem 3.5rem">
+<nav aria-label="Connect" style="display: flex; flex-direction: column; font-size: 0.9375rem">
+<span style="margin-bottom: 0.25rem; font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase">Connect</span>
+<a href="#email" style="display: inline-flex; align-items: center; min-height: 2.5rem; color: #B4B4B0; text-decoration: none">Send an email</a>
+<a href="#call" style="display: inline-flex; align-items: center; min-height: 2.5rem; color: #B4B4B0; text-decoration: none">Book a call</a>
+<a href="#linkedin" style="display: inline-flex; align-items: center; min-height: 2.5rem; color: #B4B4B0; text-decoration: none">LinkedIn</a>
+<a href="#github" style="display: inline-flex; align-items: center; min-height: 2.5rem; color: #B4B4B0; text-decoration: none">GitHub</a>
+</nav>
+<nav aria-label="About" style="display: flex; flex-direction: column; font-size: 0.9375rem">
+<span style="margin-bottom: 0.25rem; font-family: 'Geist Mono', monospace; font-size: 0.6875rem; text-transform: uppercase">About</span>
+<a href="#about" style="display: inline-flex; align-items: center; min-height: 2.5rem; color: #B4B4B0; text-decoration: none">About</a>
+<a href="#resume" style="display: inline-flex; align-items: center; min-height: 2.5rem; color: #B4B4B0; text-decoration: none">Resume</a>
+</nav>
+</div>
+</div>
+</div>
+</footer>
+
+
+<script>
+(function () {
+  const canvas = document.getElementById('field');
+  const stageEl = document.getElementById('hero-stage');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const INK = '#282828', BRAND = '#FA3600', LINE = '#B3B3AF';
+  const NAMES = [['01', 'Problem'], ['02', 'Research'], ['03', 'Design'], ['04', 'Build'], ['05', 'Live']];
+  const words = Array.from(document.querySelectorAll('[data-stage]'));
+  const bars = Array.from(document.querySelectorAll('.bar'));
+  const numEl = document.getElementById('stage-num');
+  const nameEl = document.getElementById('stage-name');
+
+  // ---- Shapes: one point cloud per stage (unit space) ----
+  function buildShapes(N) {
+    const TAU = Math.PI * 2, r = Math.random, golden = Math.PI * (3 - Math.sqrt(5));
+    const cloud = new Float32Array(N * 3), sphere = new Float32Array(N * 3), cube = new Float32Array(N * 3),
+          stack = new Float32Array(N * 3), torus = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) {
+      const j = i * 3;
+      // Problem: loose cloud
+      cloud[j] = (r() - 0.5) * 2.0; cloud[j + 1] = (r() - 0.5) * 1.1; cloud[j + 2] = (r() - 0.5) * 1.4;
+      // Research: sphere (fibonacci)
+      const y = 1 - (i / (N - 1)) * 2, rad = Math.sqrt(1 - y * y), th = golden * i;
+      sphere[j] = Math.cos(th) * rad; sphere[j + 1] = y; sphere[j + 2] = Math.sin(th) * rad;
+      // Design: cube, weighted to edges
+      const s = 0.82;
+      let p;
+      if (i % 3 !== 0) {
+        const e = Math.floor(r() * 12), axis = Math.floor(e / 4);
+        const a = (e & 1) ? s : -s, b = (e & 2) ? s : -s, t = (r() * 2 - 1) * s;
+        p = axis === 0 ? [t, a, b] : axis === 1 ? [a, t, b] : [a, b, t];
+      } else {
+        const f = Math.floor(r() * 6), u = (r() * 2 - 1) * s, v = (r() * 2 - 1) * s, w = (f & 1) ? s : -s, ax = f >> 1;
+        p = ax === 0 ? [w, u, v] : ax === 1 ? [u, w, v] : [u, v, w];
+      }
+      cube[j] = p[0]; cube[j + 1] = p[1]; cube[j + 2] = p[2];
+      // Build: three stacked plates
+      const half = 0.9, py = ((i % 3) - 1) * 0.55;
+      if (r() < 0.55) {
+        const side = Math.floor(r() * 4), t = (r() * 2 - 1) * half;
+        stack[j] = side === 0 ? t : side === 1 ? half : side === 2 ? t : -half;
+        stack[j + 2] = side === 0 ? -half : side === 1 ? t : side === 2 ? half : t;
+      } else {
+        stack[j] = (r() * 2 - 1) * half; stack[j + 2] = (r() * 2 - 1) * half;
+      }
+      stack[j + 1] = py + (r() - 0.5) * 0.04;
+      // Live: torus
+      const u2 = r() * TAU, v2 = r() * TAU, R = 0.78, rr = 0.3;
+      torus[j] = (R + rr * Math.cos(v2)) * Math.cos(u2);
+      torus[j + 1] = rr * Math.sin(v2);
+      torus[j + 2] = (R + rr * Math.cos(v2)) * Math.sin(u2);
+    }
+    return [cloud, sphere, cube, stack, torus];
+  }
+
+  const N = 1600;
+  const shapes = buildShapes(N);
+  const px = new Float32Array(N), py = new Float32Array(N), vx = new Float32Array(N), vy = new Float32Array(N);
+  let W = 0, H = 0;
+  function resize() {
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = Math.max(1, Math.round(W * dpr));
+    canvas.height = Math.max(1, Math.round(H * dpr));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  for (let i = 0; i < N; i++) { px[i] = Math.random() * W; py[i] = Math.random() * H * 0.7; }
+  new ResizeObserver(resize).observe(canvas);
+
+  let visible = true;
+  new IntersectionObserver((en) => { visible = en[0].isIntersecting; }).observe(canvas);
+
+  let mx = -9999, my = -9999;
+  stageEl.addEventListener('pointermove', (e) => {
+    const r = canvas.getBoundingClientRect();
+    mx = e.clientX - r.left; my = e.clientY - r.top;
+  });
+  stageEl.addEventListener('pointerleave', () => { mx = -9999; my = -9999; });
+
+  let lastStage = -1;
+  function setStage(s) {
+    if (s === lastStage) return;
+    lastStage = s;
+    numEl.textContent = NAMES[s][0];
+    nameEl.textContent = NAMES[s][1];
+    words.forEach((w) => { w.style.color = Number(w.dataset.stage) === s ? BRAND : INK; });
+    bars.forEach((b, i) => { b.style.background = i === s ? BRAND : (i < s ? INK : LINE); });
+  }
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const HOLD = 4600, MORPH = 1700, T = HOLD + MORPH, COUNT = shapes.length;
+  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+  let tiltX = 0, tiltY = 0;
+  const t0 = performance.now();
+
+  function frame(now) {
+    if (!reduce) requestAnimationFrame(frame);
+    if (!visible || !W) return;
+    const el = reduce ? HOLD * 0.5 + T : Math.max(0, now - t0);  // reduced motion: static sphere
+    const cyc = el / T, k = Math.floor(cyc) % COUNT, into = (cyc - Math.floor(cyc)) * T;
+    const p = into < HOLD ? 0 : ease((into - HOLD) / MORPH);
+    setStage(p > 0.5 ? (k + 1) % COUNT : k);
+    const A = shapes[k], B = shapes[(k + 1) % COUNT];
+
+    const cx = W / 2, cy = H * 0.34, R = Math.min(W * 0.2, H * 0.16);
+    const hasMouse = mx > -999;
+    const tx = hasMouse ? ((mx - cx) / W) * 0.9 : 0, ty = hasMouse ? ((my - cy) / H) * 0.6 : 0;
+    tiltX += (ty - tiltX) * 0.04; tiltY += (tx - tiltY) * 0.04;
+    const ay = el * 0.00016 + tiltY, ax = -0.42 + tiltX;
+    const cA = Math.cos(ay), sA = Math.sin(ay), cB = Math.cos(ax), sB = Math.sin(ax);
+    const mr = 95, mr2 = mr * mr;
+
+    ctx.clearRect(0, 0, W, H);
+    for (let pass = 0; pass < 2; pass++) {
+      ctx.fillStyle = pass === 0 ? INK : BRAND;
+      for (let i = 0; i < N; i++) {
+        const orange = i % 41 === 0;
+        if ((pass === 1) !== orange) continue;
+        const j = i * 3;
+        const x = A[j] + (B[j] - A[j]) * p, y = A[j + 1] + (B[j + 1] - A[j + 1]) * p, z = A[j + 2] + (B[j + 2] - A[j + 2]) * p;
+        const x1 = x * cA - z * sA, z1 = x * sA + z * cA;
+        const y2 = y * cB - z1 * sB, z2 = y * sB + z1 * cB;
+        const f = 3.4 / (3.4 + z2);
+        const sx = cx + x1 * R * f, sy = cy + y2 * R * f;
+        if (reduce) { px[i] = sx; py[i] = sy; }
+        else {
+          vx[i] += (sx - px[i]) * 0.055; vy[i] += (sy - py[i]) * 0.055;
+          if (hasMouse) {
+            const dx = px[i] - mx, dy = py[i] - my, d2 = dx * dx + dy * dy;
+            if (d2 < mr2 && d2 > 0.01) {
+              const d = Math.sqrt(d2), force = (1 - d / mr) * 3.2;
+              vx[i] += (dx / d) * force; vy[i] += (dy / d) * force;
+            }
+          }
+          vx[i] *= 0.83; vy[i] *= 0.83;
+          px[i] += vx[i]; py[i] += vy[i];
+        }
+        const depth = Math.max(0, Math.min(1, (f - 0.72) / 0.62));
+        ctx.globalAlpha = orange ? 1 : 0.18 + depth * 0.62;
+        const size = orange ? 2.4 : 0.9 + depth * 1.1;
+        ctx.fillRect(px[i] - size / 2, py[i] - size / 2, size, size);
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

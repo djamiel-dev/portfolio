@@ -1,0 +1,15 @@
+# Persoonlijke context: nooit publiek
+private/
+
+# Next.js
+node_modules/
+.next/
+out/
+.env*
+.vercel
+.DS_Store
+next-env.d.ts
+*.tsbuildinfo
+
+# Local tooling
+.claude/settings.local.json
