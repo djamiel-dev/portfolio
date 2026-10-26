@@ -25,3 +25,4 @@ Een onderdeel is pas af als alles hieronder klopt. Automatische checks: `npm run
 - [x] Placeholders staan tussen `[ ]`; niets verzonnens buiten de haken
 - [ ] Echte links (e-mail, call, LinkedIn, resume) en case-inhoud – na het design
 - [ ] Spellingscheck van alle Engelse tekst
+- [ ] Bij lancering: `robots: { index: false }` uit `app/layout.tsx` halen (nu verborgen voor zoekmachines)
