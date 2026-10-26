@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "screenshots": "node scripts/screenshots.mjs",
     "audit": "node scripts/audit.mjs",
-    "keyboard": "node scripts/keyboard.mjs"
+    "keyboard": "node scripts/keyboard.mjs",
+    "explore-check": "node scripts/explore-check.mjs"
   },
   "dependencies": {
     "next": "^16.4.3",

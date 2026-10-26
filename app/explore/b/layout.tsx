@@ -3,7 +3,7 @@ import { Bricolage_Grotesque, Kalam } from "next/font/google";
 
 const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-b-print", display: "swap" });
 // Stand-in for Djamiel's own scanned handwriting
-const kalam = Kalam({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-b-hand", display: "swap" });
+const kalam = Kalam({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-b-hand", display: "swap", preload: false });
 
 export const metadata: Metadata = {
   title: "Djamiel – product designer who builds (B)",

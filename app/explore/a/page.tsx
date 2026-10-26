@@ -63,28 +63,22 @@ export default function ConceptA() {
             <h2 className={styles.workTitle}>Selected work</h2>
             <ol className={styles.index}>
               {exploreCases.map((c) => (
-                <li key={c.num} className={styles.cellItem}>
-                  <a
-                    href={c.href}
-                    className={styles.cell}
-                    data-cursor="View case"
-                    aria-labelledby={`a-case-${c.num}`}
-                    aria-describedby={`a-out-${c.num}`}
-                  >
-                    <span className={styles.thumb}>
-                      <span className={styles.caption}>{c.caption}</span>
-                    </span>
-                    <span className={styles.cellMeta}>
-                      <span data-status={c.status}>{statusLabel[c.status]}</span>
-                      <span>{c.type}</span>
-                    </span>
-                    <span id={`a-case-${c.num}`} className={styles.cellTitle}>
+                <li key={c.num} className={styles.cellItem} data-cursor="View case">
+                  <span className={styles.thumb}>
+                    <span className={styles.caption}>{c.caption}</span>
+                  </span>
+                  <span className={styles.cellMeta}>
+                    <span data-status={c.status}>{statusLabel[c.status]}</span>
+                    <span>{c.type}</span>
+                  </span>
+                  <h3 className={styles.cellTitle}>
+                    <a href={c.href} className={styles.cell}>
                       {c.name}
-                    </span>
-                    <span id={`a-out-${c.num}`} className={styles.cellOutcome}>
-                      <Text>{c.outcome}</Text>
-                    </span>
-                  </a>
+                    </a>
+                  </h3>
+                  <p className={styles.cellOutcome}>
+                    <Text>{c.outcome}</Text>
+                  </p>
                   {c.liveUrl && (
                     <a href={c.liveUrl} className={styles.liveLink} target="_blank" rel="noopener">
                       Live site <span aria-hidden="true">↗</span>

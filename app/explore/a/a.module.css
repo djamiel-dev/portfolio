@@ -235,16 +235,31 @@
 
 .cellItem {
   position: relative;
-  background: var(--a-paper);
-}
-
-.cell {
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
-  height: 100%;
   padding: 0.75rem 0.75rem 1rem;
+  background: var(--a-paper);
+}
+
+/* The title link covers the whole cell */
+.cell {
   text-decoration: none;
+}
+
+.cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.cell:focus-visible {
+  outline: none;
+}
+
+.cellItem:has(.cell:focus-visible) {
+  outline: 2px solid var(--a-blue);
+  outline-offset: -2px;
 }
 
 .thumb {
@@ -268,13 +283,13 @@
   color: var(--a-muted);
 }
 
-.cell:hover .thumb,
-.cell:focus-visible .thumb {
+.cellItem:hover .thumb,
+.cellItem:has(.cell:focus-visible) .thumb {
   background-color: var(--a-ink);
 }
 
-.cell:hover .caption,
-.cell:focus-visible .caption {
+.cellItem:hover .caption,
+.cellItem:has(.cell:focus-visible) .caption {
   color: #d7d7d2;
 }
 
@@ -314,7 +329,7 @@
   line-height: 1.2;
 }
 
-.cell:hover .cellTitle {
+.cellItem:hover .cell {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
@@ -328,6 +343,7 @@
 
 .liveLink {
   position: absolute;
+  z-index: 1;
   top: 0.75rem;
   right: 0.75rem;
   display: inline-flex;

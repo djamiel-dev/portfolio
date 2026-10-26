@@ -97,3 +97,8 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Gevonden en opgelost tijdens het bouwen:** AI verzon eerst een AI-notitie voor de making-of die niet gebeurd was, vervangen door een echte uit dit logboek. A's animatie telde frames in plaats van tijd, waardoor hij op een trage telefoon of in een achtergrondtab bleef hangen; nu tijdgebaseerd. C's tegels braken op mobiel midden in een woord af; nu per woord.
 - **Ik besliste:** [volgt na het bekijken]
 - **Tijd:** ca. 50 min.
+
+### Stap 5 – Toetsen
+- **AI deed:** productiebuild getest met een nieuw script (`npm run explore-check`: screenshots na 1 en 5 s, eerste scherm meten, toetsenbord met reduced motion) en `npm run audit` per route, met J als nulmeting. Resultaat: A, B en C tonen alle vier de cases in het eerste scherm op desktop (J: geen), axe 0 overal, Lighthouse 97–100. Gevonden en opgelost: axe-fout in A (naam van caselinks), trage kop in B op mobiel (font preload), twee meetfouten in het eigen script. Volledig: `docs/verkenning/04-toetsing.md`.
+- **Ik besliste:** [volgt na keuze in stap 6]
+- **Tijd:** ca. 35 min.
