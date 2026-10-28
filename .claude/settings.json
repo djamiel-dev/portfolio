@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "designlang": {
+      "source": {
+        "source": "github",
+        "repo": "Manavarya09/design-extract"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "designlang@designlang": true
+  }
+}
