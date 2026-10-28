@@ -10,6 +10,7 @@ const routes = [
   { href: "/explore/a", name: "A · Construction grid", note: "Close to version J. Particles build the name on a visible grid." },
   { href: "/explore/b", name: "B · Research wall", note: "Cases as pinned evidence that folds into the product." },
   { href: "/explore/c", name: "C · Departure board", note: "Cases as departures with an honest status." },
+  { href: "/explore/d", name: "D · Wireframe v2, Heron style", note: "Built section by section from the Claude Design wireframe." },
   { href: "/", name: "J · Current version", note: "The stable homepage on main." },
 ];
 

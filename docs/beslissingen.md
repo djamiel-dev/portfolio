@@ -112,3 +112,10 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
   - nieuwe bestanden of tools alleen na overleg.
 - **Stap 6 (kiezen)** staat nog open en gaat verder in een nieuwe chat.
 - **Making-of-materiaal:** dit is een goed voorbeeld van "AI met controle": het tempo van AI moet passen bij het tempo waarin ik kan beoordelen.
+
+### Stap 6 – Nieuwe aanpak: Heron als systeem, eigen wireframe als basis (concept D)
+- **AI deed:** de designlang-plugin opgezet en Heron gemeten. designlang kwam niet voorbij Herons loader, dus typeschaal en achtergrond zijn in de browser nagemeten; vastgelegd in `DESIGN.md`. Daarna mijn wireframe uit Claude Design sectie voor sectie gebouwd op `/explore/d` (nav + hero, werk, skills, tijdlijn, afsluiter + footer), met Impeccable en Heron als experimenteel stijlsysteem. Gradient ASCII van React Bits als hero-achtergrond, met twee gemarkeerde aanpassingen (opruimen in development, `flipY`).
+- **Gevonden en opgelost tijdens het bouwen:** focusvolgorde van het werk volgde eerst de kolommen (01, 03, 02, 04); scrollpanelen lijnden niet uit met tekst en balk; de ASCII-achtergrond bleef in development wit door een verloren WebGL-context; de Skills-lijst kreeg op desktop onnodig focus.
+- **Ik besliste:** na elke sectie bijgestuurd, onder meer: hero toch schermvullend, skills-panelen beginnen en eindigen in het midden en lijnen uit met tekst en balk, tijdlijn met maximaal twee momenten in beeld, pagina wordt donker vanaf de tijdlijn en blijft donker, ASCII-gloed van boven in plaats van onder.
+- **Toetsing:** axe 0 op desktop en mobiel; Lighthouse desktop 100, mobiel 95–98 performance (versie J: 98 in dezelfde meting), SEO 60 door de bewuste `noindex`; toetsenbord 15 stappen, alle focus zichtbaar.
+- **Tijd:** [invullen]
