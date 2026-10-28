@@ -15,6 +15,28 @@ Aanpak:
 
 Tijdens verkenning mogen richtingen afwijken van de tokens, de vormtaal en de opbouw hieronder. Die secties beschrijven versie J; ze worden bijgewerkt zodra een richting gekozen is.
 
+### Stand van zaken (28 okt 2026) – lees dit eerst in een nieuwe chat
+- **Branch `explore`** (niet gepusht) bevat alles uit de verkenning; `main` is nog versie J. Werk verder op `explore`.
+- **Stappen 1–5 zijn gedaan**, elk met een verslag in `docs/verkenning/`:
+  - `01-referenties.md`: analyse van 7 referentiesites.
+  - `02-critique-versie-j.md`: Impeccable-critique van J, score 22/32.
+  - `03-concepten.md`: drie concepten.
+  - `04-toetsing.md`: metingen, audit en screenshots.
+- **Gebouwd:** `/explore` (overzicht), `/explore/a` Bouwraster, `/explore/b` Onderzoeksmuur, `/explore/c` Vertrekbord. Gedeelde inhoud in `content/explore.ts`.
+- **Nieuwe bestanden:**
+  - `PRODUCT.md`: productwaarheid voor Impeccable.
+  - `.impeccable/`: critique-archief en de richtingsafspraak per route.
+  - `scripts/explore-check.mjs` + `scripts/explore-sheet.mjs`: metingen en vergelijkingsbladen in `screenshots/explore/`.
+- **Nog niet gekozen:** stap 6 (kiezen of combineren) staat open. Nog niet gedaan: een 5-secondentest met echte mensen, en testen op een echte telefoon.
+- **Bekende losse eindjes:**
+  - De hoofdlayout laadt de fonts van J op elke pagina; dat kost snelheid.
+  - Big Shoulders (C) geeft een onschuldige build-waarschuwing.
+  - Alle case-inhoud is nog placeholder.
+- **Werkwijze vanaf nu (mijn les uit deze ronde):** we gingen te snel naar een compleet design en AI deed te veel tegelijk (drie volledige pagina's in één stap, veel procesbestanden). Voortaan:
+  - kleinere stappen, één onderwerp per stap (bijvoorbeeld eerst alleen de hero, dan alleen het werkoverzicht);
+  - na elke stap stoppen en laten zien;
+  - geen nieuwe bestanden, scripts of tools zonder het eerst te vragen.
+
 ## Doel
 Persoonlijke portfoliosite voor Djamiel (22, Tilburg, HBO ICT & Media). Positionering: **product designer die zelf bouwt / design engineer**, met AI als rode draad (niet als kop). Doelgroep: productbedrijven en scale-ups in Brabant. De site is zelf bewijs van kunnen: gebouwd in Next.js, gehost op Vercel, code publiek op GitHub.
 

@@ -102,3 +102,13 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **AI deed:** productiebuild getest met een nieuw script (`npm run explore-check`: screenshots na 1 en 5 s, eerste scherm meten, toetsenbord met reduced motion) en `npm run audit` per route, met J als nulmeting. Resultaat: A, B en C tonen alle vier de cases in het eerste scherm op desktop (J: geen), axe 0 overal, Lighthouse 97–100. Gevonden en opgelost: axe-fout in A (naam van caselinks), trage kop in B op mobiel (font preload), twee meetfouten in het eigen script. Volledig: `docs/verkenning/04-toetsing.md`.
 - **Ik besliste:** [volgt na keuze in stap 6]
 - **Tijd:** ca. 35 min.
+
+### Terugblik op de verkenning (28 okt)
+- **Mijn oordeel:** we zijn te snel naar een compleet design gegaan en AI deed te veel tegelijk. In stap 4 bouwde AI drie volledige pagina's in één keer, en onderweg kwamen er veel procesbestanden bij (`PRODUCT.md`, `.impeccable/`, twee testscripts). Daardoor kon ik keuzes niet stap voor stap volgen of bijsturen.
+- **Wat wel bruikbaar is:** de referentieanalyse, de critique van J (geleende stijl, werk niet boven de vouw, te trage hero) en de drie routes als vergelijkingsmateriaal.
+- **Afspraak voor het vervolg:**
+  - kleinere stappen, één onderdeel per keer;
+  - na elke stap laten zien en wachten;
+  - nieuwe bestanden of tools alleen na overleg.
+- **Stap 6 (kiezen)** staat nog open en gaat verder in een nieuwe chat.
+- **Making-of-materiaal:** dit is een goed voorbeeld van "AI met controle": het tempo van AI moet passen bij het tempo waarin ik kan beoordelen.
