@@ -149,6 +149,7 @@ export function Skills() {
                 </span>
                 <SkillVisual index={i} className={styles.skillVisual} />
               </div>
+              <ToolReel tools={s.tools} />
               <div className={styles.skillBody}>
                 <h3 className={styles.skillName}>{s.title}</h3>
                 <p className={styles.skillText}>{s.text}</p>
@@ -168,5 +169,33 @@ export function Skills() {
         )}
       </div>
     </section>
+  );
+}
+
+/**
+ * A slow, endless row of the tools behind a skill. It only shows and moves on the
+ * active card; the second copy exists to make the loop seamless and is hidden from
+ * assistive tech, which reads the first copy as a plain list.
+ */
+function ToolReel({ tools }: { tools: string[] }) {
+  const row = (copy: boolean) => (
+    <ul className={styles.toolRow} aria-hidden={copy || undefined}>
+      {tools.map((t, i) => (
+        <li key={i} className={styles.tool} data-placeholder={t.startsWith("[") || undefined}>
+          <span className={styles.toolMark} aria-hidden="true">
+            {t.replace(/^\[/, "").charAt(0)}
+          </span>
+          {t}
+        </li>
+      ))}
+    </ul>
+  );
+  return (
+    <div className={styles.toolReel} aria-label="Tools">
+      <div className={styles.toolTrack}>
+        {row(false)}
+        {row(true)}
+      </div>
+    </div>
   );
 }

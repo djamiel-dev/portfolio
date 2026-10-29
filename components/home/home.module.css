@@ -664,6 +664,92 @@
   color: var(--muted);
 }
 
+/* Tools reel: an endless row of small widgets in the card's open middle.
+   Hidden and paused until the card is the one in the light. */
+.toolReel {
+  overflow: hidden;
+  margin: 0 calc(clamp(24px, 2.4vw, 36px) * -1);
+  mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  opacity: 0;
+  translate: 0 6px;
+  transition: opacity 500ms ease, translate 500ms var(--ease-out);
+}
+
+.toolTrack {
+  display: flex;
+  width: max-content;
+  animation: reel 22s linear infinite;
+  animation-play-state: paused;
+}
+
+.toolRow {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0 10px 0 0;
+  list-style: none;
+}
+
+.tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px 8px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgb(255 255 255 / 0.7);
+  font-size: 0.9375rem;
+  font-weight: 520;
+  white-space: nowrap;
+  color: var(--fg);
+}
+
+.tool[data-placeholder] {
+  border-style: dashed;
+  background: transparent;
+  color: var(--muted);
+}
+
+.toolMark {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 0.8125rem;
+  font-weight: 650;
+}
+
+.tool[data-placeholder] .toolMark {
+  border: 1px dashed var(--line);
+  background: transparent;
+  color: var(--muted);
+}
+
+@keyframes reel {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.skills[data-live] .skill[data-active] .toolReel,
+.skills:not([data-live]) .toolReel {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.skills[data-live] .skill[data-active] .toolTrack {
+  animation-play-state: running;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toolTrack {
+    animation: none;
+  }
+}
+
 .skillBody {
   display: flex;
   flex-direction: column;
@@ -741,6 +827,7 @@
   transition: opacity 1100ms ease;
 }
 
+.root[data-sky="night"] .skills[data-live] .skill[data-active] .toolReel,
 .root[data-sky="night"] .skills[data-pinned] .skillsStage::before,
 .root[data-sky="night"] .skills[data-live] .skill[data-active]::before {
   opacity: 0;

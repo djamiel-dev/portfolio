@@ -1,15 +1,28 @@
 // Skills and timeline content for the homepage.
 // Text in [brackets] is a placeholder and must be replaced before going live.
 
-export type Skill = { title: string; text: string };
+// tools: what the card's carousel shows. Only tools Djamiel named; [Tool] is a slot to fill in.
+export type Skill = { title: string; text: string; tools: string[] };
 
 export const skills: Skill[] = [
-  { title: "Research & user testing", text: "[Interviews, usability tests and what I do with the findings]" },
-  { title: "UI/UX design", text: "[Flows, wireframes and interface design in Figma]" },
-  { title: "Frontend development", text: "[Building what I design in Next.js, TypeScript and CSS]" },
-  { title: "Prototyping", text: "[Clickable and coded prototypes to test ideas early]" },
-  { title: "AI workflows", text: "[How I use AI to explore more and check my own work]" },
-  { title: "Design systems", text: "[Tokens and components that keep design and code in sync]" },
+  {
+    title: "Research & user testing",
+    text: "[Interviews, usability tests and what I do with the findings]",
+    tools: ["ResearchRabbit", "[Tool]", "[Tool]"],
+  },
+  {
+    title: "UI/UX design",
+    text: "[Flows, wireframes and interface design in Figma]",
+    tools: ["Figma", "DaVinci Resolve", "[Tool]"],
+  },
+  {
+    title: "Frontend development",
+    text: "[Building what I design in Next.js, TypeScript and CSS]",
+    tools: ["Next.js", "Tailwind CSS", "TypeScript"],
+  },
+  { title: "Prototyping", text: "[Clickable and coded prototypes to test ideas early]", tools: ["[Tool]", "[Tool]", "[Tool]"] },
+  { title: "AI workflows", text: "[How I use AI to explore more and check my own work]", tools: ["Claude Code", "[Tool]", "[Tool]"] },
+  { title: "Design systems", text: "[Tokens and components that keep design and code in sync]", tools: ["[Tool]", "[Tool]", "[Tool]"] },
 ];
 
 export type Moment = { title: string; role: string; story: string; period: string };
