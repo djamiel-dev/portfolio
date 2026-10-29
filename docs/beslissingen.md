@@ -119,3 +119,24 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Ik besliste:** na elke sectie bijgestuurd, onder meer: hero toch schermvullend, skills-panelen beginnen en eindigen in het midden en lijnen uit met tekst en balk, tijdlijn met maximaal twee momenten in beeld, pagina wordt donker vanaf de tijdlijn en blijft donker, ASCII-gloed van boven in plaats van onder.
 - **Toetsing:** axe 0 op desktop en mobiel; Lighthouse desktop 100, mobiel 95–98 performance (versie J: 98 in dezelfde meting), SEO 60 door de bewuste `noindex`; toetsenbord 15 stappen, alle focus zichtbaar.
 - **Tijd:** [invullen]
+
+### Stap 7 – Vrij experiment: één dag licht (concept E)
+- **Vraag:** maak van D iets op award-niveau, als losse route `/explore/e`, in één doorlopende run zonder tussentijdse checks. Opbouw en concept van D liggen vast; het designsysteem, de hero-achtergrond en het signatuurmoment zijn vrij.
+- **AI deed:** zeven richtingen uit de wereld van de doelgroep opgesteld en Impeccable laten loten. Die koos nummer 4, **licht** (Eindhoven als Lichtstad), boven AI's eigen favoriet: een rode draad die door de pagina genaaid wordt. De pagina is nu één dag:
+  - de hero in ochtendlicht door een raam (SVG, geen afbeelding);
+  - het werk in daglicht, met per case een lichtstudie die later op de dag valt, als placeholder voor het beeld;
+  - de skills in het gouden uur, waarbij de skill in het midden in een lichtpoel staat;
+  - vanaf de tijdlijn nacht, met de lijn als gloeidraad die elk moment aanzet. De lijn eindigt in een hanglamp die de uitnodiging verlicht; de mailknop is het enige verlichte object.
+  - Eén lettertype (Mona Sans), waarvan de breedte-as het werk van een tweede font doet. Geen nieuwe npm-dependencies.
+- **Bewust anders dan D:** geen Heron-papier, mono-labels en oranje; geen ASCII-achtergrond; links veranderen bij hover niet meer van kleur (oud contrastprobleem) maar krijgen een lijn; de tijdlijn heeft vaste kanten (periode links, verhaal rechts); mobiel heeft een menu (`<details>`, werkt zonder JS) in plaats van een nav over twee regels.
+- **Gevonden en opgelost tijdens het bouwen:**
+  - gedimde skill-titels haalden 2,84:1 (axe);
+  - amberkleurige jaartallen waren onleesbaar zodra de tijdlijn nog in daglicht stond;
+  - de lamp werd op mobiel half afgesneden en de lichtpoel had harde randen;
+  - na een aanpassing waren alle nav-links standaard onderstreept;
+  - het foto-label paste niet op tablet en mobiel;
+  - het skills-deel was ruim vier schermen lang en is ingekort tot ongeveer twee.
+- **Toetsing:** axe 0 op desktop en mobiel; Lighthouse mobiel 98/100/100, desktop 100/100/100 (SEO 60 door de bewuste `noindex`); toetsenbord 15 stappen, alle focus zichtbaar; werkt zonder JS en met reduced motion (alles staat dan aan en stil). Impeccable-detector: 0 codemeldingen; in de browser alleen "veelgebruikt font" (bewuste keuze).
+- **Afwijkingen van het Impeccable-proces:** geen subagents (critique in één context), geen comps, geen surface brief en geen nieuwe DESIGN.md, om binnen `app/explore/e/` te blijven.
+- **Ik besliste:** [volgt na het bekijken]
+- **Tijd:** [invullen]

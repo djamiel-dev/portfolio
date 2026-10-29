@@ -11,6 +11,7 @@ const routes = [
   { href: "/explore/b", name: "B · Research wall", note: "Cases as pinned evidence that folds into the product." },
   { href: "/explore/c", name: "C · Departure board", note: "Cases as departures with an honest status." },
   { href: "/explore/d", name: "D · Wireframe v2, Heron style", note: "Built section by section from the Claude Design wireframe." },
+  { href: "/explore/e", name: "E · One day of light", note: "Free experiment on D: work in daylight, the story at night along a filament that ends in a lamp." },
   { href: "/", name: "J · Current version", note: "The stable homepage on main." },
 ];
 

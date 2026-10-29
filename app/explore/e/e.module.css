@@ -1,0 +1,1279 @@
+/* Concept E – one day of light.
+   Work is shown in daylight, the skills in golden hour, the story at night,
+   where a filament lights each moment and ends in a lamp over the invitation.
+   Mona Sans throughout; its width axis carries the labels. */
+
+/* Registered so the sky can transition: everything that uses a token follows */
+@property --bg { syntax: "<color>"; inherits: true; initial-value: #eeefeb; }
+@property --fg { syntax: "<color>"; inherits: true; initial-value: #121318; }
+@property --fg-2 { syntax: "<color>"; inherits: true; initial-value: #45484f; }
+@property --muted { syntax: "<color>"; inherits: true; initial-value: #5b5e65; }
+@property --dim { syntax: "<color>"; inherits: true; initial-value: #7d8086; }
+@property --line { syntax: "<color>"; inherits: true; initial-value: #c9cbc7; }
+@property --focus { syntax: "<color>"; inherits: true; initial-value: #121318; }
+@property --glow { syntax: "<color>"; inherits: true; initial-value: #8a5300; }
+
+/* Day: north light on a white wall */
+.root {
+  --bg: #eeefeb;
+  --fg: #121318;
+  --fg-2: #45484f;
+  --muted: #5b5e65;
+  --dim: #7d8086; /* only for text of 24px and up */
+  --line: #c9cbc7;
+  --focus: #121318;
+  --glow: #8a5300; /* lit text: dark amber by day, lamp light at night */
+
+  --lamp: #ffb547;
+  --lamp-core: #fff3d9;
+  --pane-ink: #31343a;
+  --gutter: clamp(20px, 3.5vw, 56px);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-e), system-ui, sans-serif;
+  font-weight: 430;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-kerning: normal;
+}
+
+/* Golden hour: the same wall, an hour before sunset */
+.root[data-sky="golden"],
+.root:not([data-sky]) .skills {
+  --bg: #f1e9dc;
+  --fg: #17140f;
+  --fg-2: #4a4339;
+  --muted: #5f574b;
+  --dim: #857b6b;
+  --line: #d8cebd;
+  --focus: #17140f;
+  --glow: #8a5300;
+}
+
+/* Night: a dark street, one warm filament */
+.root[data-sky="night"],
+.root:not([data-sky]) .night,
+.root:not([data-sky]) .footer {
+  --bg: #0b0e17;
+  --fg: #efebe3;
+  --fg-2: #b3b7c1;
+  --muted: #9095a2;
+  --dim: #5e6473;
+  --line: #262b3a;
+  --focus: #ffb547;
+  --glow: #ffb547;
+}
+
+/* Without JS each zone paints its own sky; with JS the root does, and transitions */
+.root:not([data-sky]) .skills,
+.root:not([data-sky]) .night,
+.root:not([data-sky]) .footer {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* No colour changes play while the page is still settling into its live state */
+.root:not([data-sky-ready]) .skills *,
+.root:not([data-sky-ready]) .story * {
+  transition: none;
+}
+
+.root p {
+  text-wrap: pretty;
+}
+
+.root[data-sky-ready] {
+  transition-property: --bg, --fg, --fg-2, --muted, --dim, --line, --focus, --glow;
+  transition-duration: 1100ms;
+  transition-timing-function: ease;
+}
+
+/* The canvas around the page follows the sky, so overscroll never flashes */
+:global(html):has(.root) {
+  scrollbar-color: #9a9da3 transparent;
+}
+
+:global(body):has(.root) {
+  background: #eeefeb;
+}
+
+:global(body):has(.root[data-sky="night"]) {
+  background: #0b0e17;
+}
+
+.root ::selection {
+  background: var(--lamp);
+  color: #14110b;
+}
+
+.root :global(.skip-link) {
+  min-height: var(--tap);
+}
+
+.root :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Links never change colour on hover (the old contrast problem): a line draws in instead */
+.root a:hover {
+  color: inherit;
+}
+
+.nav a > span,
+.footerNav a > span,
+.scroll span,
+.caseTitle a {
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0% 1px;
+  transition: background-size 320ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav a:hover > span,
+  .footerNav a:hover > span,
+  .scroll:hover span {
+    background-size: 100% 1px;
+  }
+}
+
+.nav a:focus-visible > span,
+.footerNav a:focus-visible > span {
+  background-size: 100% 1px;
+}
+
+.arrow {
+  flex: none;
+  transition: transform 240ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a:hover > .arrow {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* Labels: Mona Sans at its widest, small and upper case */
+.place,
+.scroll,
+.status,
+.caseYear,
+.caseMeta,
+.skillNum,
+.skillsProgress,
+.momentRole,
+.footerName small {
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-stretch: 125%;
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Nav ---------- */
+
+.top {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 80px;
+  padding: 0 var(--gutter);
+}
+
+.home {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  font-size: 1rem;
+  font-weight: 650;
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  gap: clamp(20px, 2.6vw, 40px);
+}
+
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: var(--tap);
+  min-height: var(--tap);
+  font-size: 0.9375rem;
+  font-weight: 520;
+}
+
+.nav a,
+.footerNav a {
+  text-decoration: none;
+}
+
+.nav a > span,
+.footerNav a > span {
+  padding-bottom: 2px;
+}
+
+.menu {
+  position: relative;
+  display: none;
+}
+
+.menuButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--tap);
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 560;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 160ms var(--ease-out), border-color 200ms ease;
+}
+
+.menuButton::-webkit-details-marker {
+  display: none;
+}
+
+.menuButton:active {
+  transform: scale(0.97);
+}
+
+.menu[open] .menuButton {
+  border-color: var(--fg);
+}
+
+.menuPanel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 232px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: 0 18px 40px -18px rgb(18 19 24 / 0.35);
+  transform-origin: top right;
+}
+
+.menu[open] .menuPanel {
+  animation: menu-in 200ms var(--ease-out);
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+}
+
+.menuPanel a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 1.125rem;
+  font-weight: 520;
+  text-decoration: none;
+}
+
+.menuPanel a:hover {
+  background: rgb(18 19 24 / 0.06);
+}
+
+/* ---------- Hero: morning light through a window ---------- */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: 100svh;
+  padding: 120px var(--gutter) 0;
+  overflow: clip;
+}
+
+/* Glyph field behind the hero; fades out before the floor line so it never meets the labels */
+.heroLight {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 92%);
+}
+
+.glyphs {
+  height: 100%;
+}
+
+.root[data-hero-off] .scroll svg {
+  animation-play-state: paused;
+}
+
+.heroBody {
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.6vw, 40px);
+  padding-bottom: clamp(36px, 7vh, 88px);
+}
+
+.greeting {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.2em;
+  row-gap: 0.04em;
+  font-size: clamp(2.75rem, 7.8vw, 8.25rem);
+  font-weight: 560;
+  font-stretch: 104%;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.photo {
+  position: relative;
+  display: inline-block;
+  width: 0.74em;
+  height: 0.86em;
+  background: #d6dad9;
+  overflow: hidden;
+  translate: 0 0.04em;
+}
+
+.photo img {
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.line {
+  max-width: 22em;
+  font-size: clamp(1.25rem, 2.05vw, 1.9375rem);
+  font-weight: 460;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+}
+
+/* The floor line under the wall */
+.heroFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 72px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--tap);
+  text-decoration: none;
+  color: var(--fg);
+}
+
+.scroll span {
+  background-position: 0 calc(100% + 2px);
+}
+
+.scroll svg {
+  animation: nudge 2.4s var(--ease-in-out) infinite;
+}
+
+@keyframes nudge {
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+/* ---------- Work: four panes of daylight ---------- */
+
+.work {
+  --gap: clamp(24px, 5vw, 88px);
+  --offset: clamp(180px, 16vw, 280px);
+  --top: clamp(96px, 11vw, 176px);
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(72px, 9vw, 152px) var(--gap);
+  align-items: start;
+  padding: var(--top) var(--gutter) calc(clamp(96px, 10vw, 176px) + var(--offset));
+}
+
+/* The heading sits in the space the lower right column leaves open */
+.workHead {
+  position: absolute;
+  top: var(--top);
+  left: calc(50% + var(--gap) / 2);
+  right: var(--gutter);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.workTitle,
+.skillsTitle,
+.timelineTitle {
+  font-size: clamp(2rem, 3.8vw, 3.5rem);
+  font-weight: 560;
+  font-stretch: 104%;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.workIntro {
+  max-width: 24em;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  color: var(--fg-2);
+}
+
+.case {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* DOM and focus order stay 01–04; the right column is moved down visually */
+.case:nth-of-type(even) {
+  transform: translateY(var(--offset));
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--pane-ink);
+}
+
+.mediaLight {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  opacity: 0.85;
+  transition:
+    transform 1200ms var(--ease-out),
+    opacity 700ms ease;
+}
+
+.status {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lamp {
+  width: 8px;
+  height: 8px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+/* Live means switched on */
+.status[data-status="live"] .lamp {
+  border-color: #c97d10;
+  background: var(--lamp);
+  box-shadow:
+    0 0 0 3px rgb(255 181 71 / 0.25),
+    0 0 12px 2px rgb(255 170 60 / 0.6);
+}
+
+.caption {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  left: 18px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.caseHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 22px;
+}
+
+.caseTitle {
+  max-width: 24em;
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.caseTitle a {
+  background-position: 0 calc(100% - 0.04em);
+}
+
+/* The title link covers the whole card */
+.caseTitle a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.caseYear {
+  flex: none;
+  color: var(--muted);
+}
+
+.caseMeta {
+  margin-top: 14px;
+  color: var(--muted);
+}
+
+.caseNum {
+  margin-right: 0.6em;
+  color: var(--fg);
+}
+
+.caseText {
+  max-width: 34em;
+  margin-top: 8px;
+  color: var(--fg-2);
+}
+
+/* Hover: the light in the pane brightens and the sun moves on a little */
+@media (hover: hover) and (pointer: fine) {
+  .case:hover .mediaLight {
+    opacity: 1;
+    transform: translate3d(-2.5%, 2%, 0) scale(1.04);
+  }
+
+  .case:hover .caseTitle a {
+    background-size: 100% 1px;
+  }
+}
+
+.case:has(:focus-visible) .caseTitle a {
+  background-size: 100% 1px;
+}
+
+.case:has(:focus-visible) .media {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+/* ---------- Skills: golden hour ---------- */
+
+.skills {
+  position: relative;
+  padding: clamp(96px, 11vw, 176px) 0;
+}
+
+.skillsStage {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vw, 72px);
+  padding: 0 var(--gutter);
+}
+
+/* A quieter heading than the other sections: the cards carry this one */
+.skillsTitle {
+  max-width: 18em;
+  margin-bottom: clamp(16px, 3vh, 40px);
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  letter-spacing: -0.03em;
+}
+
+/* Cards share dashed edges, like cells of one sheet */
+.skillsTrack {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px dashed var(--line);
+  border-left: 1px dashed var(--line);
+}
+
+.skill {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 48px;
+  min-height: clamp(280px, 40svh, 400px);
+  padding: clamp(24px, 2.4vw, 36px);
+  border-right: 1px dashed var(--line);
+  border-bottom: 1px dashed var(--line);
+}
+
+/* The active card catches the light: it turns near-white, so its text stands out most */
+.skill::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: rgb(253 251 246 / 0.6);
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.skillFigure {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  justify-content: space-between;
+  color: var(--fg-2);
+}
+
+.skillVisual {
+  width: 32px;
+  height: 32px;
+  transition: color 450ms ease;
+}
+
+.skillNum {
+  color: var(--muted);
+}
+
+.skillBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skillName {
+  font-size: clamp(1.5rem, 2.1vw, 2rem);
+  font-weight: 540;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  transition: color 450ms ease;
+}
+
+.skillText {
+  max-width: 26em;
+  color: var(--fg-2);
+  transition: color 450ms ease;
+}
+
+/* With motion: only the skill in the light is fully lit */
+.skills[data-live] .skillName {
+  color: var(--dim);
+}
+
+.skills:not([data-live]) .skillVisual,
+.skills[data-live] .skill[data-active] .skillVisual {
+  color: var(--glow);
+}
+
+.skills[data-live] .skill[data-active] .skillName {
+  color: var(--fg);
+}
+
+.skills[data-live] .skill[data-active]::before {
+  opacity: 1;
+}
+
+.skills[data-live] .skill:not([data-active]) .skillText {
+  color: var(--muted);
+}
+
+/* Pinned: the row sticks for one screen and slides through a pool of light */
+.skills[data-pinned] {
+  --panel: clamp(320px, 28vw, 420px);
+  padding: 0;
+}
+
+.skills[data-pinned] .skillsStage {
+  position: sticky;
+  top: 0;
+  isolation: isolate;
+  justify-content: center;
+  height: 100svh;
+  padding: 0;
+  overflow: hidden;
+}
+
+.skills[data-pinned] .skillsStage::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--panel) * 2.6);
+  height: 86%;
+  translate: -50% -50%;
+  background: radial-gradient(closest-side, rgb(255 251 241 / 0.95), rgb(255 251 241 / 0.4) 55%, rgb(255 251 241 / 0));
+  pointer-events: none;
+}
+
+/* When night falls the light pool and the lit card go out with the sky, so nothing glows on dark */
+.skills[data-pinned] .skillsStage::before {
+  transition: opacity 1100ms ease;
+}
+
+.root[data-sky="night"] .skills[data-pinned] .skillsStage::before,
+.root[data-sky="night"] .skills[data-live] .skill[data-active]::before {
+  opacity: 0;
+}
+
+.skills[data-pinned] .skillsTitle,
+.skills[data-pinned] .skillsProgress {
+  align-self: center;
+  width: var(--panel);
+}
+
+/* One row of cells; Skills.tsx measures one step as one panel (no gap) */
+.skills[data-pinned] .skillsTrack {
+  display: flex;
+  align-self: flex-start;
+  width: max-content;
+  will-change: transform;
+}
+
+.skills[data-pinned] .skill {
+  width: var(--panel);
+}
+
+.skillsProgress {
+  align-self: center;
+  width: var(--panel);
+}
+
+.skillsProgress {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: var(--muted);
+}
+
+.skillsBar {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.skillsBar span {
+  position: absolute;
+  inset: 0;
+  background: var(--fg);
+  transform-origin: left;
+  transition: transform 450ms var(--ease-out);
+}
+
+/* ---------- Story: night, one filament ---------- */
+
+.story {
+  --t: clamp(1.75rem, 3vw, 2.75rem); /* moment title size; bulbs sit on its first line */
+  --p: clamp(1.125rem, 1.7vw, 1.5rem);
+  --gut: clamp(64px, 9vw, 136px);
+  --x: 50%; /* where the filament runs */
+  position: relative;
+  padding: clamp(120px, 14vw, 224px) var(--gutter) 0;
+  overflow-x: clip; /* the lamp's light may spill past the edges */
+}
+
+.timelineTitle {
+  max-width: 11em;
+  margin: 0 auto clamp(88px, 11vw, 168px);
+  text-align: center;
+}
+
+.moments {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 44svh;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.moment {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--gut) minmax(0, 1fr);
+  align-items: start;
+}
+
+.momentPeriod {
+  grid-column: 1;
+  margin-top: calc(var(--t) * 0.52 - var(--p) * 0.6);
+  font-size: var(--p);
+  font-weight: 500;
+  font-stretch: 112%;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--muted);
+  transition: color 500ms ease;
+}
+
+.bulb {
+  position: relative;
+  z-index: 3;
+  grid-column: 2;
+  justify-self: center;
+  width: 13px;
+  height: 13px;
+  margin-top: calc(var(--t) * 0.52 - 6.5px);
+  border: 1px solid var(--dim);
+  border-radius: 50%;
+  background: var(--bg);
+}
+
+.momentBody {
+  grid-column: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.momentTitle {
+  font-size: var(--t);
+  font-weight: 560;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  transition: color 500ms ease;
+}
+
+.momentRole {
+  color: var(--muted);
+}
+
+.momentStory {
+  max-width: 30em;
+  margin-top: 4px;
+  font-size: 1.0625rem;
+  color: var(--fg-2);
+}
+
+/* The static filament: lit by default (no JS, reduced motion) */
+.moments::before,
+.lampCord {
+  content: "";
+  position: absolute;
+  left: var(--x);
+  width: 2px;
+  translate: -50% 0;
+  background: var(--lamp);
+  box-shadow: 0 0 10px 1px rgb(255 170 60 / 0.55);
+}
+
+.moments::before {
+  top: calc(var(--t) * 0.52);
+  bottom: 0;
+}
+
+/* Lit state, shared by the static page and every moment the light has reached */
+.story:not([data-live]) .bulb,
+.moment[data-lit] .bulb {
+  border-color: #ffd28a;
+  background: var(--lamp-core);
+  box-shadow:
+    0 0 0 4px rgb(255 181 71 / 0.16),
+    0 0 18px 4px rgb(255 170 60 / 0.55);
+}
+
+.story:not([data-live]) .momentPeriod,
+.moment[data-lit] .momentPeriod {
+  color: var(--glow);
+}
+
+.story[data-live] .moment:not([data-lit]) .momentTitle {
+  color: var(--fg-2);
+}
+
+/* Switching on: a short flicker, like a filament catching */
+.moment[data-lit] .bulb,
+.closing[data-lit] .lampBulb {
+  animation: ignite 420ms steps(1, end);
+}
+
+@keyframes ignite {
+  0% {
+    opacity: 0.35;
+  }
+  25% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.5;
+  }
+  70% {
+    opacity: 1;
+  }
+}
+
+/* With JS: the track is dark and the measured filament glows as far as you've read */
+.story[data-live] .moments::before,
+.story[data-live] .lampCord {
+  width: 1px;
+  background: var(--line);
+  box-shadow: none;
+}
+
+.filament {
+  position: absolute;
+  z-index: 2;
+  left: calc(var(--gutter) + (100% - 2 * var(--gutter)) * 0.5);
+  display: none;
+  width: 2px;
+  translate: -50% 0;
+  pointer-events: none;
+}
+
+.story[data-live] .filament {
+  display: block;
+}
+
+.filamentFill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgb(255 181 71 / 0.5), var(--lamp) 18%);
+  box-shadow: 0 0 10px 1px rgb(255 170 60 / 0.55);
+  transform: scaleY(0);
+  transform-origin: top;
+  will-change: transform;
+}
+
+/* ---------- Closing: the line ends in a lamp over the invitation ---------- */
+
+.closing {
+  --drop: 38svh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--drop) 0 clamp(120px, 14vw, 208px);
+  text-align: center;
+}
+
+.lampCord {
+  top: 0;
+  height: var(--drop);
+}
+
+.lampBulb {
+  position: relative;
+  z-index: 3;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  border: 1px solid var(--dim);
+  border-radius: 50%;
+  background: var(--bg);
+  transition:
+    background-color 500ms ease,
+    box-shadow 900ms var(--ease-out),
+    border-color 500ms ease;
+}
+
+.story:not([data-live]) .lampBulb,
+.closing[data-lit] .lampBulb {
+  border-color: #ffe2ad;
+  background: #fff6e2;
+  box-shadow:
+    0 0 0 6px rgb(255 181 71 / 0.16),
+    0 0 44px 12px rgb(255 170 60 / 0.5),
+    0 0 140px 48px rgb(255 160 50 / 0.18);
+}
+
+/* Light falls from the bulb in every direction; the box is centred on the bulb
+   and larger than the light, so the glow fades out before any edge */
+.pool {
+  --reach: ellipse 640px 560px;
+  position: absolute;
+  z-index: 0;
+  top: var(--drop);
+  left: 50%;
+  width: 1400px;
+  height: 1240px;
+  translate: -50% -50%;
+  background: radial-gradient(var(--reach) at 50% 50%, rgb(255 184 90 / 0.2), rgb(255 184 90 / 0.07) 42%, rgb(255 184 90 / 0) 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1600ms var(--ease-out);
+}
+
+.story:not([data-live]) .pool,
+.closing[data-lit] .pool {
+  opacity: 1;
+}
+
+.closingTitle,
+.closingText,
+.mail {
+  position: relative;
+  z-index: 1;
+}
+
+.closingTitle {
+  max-width: 11em;
+  margin-top: clamp(56px, 7vw, 96px);
+  font-size: clamp(2.5rem, 6.6vw, 6.75rem);
+  font-weight: 560;
+  font-stretch: 104%;
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  transition: color 900ms ease;
+}
+
+.story[data-live] .closing:not([data-lit]) .closingTitle {
+  color: var(--fg-2);
+}
+
+.closingText {
+  max-width: 26em;
+  margin-top: clamp(20px, 2.4vw, 32px);
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  color: var(--fg-2);
+}
+
+/* The one lit object in the night */
+.mail {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  margin-top: clamp(32px, 4vw, 48px);
+  padding: 0 28px;
+  border: 1px solid var(--fg-2);
+  border-radius: 999px;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color 600ms ease,
+    border-color 600ms ease,
+    color 600ms ease,
+    box-shadow 600ms ease,
+    transform 160ms var(--ease-out);
+}
+
+.story:not([data-live]) .mail,
+.closing[data-lit] .mail {
+  border-color: var(--lamp);
+  background: var(--lamp);
+  color: #14110b;
+  box-shadow: 0 14px 44px -12px rgb(255 170 60 / 0.6);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .root .mail:hover {
+    border-color: var(--lamp);
+    background: #ffc46e;
+    color: #14110b;
+  }
+
+  .mail:hover svg {
+    transform: translate(2px, -2px);
+  }
+}
+
+.mail svg {
+  transition: transform 240ms var(--ease-out);
+}
+
+.mail:active {
+  transform: scale(0.97);
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px var(--gutter) 36px;
+  border-top: 1px solid var(--line);
+}
+
+.footerName {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footerMark {
+  font-size: 1rem;
+  font-weight: 650;
+  font-stretch: 112%;
+}
+
+.footerName small {
+  color: var(--muted);
+}
+
+.footerNav {
+  display: flex;
+  gap: clamp(20px, 2.6vw, 40px);
+}
+
+.footerNav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: var(--tap);
+  min-height: var(--tap);
+  font-weight: 520;
+}
+
+/* ---------- Phone ---------- */
+
+@media (max-width: 47.99em) {
+  .nav {
+    display: none;
+  }
+
+  .menu {
+    display: block;
+  }
+
+  .top {
+    height: 68px;
+  }
+
+  .hero {
+    padding-top: 96px;
+  }
+
+  .greeting {
+    font-size: clamp(2.5rem, 12.6vw, 4.5rem);
+  }
+
+
+  .work {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 64px;
+    --offset: 0px;
+    padding-top: 80px;
+  }
+
+  .workHead {
+    position: static;
+  }
+
+  .caseHead {
+    margin-top: 18px;
+  }
+
+  .skillsTrack {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .skill {
+    min-height: 260px;
+  }
+
+  /* The filament runs down the left; every moment sits to its right */
+  .story {
+    --gut: 40px;
+    --x: 7px;
+  }
+
+  .timelineTitle {
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .moments {
+    gap: 30svh;
+  }
+
+  .moment {
+    grid-template-columns: var(--gut) minmax(0, 1fr);
+    row-gap: 10px;
+  }
+
+  .momentPeriod {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 0;
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .bulb {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+    margin-left: 1px;
+  }
+
+  .momentBody {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .moments::before {
+    top: calc(1rem * 1.2 + 10px + var(--t) * 0.52);
+  }
+
+  .filament {
+    left: calc(var(--gutter) + 7px);
+  }
+
+  .closing {
+    --drop: 26svh;
+    align-items: flex-start;
+    padding-left: var(--gut);
+    text-align: left;
+  }
+
+  .lampBulb {
+    position: absolute;
+    top: var(--drop);
+    left: 7px;
+    margin: -12px 0 0 -12px;
+  }
+
+  .pool {
+    --reach: circle 420px;
+    left: 7px;
+    width: 900px;
+    height: 900px;
+  }
+
+  .closingTitle {
+    margin-top: 48px;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
