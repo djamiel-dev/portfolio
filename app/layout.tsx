@@ -1,14 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Inter_Tight, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Mona_Sans } from "next/font/google";
 import "./globals.css";
 
-const interTight = Inter_Tight({
+// One family for the page: the width axis does the work a second face would do
+const mona = Mona_Sans({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-inter-tight",
+  axes: ["wdth"],
+  variable: "--font-e",
   display: "swap",
 });
 
+// Only for the glyph field behind the hero
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -25,12 +27,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F5F5EE",
+  themeColor: "#eeefeb",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${interTight.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${mona.variable} ${geistMono.variable}`}>
       <body>{children}</body>
     </html>
   );

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { moments } from "./content";
-import styles from "./e.module.css";
+import styles from "./home.module.css";
 
 /**
  * Night. One filament runs from the first moment down to a lamp above the

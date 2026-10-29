@@ -10,7 +10,7 @@
   --brand: #fa3600;
   --placeholder: #ecece4;
 
-  --font-sans: var(--font-inter-tight), "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-e), "Helvetica Neue", Arial, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   --page-max: 80rem;

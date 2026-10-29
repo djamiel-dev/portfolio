@@ -1,4 +1,4 @@
-// Content for /explore/e that D keeps inside its components.
+// Skills and timeline content for the homepage.
 // Text in [brackets] is a placeholder and must be replaced before going live.
 
 export type Skill = { title: string; text: string };

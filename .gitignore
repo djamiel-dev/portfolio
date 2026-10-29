@@ -14,3 +14,16 @@ next-env.d.ts
 # Local tooling
 .claude/settings.local.json
 screenshots/
+
+# Kept locally, not published: the explorations (A–D) and the old homepage (version J)
+app/explore/
+components/explore/
+app/page.module.css
+components/CaseCard.*
+components/Cross.*
+components/Footer.*
+components/Hero.*
+components/Logo.tsx
+components/Nav.*
+components/ParticleField.tsx
+components/WorkGrid.*

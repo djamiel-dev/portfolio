@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { skills } from "./content";
-import styles from "./e.module.css";
+import styles from "./home.module.css";
 import { SkillVisual } from "./SkillVisual";
 
 /**
