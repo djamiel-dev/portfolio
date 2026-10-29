@@ -180,27 +180,56 @@
 
 /* ---------- Nav ---------- */
 
+/* A calm bar that stays: plain ground and one rule, like the floor line under the hero */
 .top {
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 3;
+  --bar: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  height: 80px;
+  height: var(--bar);
   padding: 0 var(--gutter);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
 }
 
+:global(html):has(.root) {
+  scroll-padding-top: 72px;
+}
+
+/* Empty at the top of the page; NavName types into it once the greeting is passed */
 .home {
   display: inline-flex;
   align-items: center;
   min-height: var(--tap);
+  visibility: hidden;
   font-size: 1rem;
   font-weight: 650;
   font-stretch: 112%;
   letter-spacing: -0.01em;
   text-decoration: none;
+  white-space: nowrap;
+}
+
+.home[data-shown] {
+  visibility: visible;
+}
+
+.caret {
+  display: inline-block;
+  vertical-align: -0.15em;
+  width: 1.5px;
+  height: 1.1em;
+  margin-left: 2px;
+  background: currentColor;
+  opacity: 0;
+}
+
+.caret[data-typing] {
+  opacity: 1;
 }
 
 .nav {
@@ -311,8 +340,8 @@
   isolation: isolate;
   display: grid;
   grid-template-rows: 1fr auto;
-  min-height: 100svh;
-  padding: 120px var(--gutter) 0;
+  min-height: calc(100svh - 72px);
+  padding: 0 var(--gutter);
   overflow: clip;
 }
 
@@ -321,7 +350,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  mask-image: linear-gradient(to bottom, #000 55%, transparent 92%);
+  mask-image: linear-gradient(to bottom, transparent, #000 72px, #000 55%, transparent 92%);
 }
 
 .glyphs {
@@ -332,35 +361,38 @@
   animation-play-state: paused;
 }
 
+/* Greeting small at the top, the statement large at the bottom */
 .heroBody {
-  align-self: end;
   display: flex;
   flex-direction: column;
-  gap: clamp(20px, 2.6vw, 40px);
-  padding-bottom: clamp(36px, 7vh, 88px);
+  justify-content: space-between;
+  gap: clamp(48px, 10vh, 120px);
+  padding: clamp(64px, 15vh, 168px) 0 clamp(36px, 7vh, 88px);
 }
 
+/* The photo stands on the text's baseline */
 .greeting {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  column-gap: 0.2em;
-  row-gap: 0.04em;
-  font-size: clamp(2.75rem, 7.8vw, 8.25rem);
-  font-weight: 560;
-  font-stretch: 104%;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  align-items: baseline;
+  gap: clamp(16px, 1.6vw, 24px);
+  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  font-weight: 520;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* "Hi," keeps its width while it is typed away, so the photo never shifts */
+.greeting > span:nth-child(2) {
+  min-width: 1.3em;
 }
 
 .photo {
   position: relative;
-  display: inline-block;
-  width: 0.74em;
-  height: 0.86em;
+  flex: none;
+  width: clamp(72px, 8vw, 120px);
+  aspect-ratio: 5 / 6;
   background: #d6dad9;
   overflow: hidden;
-  translate: 0 0.04em;
 }
 
 .photo img {
@@ -368,13 +400,21 @@
   object-position: 50% 30%;
 }
 
-.line {
-  max-width: 22em;
-  font-size: clamp(1.25rem, 2.05vw, 1.9375rem);
-  font-weight: 460;
-  line-height: 1.22;
-  letter-spacing: -0.02em;
+.statement {
+  max-width: 17em;
+  font-size: clamp(2rem, 5vw, 5.25rem);
+  font-weight: 540;
+  font-stretch: 104%;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
   text-wrap: pretty;
+}
+
+/* The role in signal orange: same face, the one coloured phrase on the page's first screen.
+   3.6:1 on the day ground, enough for text this large (never under 32px). */
+.role {
+  background: none;
+  color: #e04400;
 }
 
 /* The floor line under the wall */
@@ -1250,16 +1290,9 @@
     display: block;
   }
 
+
   .top {
-    height: 68px;
-  }
-
-  .hero {
-    padding-top: 96px;
-  }
-
-  .greeting {
-    font-size: clamp(2.5rem, 12.6vw, 4.5rem);
+    --bar: 64px;
   }
 
 

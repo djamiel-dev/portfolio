@@ -1,9 +1,9 @@
-import Image from "next/image";
 import { exploreCases, statusLabel } from "@/content/explore";
 import { links } from "@/content/site";
 import { GlyphSwell } from "@/components/home/glyph-swell";
 import styles from "@/components/home/home.module.css";
 import { Menu } from "@/components/home/Menu";
+import { HeroGreeting, NavName } from "@/components/home/NameHandoff";
 import { Skills } from "@/components/home/Skills";
 import { Sky } from "@/components/home/Sky";
 import { Story } from "@/components/home/Story";
@@ -28,10 +28,8 @@ export default function Home() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <header className={styles.top}>
-        <a href="#main" className={styles.home}>
-          Djamiel Saou
-        </a>
+      <header className={styles.top} data-bar>
+        <NavName className={styles.home} caretClassName={styles.caret} />
         <nav aria-label="Main" className={styles.nav}>
           <a href="#work">
             <span>Work</span>
@@ -63,17 +61,11 @@ export default function Home() {
           </div>
 
           <div className={styles.heroBody}>
-            <h1 id="e-title" className={styles.greeting}>
-              <span>Hi,</span>
-              <span className={styles.photo}>
-                {/* The name is right beside it, so the photo needs no text of its own */}
-                <Image src="/images/djamiel.jpg" alt="" fill sizes="(max-width: 48em) 48px, 120px" priority />
-              </span>
-              <span>I&rsquo;m Djamiel</span>
+            <HeroGreeting className={styles.greeting} photoClassName={styles.photo} caretClassName={styles.caret} />
+            <h1 id="e-title" className={styles.statement}>
+              AI-native <mark className={styles.role}>product designer</mark> who researches, designs and builds, from real
+              problem to live product.
             </h1>
-            <p className={styles.line}>
-              AI-native product designer who researches, designs and builds, from real problem to live product.
-            </p>
           </div>
 
           <div className={styles.heroFoot}>
