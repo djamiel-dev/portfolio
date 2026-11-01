@@ -1,28 +1,28 @@
 # DESIGN.md – Eén dag licht
 
-Het designsysteem van de homepage (concept E). Beschrijft wat nu gebouwd is; de waarden staan in `components/home/home.module.css`. Het vorige systeem (Heron) staat in de git-geschiedenis.
+Het designsysteem van de homepage (concept E). Beschrijft wat nu gebouwd is; de waarden staan in `components/home/home.module.css`, en `/design-system` toont ze live. Het vorige systeem (Heron) staat in de git-geschiedenis.
 
 ## 1. Idee
-De pagina is één dag: werk in daglicht, skills in het gouden uur, het verhaal in de nacht. Licht betekent "aan": wat live of actief is, licht op. Eén signatuurmoment: de gloeidraad langs de tijdlijn, die eindigt in een hanglamp boven de uitnodiging. De rest blijft rustig.
+De pagina is één dag: werk en skills in daglicht, het verhaal in de nacht. Licht betekent "aan": wat live of actief is, licht op. Eén signatuurmoment: de gloeidraad langs de tijdlijn, die eindigt in een hanglamp boven de uitnodiging. De rest blijft rustig.
 
 ## 2. Kleur
 `Sky.tsx` zet het dagdeel op de root (`data-sky`), op basis van de sectie die het midden van het scherm kruist. De tokens gaan in 1100ms over. Zonder JS kleurt elke zone zichzelf.
 
-| Token | Dag | Gouden uur | Nacht | Gebruik |
-|---|---|---|---|---|
-| `--bg` | `#eeefeb` | `#f1e9dc` | `#0b0e17` | achtergrond, ook de nav |
-| `--fg` | `#121318` | `#17140f` | `#efebe3` | hoofdtekst |
-| `--fg-2` | `#45484f` | `#4a4339` | `#b3b7c1` | lopende tekst |
-| `--muted` | `#5b5e65` | `#5f574b` | `#9095a2` | labels en meta |
-| `--dim` | `#7d8086` | `#857b6b` | `#5e6473` | gedimd, alleen tekst vanaf 24px |
-| `--line` | `#c9cbc7` | `#d8cebd` | `#262b3a` | lijnen |
-| `--glow` | `#8a5300` | `#8a5300` | `#ffb547` | "aan"-tekst en iconen |
-| `--focus` | `#121318` | `#17140f` | `#ffb547` | focusring |
+| Token | Dag | Nacht | Gebruik |
+|---|---|---|---|
+| `--bg` | `#eeefeb` | `#151412` | achtergrond, ook de nav |
+| `--fg` | `#121318` | `#eeefeb` | hoofdtekst |
+| `--fg-2` | `#45484f` | `#b9bab3` | lopende tekst |
+| `--muted` | `#5b5e65` | `#979890` | labels en meta |
+| `--dim` | `#7d8086` | `#6b6c64` | gedimd, alleen tekst vanaf 24px |
+| `--line` | `#c9cbc7` | `#2e2d2a` | lijnen |
+| `--glow` | `--accent` | `--lamp` | "aan"-iconen; tekst alleen 's nachts |
+| `--focus` | `#121318` | `--lamp` | focusring |
 
 Vaste kleuren:
-- `--lamp` `#ffb547` en `--lamp-core` `#fff3d9`: gloeidraad, lampjes, mail-knop (met tekst `#14110b`).
-- `#e04400`: "product designer" in de hero. 3,6:1, dus alleen voor tekst vanaf 24px.
-- Glyph Swell: `#eeefeb`, `#a3a6a3`, `#8a5300`.
+- `--lamp` `#ff9e5e` en `--lamp-core` `#fff3e9`: gloeidraad, lampjes, mail-knop (met tekst `#14110b`). Hetzelfde oranje als overdag, maar dan als licht.
+- `--accent` `#c04a00`: het enige oranje, voor "product designer" en het accent overdag. 4,31:1 op de dagachtergrond, dus alleen voor iconen en tekst vanaf 24px.
+- Glyph Swell: `#eeefeb`, `#a3a6a3`, `#da9576` (lichtere tint van hetzelfde oranje, kleurtoon vrijwel gelijk).
 - Case-vlakken: per case een eigen tint, van koel (`#dde2e3`) naar warm (`#e2d4c2`).
 
 ## 3. Typografie
@@ -51,6 +51,7 @@ Eén familie: **Mona Sans** (variabel). De breedte-as vervangt een tweede font. 
 - Easing: `--ease-out` `cubic-bezier(0.23, 1, 0.32, 1)`; `--ease-in-out` `cubic-bezier(0.77, 0, 0.175, 1)`.
 - Hover: links veranderen niet van kleur; er schuift een lijn in (320ms). Hover-effecten alleen op apparaten met een fijne aanwijzer.
 - Skills: elke kaart blijft even in het licht staan; de rij beweegt licht vertraagd mee.
+- Tool-rij: sleepbaar in beide richtingen. De gepakte tegel komt iets naar voren, de buren wijken, en de rij helt mee met de snelheid; na loslaten glijdt hij uit naar zijn eigen tempo.
 - Tijdlijn: de draad volgt het scrollen tot 62% van de schermhoogte; lampjes gaan aan met een korte flikkering.
 - Naam: typewriter tussen hero en nav, omkeerbaar.
 - Reduced motion: alles staat aan en stil. Zonder JS: alles leesbaar en aan.
@@ -59,4 +60,4 @@ Eén familie: **Mona Sans** (variabel). De breedte-as vervangt een tweede font. 
 ## 6. Nog niet beslist
 - Eén beeldtaal voor hero (tekens) en case-vlakken (raamlicht).
 - De rol van oranje naast amber.
-- Echte logo's in de tool-widgets en echte case-beelden.
+- Echte case-beelden.

@@ -4,7 +4,7 @@ import { useLayoutEffect } from "react";
 
 /**
  * The time of day follows the reader: whichever zone crosses the middle of the
- * screen sets the sky (day, golden, night) on the page root. The colours
+ * screen sets the sky (day, night) on the page root. The colours
  * themselves transition in CSS. Also pauses the hero light once it is out of view.
  * Without JS each zone paints its own colours, so the page still turns dark.
  */

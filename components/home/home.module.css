@@ -1,5 +1,5 @@
 /* Concept E – one day of light.
-   Work is shown in daylight, the skills in golden hour, the story at night,
+   Work and skills are shown in daylight, the story at night,
    where a filament lights each moment and ends in a lamp over the invitation.
    Mona Sans throughout; its width axis carries the labels. */
 
@@ -11,7 +11,7 @@
 @property --dim { syntax: "<color>"; inherits: true; initial-value: #7d8086; }
 @property --line { syntax: "<color>"; inherits: true; initial-value: #c9cbc7; }
 @property --focus { syntax: "<color>"; inherits: true; initial-value: #121318; }
-@property --glow { syntax: "<color>"; inherits: true; initial-value: #8a5300; }
+@property --glow { syntax: "<color>"; inherits: true; initial-value: #c04a00; }
 
 /* Day: north light on a white wall */
 .root {
@@ -22,11 +22,11 @@
   --dim: #7d8086; /* only for text of 24px and up */
   --line: #c9cbc7;
   --focus: #121318;
-  --glow: #8a5300; /* lit text: dark amber by day, lamp light at night */
+  --glow: var(--accent); /* lit icons by day, lamp light at night */
 
-  --lamp: #ffb547;
-  --lamp-core: #fff3d9;
-  --pane-ink: #31343a;
+  --accent: #c04a00; /* the one orange: 4.31:1, so icons and text of 24px and up. Hero crest is its lighter shade */
+  --lamp: #ff9e5e;
+  --lamp-core: #fff3e9;
   --gutter: clamp(20px, 3.5vw, 56px);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
@@ -42,35 +42,21 @@
   font-kerning: normal;
 }
 
-/* Golden hour: the same wall, an hour before sunset */
-.root[data-sky="golden"],
-.root:not([data-sky]) .skills {
-  --bg: #f1e9dc;
-  --fg: #17140f;
-  --fg-2: #4a4339;
-  --muted: #5f574b;
-  --dim: #857b6b;
-  --line: #d8cebd;
-  --focus: #17140f;
-  --glow: #8a5300;
-}
-
 /* Night: a dark street, one warm filament */
 .root[data-sky="night"],
 .root:not([data-sky]) .night,
 .root:not([data-sky]) .footer {
-  --bg: #0b0e17;
-  --fg: #efebe3;
-  --fg-2: #b3b7c1;
-  --muted: #9095a2;
-  --dim: #5e6473;
-  --line: #262b3a;
-  --focus: #ffb547;
-  --glow: #ffb547;
+  --bg: #151412;
+  --fg: #eeefeb;
+  --fg-2: #b9bab3;
+  --muted: #979890;
+  --dim: #6b6c64;
+  --line: #2e2d2a;
+  --focus: var(--lamp);
+  --glow: var(--lamp);
 }
 
 /* Without JS each zone paints its own sky; with JS the root does, and transitions */
-.root:not([data-sky]) .skills,
 .root:not([data-sky]) .night,
 .root:not([data-sky]) .footer {
   background: var(--bg);
@@ -103,7 +89,7 @@
 }
 
 :global(body):has(.root[data-sky="night"]) {
-  background: #0b0e17;
+  background: #151412;
 }
 
 .root ::selection {
@@ -162,9 +148,6 @@
 /* Labels: Mona Sans at its widest, small and upper case */
 .place,
 .scroll,
-.status,
-.caseYear,
-.caseMeta,
 .skillNum,
 .skillsProgress,
 .momentRole,
@@ -410,11 +393,10 @@
   text-wrap: pretty;
 }
 
-/* The role in signal orange: same face, the one coloured phrase on the page's first screen.
-   3.6:1 on the day ground, enough for text this large (never under 32px). */
+/* The role in signal orange: same face, the one coloured phrase on the page's first screen. */
 .role {
   background: none;
-  color: #e04400;
+  color: var(--accent);
 }
 
 /* The floor line under the wall */
@@ -505,70 +487,12 @@
 }
 
 .media {
-  position: relative;
   aspect-ratio: 4 / 3;
-  overflow: hidden;
-  isolation: isolate;
-  color: var(--pane-ink);
-}
-
-.mediaLight {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  opacity: 0.85;
-  transition:
-    transform 1200ms var(--ease-out),
-    opacity 700ms ease;
-}
-
-.status {
-  position: absolute;
-  top: 18px;
-  left: 18px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.lamp {
-  width: 8px;
-  height: 8px;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-}
-
-/* Live means switched on */
-.status[data-status="live"] .lamp {
-  border-color: #c97d10;
-  background: var(--lamp);
-  box-shadow:
-    0 0 0 3px rgb(255 181 71 / 0.25),
-    0 0 12px 2px rgb(255 170 60 / 0.6);
-}
-
-.caption {
-  position: absolute;
-  right: 18px;
-  bottom: 16px;
-  left: 18px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  line-height: 1.35;
-}
-
-.caseHead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 24px;
-  margin-top: 22px;
 }
 
 .caseTitle {
   max-width: 24em;
+  margin-top: 22px;
   font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
   font-weight: 540;
   line-height: 1.18;
@@ -587,34 +511,7 @@
   inset: 0;
 }
 
-.caseYear {
-  flex: none;
-  color: var(--muted);
-}
-
-.caseMeta {
-  margin-top: 14px;
-  color: var(--muted);
-}
-
-.caseNum {
-  margin-right: 0.6em;
-  color: var(--fg);
-}
-
-.caseText {
-  max-width: 34em;
-  margin-top: 8px;
-  color: var(--fg-2);
-}
-
-/* Hover: the light in the pane brightens and the sun moves on a little */
 @media (hover: hover) and (pointer: fine) {
-  .case:hover .mediaLight {
-    opacity: 1;
-    transform: translate3d(-2.5%, 2%, 0) scale(1.04);
-  }
-
   .case:hover .caseTitle a {
     background-size: 100% 1px;
   }
@@ -629,7 +526,7 @@
   outline-offset: 4px;
 }
 
-/* ---------- Skills: golden hour ---------- */
+/* ---------- Skills ---------- */
 
 .skills {
   position: relative;
@@ -668,7 +565,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 48px;
+  gap: 24px;
   min-height: clamp(280px, 40svh, 400px);
   padding: clamp(24px, 2.4vw, 36px);
   border-right: 1px dashed var(--line);
@@ -705,10 +602,16 @@
 }
 
 /* Tools reel: an endless row of small widgets in the card's open middle.
-   Hidden and paused until the card is the one in the light. */
+   Hidden until the card is the one in the light. The vertical padding leaves room
+   for a grabbed tile; pan-y keeps vertical scrolling working on touch screens. */
 .toolReel {
   overflow: hidden;
-  margin: 0 calc(clamp(24px, 2.4vw, 36px) * -1);
+  margin: -10px calc(clamp(24px, 2.4vw, 36px) * -1);
+  padding: 10px 0;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
   mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
   opacity: 0;
   translate: 0 6px;
@@ -718,8 +621,6 @@
 .toolTrack {
   display: flex;
   width: max-content;
-  animation: reel 22s linear infinite;
-  animation-play-state: paused;
 }
 
 .toolRow {
@@ -730,48 +631,50 @@
   list-style: none;
 }
 
+/* A tile with the name of a method or a tool without an app; an app shows just its own icon */
 .tool {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 14px 8px 8px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: rgb(255 255 255 / 0.7);
+  justify-content: center;
+  min-width: 92px;
+  height: 92px;
+  padding: 0 20px;
+  border-radius: 21px; /* the corner of a macOS app icon at this size */
+  background: var(--bg);
   font-size: 0.9375rem;
   font-weight: 520;
   white-space: nowrap;
   color: var(--fg);
+  rotate: calc(var(--lean, 0deg) * 0.35);
+  transition:
+    scale 260ms var(--ease-out),
+    translate 260ms var(--ease-out);
 }
 
-.tool[data-placeholder] {
-  border-style: dashed;
-  background: transparent;
-  color: var(--muted);
+.tool[data-icon] {
+  padding: 0;
+  background: none;
 }
 
-.toolMark {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 7px;
-  background: var(--fg);
-  color: var(--bg);
-  font-size: 0.8125rem;
-  font-weight: 650;
+.tool img {
+  display: block;
+  pointer-events: none;
 }
 
-.tool[data-placeholder] .toolMark {
-  border: 1px dashed var(--line);
-  background: transparent;
-  color: var(--muted);
+/* Grabbed: the tile comes forward and leans with the throw, its neighbours make room */
+.tool[data-held] {
+  z-index: 1;
+  position: relative;
+  scale: 1.09;
+  rotate: var(--lean, 0deg);
 }
 
-@keyframes reel {
-  to {
-    transform: translateX(-50%);
-  }
+.tool:has(+ .tool[data-held]) {
+  translate: -7px 0;
+}
+
+.tool[data-held] + .tool {
+  translate: 7px 0;
 }
 
 .skills[data-live] .skill[data-active] .toolReel,
@@ -780,13 +683,35 @@
   translate: 0 0;
 }
 
-.skills[data-live] .skill[data-active] .toolTrack {
-  animation-play-state: running;
+.skills[data-live] .skill[data-active] .toolReel,
+.skills:not([data-live]) .toolReel {
+  pointer-events: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .toolReel {
+    cursor: grab;
+  }
+
+  .toolReel[data-grabbing] {
+    cursor: grabbing;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .toolTrack {
-    animation: none;
+  .tool {
+    rotate: none;
+    transition: none;
+  }
+
+  .tool[data-held] {
+    rotate: none;
+    scale: none;
+  }
+
+  .tool:has(+ .tool[data-held]),
+  .tool[data-held] + .tool {
+    translate: none;
   }
 }
 
@@ -1015,7 +940,7 @@
   width: 2px;
   translate: -50% 0;
   background: var(--lamp);
-  box-shadow: 0 0 10px 1px rgb(255 170 60 / 0.55);
+  box-shadow: 0 0 10px 1px rgb(255 158 94 / 0.55);
 }
 
 .moments::before {
@@ -1026,11 +951,11 @@
 /* Lit state, shared by the static page and every moment the light has reached */
 .story:not([data-live]) .bulb,
 .moment[data-lit] .bulb {
-  border-color: #ffd28a;
+  border-color: #ffc9a3;
   background: var(--lamp-core);
   box-shadow:
-    0 0 0 4px rgb(255 181 71 / 0.16),
-    0 0 18px 4px rgb(255 170 60 / 0.55);
+    0 0 0 4px rgb(255 158 94 / 0.16),
+    0 0 18px 4px rgb(255 158 94 / 0.55);
 }
 
 .story:not([data-live]) .momentPeriod,
@@ -1088,8 +1013,8 @@
 .filamentFill {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgb(255 181 71 / 0.5), var(--lamp) 18%);
-  box-shadow: 0 0 10px 1px rgb(255 170 60 / 0.55);
+  background: linear-gradient(to bottom, rgb(255 158 94 / 0.5), var(--lamp) 18%);
+  box-shadow: 0 0 10px 1px rgb(255 158 94 / 0.55);
   transform: scaleY(0);
   transform-origin: top;
   will-change: transform;
@@ -1129,12 +1054,12 @@
 
 .story:not([data-live]) .lampBulb,
 .closing[data-lit] .lampBulb {
-  border-color: #ffe2ad;
-  background: #fff6e2;
+  border-color: #ffdcc2;
+  background: #fff3e9;
   box-shadow:
-    0 0 0 6px rgb(255 181 71 / 0.16),
-    0 0 44px 12px rgb(255 170 60 / 0.5),
-    0 0 140px 48px rgb(255 160 50 / 0.18);
+    0 0 0 6px rgb(255 158 94 / 0.16),
+    0 0 44px 12px rgb(255 158 94 / 0.5),
+    0 0 140px 48px rgb(255 158 94 / 0.18);
 }
 
 /* Light falls from the bulb in every direction; the box is centred on the bulb
@@ -1148,7 +1073,7 @@
   width: 1400px;
   height: 1240px;
   translate: -50% -50%;
-  background: radial-gradient(var(--reach) at 50% 50%, rgb(255 184 90 / 0.2), rgb(255 184 90 / 0.07) 42%, rgb(255 184 90 / 0) 100%);
+  background: radial-gradient(var(--reach) at 50% 50%, rgb(255 158 94 / 0.2), rgb(255 158 94 / 0.07) 42%, rgb(255 158 94 / 0) 100%);
   opacity: 0;
   pointer-events: none;
   transition: opacity 1600ms var(--ease-out);
@@ -1215,13 +1140,13 @@
   border-color: var(--lamp);
   background: var(--lamp);
   color: #14110b;
-  box-shadow: 0 14px 44px -12px rgb(255 170 60 / 0.6);
+  box-shadow: 0 14px 44px -12px rgb(255 158 94 / 0.6);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .root .mail:hover {
     border-color: var(--lamp);
-    background: #ffc46e;
+    background: #ffb480;
     color: #14110b;
   }
 
@@ -1307,7 +1232,7 @@
     position: static;
   }
 
-  .caseHead {
+  .caseTitle {
     margin-top: 18px;
   }
 

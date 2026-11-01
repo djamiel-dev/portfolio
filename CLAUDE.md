@@ -20,11 +20,11 @@ Werkwijze:
 - **Laatste meting (1 nov):** axe 0 op desktop en mobiel; Lighthouse desktop 100/100/100, mobiel Performance 96 (drie herhalingen; één uitschieter van 79 in de run daarvoor), Accessibility 100, Best Practices 100. SEO 63 komt door de `noindex`. Toetsenbord: 14 tabstops, focus overal zichtbaar.
 
 ### Open punten
-- **Twee beeldtalen:** de hero gebruikt Glyph Swell (tekens), de case-vlakken nog `WindowLight` (raamlicht). Dit moet één verhaal worden.
+- **Case-vlakken:** effen tint tot de echte beelden er zijn; `WindowLight.tsx` wordt niet meer gebruikt en kan weg.
 - **Opruimen:** de hero-laag heet nog `heroLight`, en `home.module.css` kan ongebruikte regels bevatten.
-- **Inhoud:** alle case-inhoud is placeholder; de `[Tool]`-vakjes in de skills wachten op mijn tools; de resume en links zijn nog placeholders.
-- **Tool-widgets:** nu letter-icoontjes. Echte logo's vragen om Simple Icons (nieuwe dependency, eerst vragen).
-- **Accentkleuren:** oranje `#e04400` (hero) naast amber (licht). Oranje is alleen geschikt voor tekst vanaf 24px.
+- **Inhoud:** alle case-inhoud is placeholder; de resume en links zijn nog placeholders.
+- **Tool-widgets:** echte desktop-pictogrammen als PNG in `public/tools/`; alles zonder app (methodes, frameworks) toont zijn naam in een tegel. De voorbeelden moet ik nog nalopen op wat ik echt gebruik.
+- **Accentkleuren:** één oranje `#c04a00` (overdag, 4,31:1, alleen iconen en tekst vanaf 24px) met lichtere tint `#da9576` in de hero-animatie en `--lamp` `#ff9e5e` als licht in de nacht.
 - **Scripts:** `npm run keyboard` crasht aan het eind op de canvas-check van J (gebruik alleen de focusregels); `explore-check` en `explore-sheet` testen routes die alleen lokaal bestaan; `screenshots` vergelijkt met versie J.
 - **Niet getest:** echte telefoon, Safari en Firefox, 5-secondentest met echte mensen.
 
@@ -44,9 +44,9 @@ Belangrijkste boodschap: niet "AI maakt mij sneller", maar "AI helpt mij een pro
 - `app/page.tsx` – de homepage; `app/layout.tsx` – fonts en metadata.
 - `components/home/` – onderdelen en `home.module.css`:
   - `glyph-swell.tsx` (hero-achtergrond), `NameHandoff.tsx` (begroeting en naam in de nav), `Menu.tsx`, `Sky.tsx` (dagdeel per sectie);
-  - `Skills.tsx`, `SkillVisual.tsx`, `Story.tsx` (tijdlijn en afsluiter), `WindowLight.tsx`, `content.ts`.
+  - `Skills.tsx`, `SkillVisual.tsx`, `Story.tsx` (tijdlijn en afsluiter), `content.ts`.
 - `content/explore.ts` + `cases.ts` – case-inhoud; `content/site.ts` – links.
-- `DESIGN.md` – het designsysteem van E; `PRODUCT.md` – productwaarheid.
+- `DESIGN.md` – het designsysteem van E; `/design-system` (`app/design-system/`) toont de tokens live; `PRODUCT.md` – productwaarheid.
 - `docs/beslissingen.md` – logboek (ook bron voor de making-of); `docs/definition-of-done.md`; `docs/verkenning/` – analyses uit de verkenning.
 - `private/context-djamiel.md` – persoonlijke context. **Staat in .gitignore, nooit committen of citeren op de site.** Bestaat alleen lokaal.
 - Repo: https://github.com/djamiel-dev/portfolio (publiek). Commits met het GitHub-noreply-adres, nooit met het werkmailadres.

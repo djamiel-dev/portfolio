@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { skills } from "./content";
+import { skills, toolIcons } from "./content";
 import styles from "./home.module.css";
 import { SkillVisual } from "./SkillVisual";
 
 /**
- * Golden hour. On a wide screen the row is pinned and vertical scroll slides the
+ * On a wide screen the row is pinned and vertical scroll slides the
  * skills through one pool of light; the skill in the light is the active one.
  * On a phone the list stays vertical and the light falls on the skill in the
  * middle of the screen. Without JS or with reduced motion: a plain, fully lit list.
@@ -131,7 +131,7 @@ export function Skills() {
     <section
       ref={outer}
       className={styles.skills}
-      data-zone="golden"
+      data-zone="day"
       data-pinned={mode === "pinned" || undefined}
       data-live={mode !== "static" || undefined}
       aria-labelledby="e-skills"
@@ -149,7 +149,7 @@ export function Skills() {
                 </span>
                 <SkillVisual index={i} className={styles.skillVisual} />
               </div>
-              <ToolReel tools={s.tools} />
+              <ToolReel tools={s.tools} running={mode === "static" || i === active} drift={mode !== "static"} />
               <div className={styles.skillBody}>
                 <h3 className={styles.skillName}>{s.title}</h3>
                 <p className={styles.skillText}>{s.text}</p>
@@ -174,25 +174,125 @@ export function Skills() {
 
 /**
  * A slow, endless row of the tools behind a skill. It only shows and moves on the
- * active card; the second copy exists to make the loop seamless and is hidden from
- * assistive tech, which reads the first copy as a plain list.
+ * active card, and can be grabbed and thrown in either direction; once let go it
+ * eases back to its own pace. The second copy exists to make the loop seamless and
+ * is hidden from assistive tech, which reads the first copy as a plain list.
+ * With reduced motion the row stands still until it is dragged, and doesn't coast.
  */
-function ToolReel({ tools }: { tools: string[] }) {
+function ToolReel({ tools, running, drift }: { tools: string[]; running: boolean; drift: boolean }) {
+  const reel = useRef<HTMLDivElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+  const pos = useRef({ x: 0, v: 0 }); // survives the card going in and out of the light
+
+  useEffect(() => {
+    const r = reel.current;
+    const t = track.current;
+    if (!running || !r || !t) return;
+    const row = t.firstElementChild as HTMLElement;
+    const m = pos.current;
+    let width = row.getBoundingClientRect().width;
+    let raf = 0;
+    let prev = 0;
+    let seen = false;
+    let pointer: number | null = null;
+    let lastX = 0;
+    let lastT = 0;
+    let held: Element | null = null;
+
+    const frame = (now: number) => {
+      const dt = Math.min(now - prev, 50);
+      prev = now;
+      const pace = drift ? -width / 22 : 0;
+      if (pointer === null) {
+        m.v += (pace - m.v) * (1 - Math.exp(-dt / 450));
+        m.x += (m.v * dt) / 1000;
+      } else {
+        m.v *= Math.exp(-dt / 120);
+      }
+      if (width) m.x = ((m.x % width) + width) % width - width;
+      t.style.transform = `translate3d(${m.x.toFixed(2)}px, 0, 0)`;
+      const lean = pointer === null ? m.v - pace : m.v;
+      t.style.setProperty("--lean", `${Math.max(-7, Math.min(7, lean / 160)).toFixed(2)}deg`);
+      raf = drift || pointer !== null || Math.abs(m.v) > 1 ? requestAnimationFrame(frame) : 0;
+    };
+    const start = () => {
+      if (raf || !seen) return;
+      prev = performance.now();
+      raf = requestAnimationFrame(frame);
+    };
+
+    const down = (e: PointerEvent) => {
+      if (e.button !== 0 || pointer !== null) return;
+      pointer = e.pointerId;
+      r.setPointerCapture(pointer);
+      lastX = e.clientX;
+      lastT = e.timeStamp;
+      m.v = 0;
+      held = (e.target as Element).closest("li");
+      held?.setAttribute("data-held", "");
+      r.setAttribute("data-grabbing", "");
+      start();
+    };
+    const move = (e: PointerEvent) => {
+      if (e.pointerId !== pointer) return;
+      const dx = e.clientX - lastX;
+      const dt = Math.max(e.timeStamp - lastT, 1);
+      m.x += dx;
+      m.v = m.v * 0.6 + ((dx / dt) * 1000) * 0.4;
+      lastX = e.clientX;
+      lastT = e.timeStamp;
+    };
+    const up = (e: PointerEvent) => {
+      if (e.pointerId !== pointer) return;
+      pointer = null;
+      if (e.timeStamp - lastT > 100) m.v = 0; // held still before letting go: no throw
+      if (!drift) m.v = 0;
+      held?.removeAttribute("data-held");
+      held = null;
+      r.removeAttribute("data-grabbing");
+      start();
+    };
+
+    const sized = new ResizeObserver(() => (width = row.getBoundingClientRect().width));
+    sized.observe(row);
+    const visible = new IntersectionObserver(([e]) => {
+      seen = e.isIntersecting;
+      if (seen) start();
+      else {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    });
+    visible.observe(r);
+    r.addEventListener("pointerdown", down);
+    r.addEventListener("pointermove", move);
+    r.addEventListener("pointerup", up);
+    r.addEventListener("pointercancel", up);
+    return () => {
+      cancelAnimationFrame(raf);
+      sized.disconnect();
+      visible.disconnect();
+      r.removeEventListener("pointerdown", down);
+      r.removeEventListener("pointermove", move);
+      r.removeEventListener("pointerup", up);
+      r.removeEventListener("pointercancel", up);
+      held?.removeAttribute("data-held");
+      r.removeAttribute("data-grabbing");
+    };
+  }, [running, drift]);
+
   const row = (copy: boolean) => (
     <ul className={styles.toolRow} aria-hidden={copy || undefined}>
       {tools.map((t, i) => (
-        <li key={i} className={styles.tool} data-placeholder={t.startsWith("[") || undefined}>
-          <span className={styles.toolMark} aria-hidden="true">
-            {t.replace(/^\[/, "").charAt(0)}
-          </span>
-          {t}
+        <li key={i} className={styles.tool} data-icon={toolIcons[t] ? "" : undefined}>
+          {toolIcons[t] ? <img src={toolIcons[t]} alt={t} width={92} height={92} draggable={false} /> : t}
         </li>
       ))}
     </ul>
   );
   return (
-    <div className={styles.toolReel} aria-label="Tools">
-      <div className={styles.toolTrack}>
+    <div ref={reel} className={styles.toolReel} aria-label="Tools">
+      <div ref={track} className={styles.toolTrack}>
         {row(false)}
         {row(true)}
       </div>

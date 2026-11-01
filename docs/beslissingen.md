@@ -160,3 +160,19 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Gevonden en opgelost:** startpositie van de skills-rij klopte niet meer na de nieuwe kaarten (door mij gezien, oorzaak `offsetLeft`); een Lighthouse-uitschieter van 79 op mobiel bleek bij drie herhalingen 96.
 - **Toetsing (1 nov):** axe 0; Lighthouse desktop 100, mobiel Performance 96, Accessibility 100. Echte telefoon, Safari en Firefox nog niet getest.
 - **Tijd:** [invullen]
+
+### Stap 9 – Werk, skills en kleur verfijnen (1 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Case-kaarten | Raamlicht, statustags, jaartal, type en probleemzin | Alles weg: effen vlak met één zin. De rest komt op de casepagina |
+| Gouden uur | Eigen warme kleuren voor Skills | Geen kleurwissel tot de tijdlijn |
+| Oranje | Eerst bruin als accent, daarna `#c53b00` voor contrast | Bruin lelijk, `#c53b00` te rood. Eén oranje, `#c04a00`, in dezelfde kleurtoon als de animatie, om variatie en fouten te beperken |
+| Nacht | Blauw-zwart met amber | Paste niet bij de dag. Warm bijna-zwart met hetzelfde oranje als licht; daarna nog iets minder groen |
+| Designsysteem | – | Mijn verzoek: pagina `/design-system` die de echte tokens toont |
+| Skills-indeling | Zes losse skills | Mijn indeling in fases; AI stelde de namen "problem framing" en "Collaboration" voor |
+| Tool-rij | SVG-logo's uit Simple Icons | Echte desktop-pictogrammen, tekst-tegels in `--bg`, en sleepbaar met pak-animatie |
+| Tijdlijn | Om en om links en rechts op mijn verzoek | Geprobeerd en voorlopig teruggedraaid |
+
+- **Nog na te lopen door mij:** AI verzon de meeste tekst-tegels in de tool-rij (buiten `[ ]`), op mijn verzoek om voorbeelden.
+- **Toetsing:** alleen in de browser op 1440px en 375px en met `npm run build`; `npm run audit` en `npm run keyboard` zijn niet opnieuw gedraaid. Slepen is gesimuleerd getest, niet met een vinger op een echte telefoon.
+- **Tijd:** [invullen]
