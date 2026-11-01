@@ -1,69 +1,62 @@
-# DESIGN.md – Heron design system (measured)
+# DESIGN.md – Eén dag licht
 
-The visual system for the portfolio, taken from https://heronaiapp.com. Only measured values are listed here; anything not yet measured is listed as open at the bottom.
+Het designsysteem van de homepage (concept E). Beschrijft wat nu gebouwd is; de waarden staan in `components/home/home.module.css`. Het vorige systeem (Heron) staat in de git-geschiedenis.
 
-## 1. Source and method
+## 1. Idee
+De pagina is één dag: werk in daglicht, skills in het gouden uur, het verhaal in de nacht. Licht betekent "aan": wat live of actief is, licht op. Eén signatuurmoment: de gloeidraad langs de tijdlijn, die eindigt in een hanglamp boven de uitnodiging. De rest blijft rustig.
 
-Measured on 28 Oct 2026.
+## 2. Kleur
+`Sky.tsx` zet het dagdeel op de root (`data-sky`), op basis van de sectie die het midden van het scherm kruist. De tokens gaan in 1100ms over. Zonder JS kleurt elke zone zichzelf.
 
-- **designlang 13.3.2** (`npx designlang https://heronaiapp.com`): colours, font families, flat material. Reliable, because these come from Heron's own CSS.
-- **Browser measurement** (built-in browser, 1440×900, after the loader finished): type scale, background, muted text, line width. Computed styles via JavaScript.
+| Token | Dag | Gouden uur | Nacht | Gebruik |
+|---|---|---|---|---|
+| `--bg` | `#eeefeb` | `#f1e9dc` | `#0b0e17` | achtergrond, ook de nav |
+| `--fg` | `#121318` | `#17140f` | `#efebe3` | hoofdtekst |
+| `--fg-2` | `#45484f` | `#4a4339` | `#b3b7c1` | lopende tekst |
+| `--muted` | `#5b5e65` | `#5f574b` | `#9095a2` | labels en meta |
+| `--dim` | `#7d8086` | `#857b6b` | `#5e6473` | gedimd, alleen tekst vanaf 24px |
+| `--line` | `#c9cbc7` | `#d8cebd` | `#262b3a` | lijnen |
+| `--glow` | `#8a5300` | `#8a5300` | `#ffb547` | "aan"-tekst en iconen |
+| `--focus` | `#121318` | `#17140f` | `#ffb547` | focusring |
 
-What designlang got wrong, and why:
-- Its headless browser never gets past Heron's loader (screenshot shows the line drawing at 60–74%), even with `--wait 9000`.
-- Type sizes came out at 7.4px body / 41px h1: real values, but at the wrong viewport scale (see §2).
-- Background came out as `#FFFFFF`: the paper is a texture image, not a colour.
-- Colour dominance was measured on the loader; breakpoints came out as `[object Object]`.
+Vaste kleuren:
+- `--lamp` `#ffb547` en `--lamp-core` `#fff3d9`: gloeidraad, lampjes, mail-knop (met tekst `#14110b`).
+- `#e04400`: "product designer" in de hero. 3,6:1, dus alleen voor tekst vanaf 24px.
+- Glyph Swell: `#eeefeb`, `#a3a6a3`, `#8a5300`.
+- Case-vlakken: per case een eigen tint, van koel (`#dde2e3`) naar warm (`#e2d4c2`).
 
-## 2. Scale
+## 3. Typografie
+Eén familie: **Mona Sans** (variabel). De breedte-as vervangt een tweede font. Geist Mono wordt alleen geladen voor de tekens in Glyph Swell.
 
-```css
-html { font-size: 0.578704vw; } /* 1rem = 10px at 1728px wide */
-```
+| Rol | Grootte | Gewicht | Overig |
+|---|---|---|---|
+| Hero-zin | `clamp(2rem, 5vw, 5.25rem)` | 540 | breedte 104%, regel 1.02, spatiëring −0.035em |
+| Afsluiter | `clamp(2.5rem, 6.6vw, 6.75rem)` | 560 | regel 0.96, −0.04em |
+| Sectiekop | `clamp(2rem, 3.8vw, 3.5rem)` | 560 | regel 1, −0.035em |
+| Skills-kop | `clamp(1.5rem, 2.4vw, 2.25rem)` | 560 | bewust rustiger, de kaarten dragen de sectie |
+| Moment-titel | `clamp(1.75rem, 3vw, 2.75rem)` | 560 | −0.035em |
+| Skill-titel | `clamp(1.5rem, 2.1vw, 2rem)` | 540 | −0.03em |
+| Case-titel | `clamp(1.25rem, 1.75vw, 1.6875rem)` | 540 | −0.02em |
+| Begroeting | `clamp(1.125rem, 1.6vw, 1.5rem)` | 520 | foto staat op de basislijn |
+| Body | 1rem | 430 | regel 1.5 |
+| Label | 0.75rem | 600 | breedte 125%, hoofdletters, +0.06em, tabulaire cijfers |
 
-All sizes are in `rem`, so the whole page scales with the viewport width. At 1440px wide, 1rem = 8.33px.
+## 4. Vorm
+- Beeldvlakken en kaarten: rechte hoeken, 1px lijnen. Skills-kaarten delen gestippelde randen.
+- Pil-vorm alleen voor bediening: Menu en Email me.
+- Iconen: eigen SVG, 24px-raster, lijndikte 1.25, ronde hoeken.
+- Geen schaduwen als decoratie. Gloed is alleen voor echt licht: draad, lampjes, lamp.
 
-## 3. Colour
+## 5. Beweging
+- Easing: `--ease-out` `cubic-bezier(0.23, 1, 0.32, 1)`; `--ease-in-out` `cubic-bezier(0.77, 0, 0.175, 1)`.
+- Hover: links veranderen niet van kleur; er schuift een lijn in (320ms). Hover-effecten alleen op apparaten met een fijne aanwijzer.
+- Skills: elke kaart blijft even in het licht staan; de rij beweegt licht vertraagd mee.
+- Tijdlijn: de draad volgt het scrollen tot 62% van de schermhoogte; lampjes gaan aan met een korte flikkering.
+- Naam: typewriter tussen hero en nav, omkeerbaar.
+- Reduced motion: alles staat aan en stil. Zonder JS: alles leesbaar en aan.
+- Animaties pauzeren buiten beeld.
 
-| Role | Value | Used for |
-|---|---|---|
-| paper | `#F5F5EE` | page background: a tiled paper texture (PNG inside `bg.svg`) whose average colour is `#F5F5EE` |
-| ink | `#282828` | primary text, dark surfaces |
-| ink 72% | `rgba(40, 40, 40, .72)` | muted body text and labels (opacity, not a separate grey) |
-| muted | `#626260` | small meta labels |
-| surface | `#72726F` | neutral grey |
-| line | `#B3B3AF` | hairlines; also grey display headings (40px) |
-| disabled | `#B4B4B0` | `[01]` numbering, `[Scroll to continue]` |
-| brand | `#FA3600` | active links ("Home", "Contact us"), markers, accents |
-
-Brand orange is an accent: about 5% of the painted area on Heron.
-
-## 4. Typography
-
-Families: **BT Grotesk** (headings and body, paid) and **Geist Mono** (labels). For the portfolio, **Inter Tight** stands in for BT Grotesk, as in version J.
-
-| Role | Font | Size rem → px @1728 | Weight | Line height | Letter spacing | Case |
-|---|---|---|---|---|---|---|
-| H1 | BT Grotesk | 5.6 → 56 | 700 | 1.0 | −0.02em | uppercase |
-| H2 | BT Grotesk | 4.8 → 48 | 600 | 1.0 | −0.02em | uppercase |
-| H3 (grey, `#B3B3AF`) | BT Grotesk | 4.0 → 40 | 600 | 1.0 | −0.02em | uppercase |
-| Title | BT Grotesk | 3.2 / 2.8 → 32 / 28 | 600 | 1.0 | −0.02em | uppercase |
-| Small heading | BT Grotesk | 2.4 → 24 | 700 | 1.1 | −0.02em | uppercase |
-| Body | BT Grotesk | 1.6 → 16 | 400 / 500 | 1.3 | −0.02em | none |
-| Mono label | Geist Mono | 1.4 → 14 | 500 | 1.4 | normal | uppercase |
-| Mono small | Geist Mono | 1.2 → 12 | 500 | 1.3 | normal | uppercase |
-
-## 5. Shape
-
-- Square corners.
-- Lines: `max(1px, .1rem)`. They grow slightly on wide screens but are never thinner than 1px.
-- No shadows (flat material).
-- `[01]`-style numbering set in mono.
-
-## 6. Not yet measured
-
-- Spacing scale and grid.
-- Mobile: how the vw-based scale behaves on small screens.
-- Motion and hover/focus states.
-
-Fill these in only once they have been measured.
+## 6. Nog niet beslist
+- Eén beeldtaal voor hero (tekens) en case-vlakken (raamlicht).
+- De rol van oranje naast amber.
+- Echte logo's in de tool-widgets en echte case-beelden.

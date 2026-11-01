@@ -138,5 +138,25 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
   - het skills-deel was ruim vier schermen lang en is ingekort tot ongeveer twee.
 - **Toetsing:** axe 0 op desktop en mobiel; Lighthouse mobiel 98/100/100, desktop 100/100/100 (SEO 60 door de bewuste `noindex`); toetsenbord 15 stappen, alle focus zichtbaar; werkt zonder JS en met reduced motion (alles staat dan aan en stil). Impeccable-detector: 0 codemeldingen; in de browser alleen "veelgebruikt font" (bewuste keuze).
 - **Afwijkingen van het Impeccable-proces:** geen subagents (critique in één context), geen comps, geen surface brief en geen nieuwe DESIGN.md, om binnen `app/explore/e/` te blijven.
-- **Ik besliste:** [volgt na het bekijken]
+- **Ik besliste:** E wordt de homepage, na de bijsturing in stap 8.
+- **Tijd:** [invullen]
+
+### Stap 8 – Bijsturen en E als homepage (29 okt – 1 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Hero-achtergrond | Raamlicht als SVG, onderdeel van het dag-idee | Vervangen door Glyph Swell, een component dat ik aandroeg. AI waarschuwde dat dit het lichtverhaal doorbreekt; ik vind de animatie super cool, dus hij blijft |
+| Foto | Twee foto's geconverteerd en bijgesneden, GPS-locatie verwijderd. AI adviseerde de foto in Rome | Toch de eerste, rustige foto |
+| Lamp en draad | Lichtpoel als apart vlak, draad boven de lampjes | Harde rand en lijn door de bolletjes gezien; laten oplossen |
+| Skills-kaarten | Vlakken met "lichtinstrumenten" (lens, prisma) | Zag er echt slecht uit. Na een selectie van React Bits en 21st.dev zelf een voorbeeld gekozen: gestippelde kaarten met lijnicoontjes, zonder het raster, en smaller |
+| Skills-accent | Warme gele gloed, daarna bijna wit | Te geel, daarna te wit. Nu 60% lichte tint. Bij de overgang naar de nacht moest de gloed weg |
+| Tool-widgets | – | Mijn idee: doorlopende rij tools, alleen zichtbaar op het actieve kaartje. Onbekende tools blijven `[Tool]` |
+| Skills-kop | Placeholder, groot | Zin door AI: "From the first interview to the last line of code." Kleiner en hoger |
+| Hiërarchie hero | Grote begroeting, kleine functiezin | Omgedraaid: functiezin groot, begroeting klein, foto op de basislijn |
+| Nav | Naam links, balk alleen bovenaan de pagina | Mijn idee: vaste, rustige balk en een typewriter die de naam overdraagt van hero naar nav |
+| Accent | Amber band onder "product designer", rest grijs | Rest weer donker; eerst andere letters geprobeerd, uiteindelijk zelfde font in oranje |
+| Publicatie | – | E op `/`, A–D en J alleen nog lokaal, live op Vercel |
+
+- **Observatie van AI (nog te bevestigen door mij):** de onderdelen kwamen sneller goed wanneer ik een voorbeeld aanwees en precies zei wat wel en niet moest, dan wanneer AI zelf een concept bedacht.
+- **Gevonden en opgelost:** startpositie van de skills-rij klopte niet meer na de nieuwe kaarten (door mij gezien, oorzaak `offsetLeft`); een Lighthouse-uitschieter van 79 op mobiel bleek bij drie herhalingen 96.
+- **Toetsing (1 nov):** axe 0; Lighthouse desktop 100, mobiel Performance 96, Accessibility 100. Echte telefoon, Safari en Firefox nog niet getest.
 - **Tijd:** [invullen]
