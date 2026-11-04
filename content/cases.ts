@@ -7,6 +7,8 @@ export type CaseMedia = {
   tone?: "light" | "dark";
   badge?: string;
   marker?: boolean;
+  image?: string;
+  fit?: "cover" | "contain"; // cover: fills the width from the top (screenshot or pre-cropped laptop mockup); contain: cut-out mockup inset on a plain ground
 };
 
 export type Case = {
@@ -21,34 +23,34 @@ export type Case = {
 export const cases: Case[] = [
   {
     num: "01",
-    label: "Collaborative Strength",
+    label: "Incentive portal",
     href: "#case-1",
-    outcome: "[A coaching site that turns visitors into booked intake calls]",
-    meta: "Powerlifting coach · Freelance [Year]",
-    media: { aspect: "4 / 3", caption: "[Loop: live site on desktop and phone]", badge: "Live · Next.js" },
+    outcome: "A rewards portal managers can use without training",
+    meta: "[Company] · Internship [Year]",
+    media: { aspect: "4 / 3", caption: "[Screens: rewards, points and undo]", image: "/images/cases/jobrewards.png", fit: "contain" },
   },
   {
     num: "02",
-    label: "Lash studio",
+    label: "Collaborative Strength",
     href: "#case-2",
-    outcome: "[Online booking that replaced back-and-forth over WhatsApp]",
-    meta: "Lash studio · Project [Year]",
-    media: { aspect: "16 / 10", caption: "[Loop: booking flow on phone]" },
+    outcome: "A website for my own powerlifting coaching",
+    meta: "Own coaching business · [Year]",
+    media: { aspect: "4 / 3", caption: "[Loop: live site on desktop and phone]", badge: "Live · Next.js", image: "/images/cases/powerlifting-laptop.png" },
   },
   {
     num: "03",
-    label: "Incentive portal",
+    label: "Stuurmen",
     href: "#case-3",
-    outcome: "[A rewards portal managers can use without training]",
-    meta: "[Company] · Internship [Year]",
-    media: { aspect: "16 / 10", caption: "[Screens: rewards, points and undo]" },
+    outcome: "An inspiration tool clients use to prepare for a branding session",
+    meta: "Stuurmen · [Project] [Year]",
+    media: { aspect: "4 / 3", caption: "[Work overview with wishlist]", image: "/images/cases/stuurmen-laptop.png" },
   },
   {
     num: "04",
-    label: "This portfolio",
-    href: "#making-of",
-    outcome: "How I designed and built this site with AI",
-    meta: "Making of · 2026",
-    media: { aspect: "4 / 3", caption: "[From sketch to Figma to code]", tone: "dark", marker: true },
+    label: "Moraira Dream Villas",
+    href: "#case-4",
+    outcome: "A website for renting holiday villas in Moraira",
+    meta: "Moraira Dream Villas · [Project] [Year]",
+    media: { aspect: "4 / 3", caption: "[Homepage and villa pages]", image: "/images/cases/moraira-laptop.png" },
   },
 ];

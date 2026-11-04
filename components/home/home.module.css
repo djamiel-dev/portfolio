@@ -442,7 +442,7 @@
   position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(72px, 9vw, 152px) var(--gap);
+  gap: clamp(96px, 12vw, 200px) var(--gap);
   align-items: start;
   padding: var(--top) var(--gutter) calc(clamp(96px, 10vw, 176px) + var(--offset));
 }
@@ -486,17 +486,58 @@
   transform: translateY(var(--offset));
 }
 
+/* clip, not hidden: hidden would make the frame its own scroll container and break the parallax timeline.
+   An inline-size container, so the drift below can be measured in the frame's own width (cqw). */
 .media {
+  position: relative;
+  overflow: clip;
   aspect-ratio: 4 / 3;
+  container-type: inline-size;
 }
 
+/* Parallax: the picture scrolls inside its frame while the card crosses the screen. It enters showing
+   its own top edge and moves on down the screenshot as you scroll, full width the whole time.
+   18cqw is 24% of the frame's height; every picture runs longer than its frame by more than that.
+   Pure CSS; where scroll timelines aren't supported, or with reduced motion, it simply stands still. */
+@keyframes caseDrift {
+  from {
+    object-position: 50% 0;
+  }
+  to {
+    object-position: 50% -18cqw;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .media img {
+      animation: caseDrift linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+/* Long page screenshots fill the frame from the top. overflow: visible lets the picture paint past its
+   own content box (the mockup's padding) as it drifts; the frame still clips it. */
+.media img {
+  overflow: visible;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* A cut-out mockup fills the width on the plain ground; its bottom runs off the frame */
+.media[data-fit="contain"] img {
+  padding: 6% 14% 0;
+}
+
+/* Quiet on purpose: the work speaks, the line only names it */
 .caseTitle {
-  max-width: 24em;
-  margin-top: 22px;
-  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
-  font-weight: 540;
-  line-height: 1.18;
-  letter-spacing: -0.02em;
+  max-width: 30em;
+  margin-top: 18px;
+  font-size: clamp(1rem, 1.2vw, 1.1875rem);
+  font-weight: 420;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
@@ -540,12 +581,39 @@
   padding: 0 var(--gutter);
 }
 
-/* A quieter heading than the other sections: the cards carry this one */
 .skillsTitle {
-  max-width: 18em;
-  margin-bottom: clamp(16px, 3vh, 40px);
-  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  max-width: 22em;
+  font-size: clamp(1.75rem, 3.2vw, 3rem);
+  line-height: 1.08;
   letter-spacing: -0.03em;
+}
+
+/* Loading text (Scramble in Skills.tsx): a letter waiting to appear keeps its width but is invisible;
+   while it flickers, one of the hero's glyphs stands in its place */
+.scrambleWord {
+  white-space: nowrap;
+}
+
+.scrambleChar {
+  position: relative;
+}
+
+.scrambleChar[data-s] {
+  color: transparent;
+}
+
+.scrambleChar[data-s="g"]::before {
+  content: attr(data-g);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.6em;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--muted);
 }
 
 /* Cards share dashed edges, like cells of one sheet */
@@ -640,7 +708,7 @@
   height: 92px;
   padding: 0 20px;
   border-radius: 21px; /* the corner of a macOS app icon at this size */
-  background: var(--bg);
+  background: #fff;
   font-size: 0.9375rem;
   font-weight: 520;
   white-space: nowrap;
@@ -658,6 +726,7 @@
 
 .tool img {
   display: block;
+  border-radius: 21px; /* icons on a square white ground get the same corner as the tiles */
   pointer-events: none;
 }
 
@@ -760,8 +829,16 @@
 
 /* Pinned: the row sticks for one screen and slides through a pool of light */
 .skills[data-pinned] {
-  --panel: clamp(320px, 28vw, 420px);
+  --panel: clamp(360px, 32vw, 480px);
   padding: 0;
+  /* Pulled up into the work section's empty bottom padding: the centred heading already brings
+     half a screen of room above it */
+  margin-top: -10svh;
+  margin-bottom: clamp(24px, 5vh, 64px);
+}
+
+.skills[data-pinned] .skill {
+  min-height: clamp(360px, 52svh, 540px);
 }
 
 .skills[data-pinned] .skillsStage {
@@ -798,10 +875,21 @@
   opacity: 0;
 }
 
-.skills[data-pinned] .skillsTitle,
 .skills[data-pinned] .skillsProgress {
   align-self: center;
   width: var(--panel);
+}
+
+/* The heading opens the section on its own in the middle of the screen; the row waits a wide gap
+   (its margin-bottom, read by Skills.tsx) below it. It sits out of the flow, so the row stays centred. */
+.skills[data-pinned] .skillsTitle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(100% - var(--gutter) * 2, 22em);
+  margin-bottom: clamp(56px, 12vh, 140px);
+  translate: -50% -50%;
+  text-align: center;
 }
 
 /* One row of cells; Skills.tsx measures one step as one panel (no gap) */
@@ -810,6 +898,18 @@
   align-self: flex-start;
   width: max-content;
   will-change: transform;
+}
+
+/* As the row is pinned the heading scrolls up out of view and the row rises to the middle of the
+   screen. --intro (0 → 1) follows the scroll, set by Skills.tsx; translate stacks with the row's
+   own sideways transform. The heading ends with its bottom edge just above the screen. */
+.skills[data-pinned] .skillsTitle {
+  translate: -50% calc(-50% - var(--intro, 0) * (50svh + 50% + 24px));
+}
+
+.skills[data-pinned] .skillsTrack,
+.skills[data-pinned] .skillsProgress {
+  translate: 0 calc(var(--drop, 0px) * (1 - var(--intro, 0)) - var(--lift, 0px) * var(--intro, 0));
 }
 
 .skills[data-pinned] .skill {
@@ -1223,7 +1323,7 @@
 
   .work {
     grid-template-columns: minmax(0, 1fr);
-    gap: 64px;
+    gap: 80px;
     --offset: 0px;
     padding-top: 80px;
   }
@@ -1233,7 +1333,7 @@
   }
 
   .caseTitle {
-    margin-top: 18px;
+    margin-top: 14px;
   }
 
   .skillsTrack {

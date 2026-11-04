@@ -23,7 +23,7 @@ Vaste kleuren:
 - `--lamp` `#ff9e5e` en `--lamp-core` `#fff3e9`: gloeidraad, lampjes, mail-knop (met tekst `#14110b`). Hetzelfde oranje als overdag, maar dan als licht.
 - `--accent` `#c04a00`: het enige oranje, voor "product designer" en het accent overdag. 4,31:1 op de dagachtergrond, dus alleen voor iconen en tekst vanaf 24px.
 - Glyph Swell: `#eeefeb`, `#a3a6a3`, `#da9576` (lichtere tint van hetzelfde oranje, kleurtoon vrijwel gelijk).
-- Case-vlakken: per case een eigen tint, van koel (`#dde2e3`) naar warm (`#e2d4c2`).
+- Case-vlakken: per case een eigen tint, van koel (`#dde2e3`) naar warm (`#e3dbcf`).
 
 ## 3. Typografie
 Eén familie: **Mona Sans** (variabel). De breedte-as vervangt een tweede font. Geist Mono wordt alleen geladen voor de tekens in Glyph Swell.

@@ -42,13 +42,17 @@ export function Skills() {
     const pace = 0.55;
     let start = 0;
     let distance = 0;
+    let lead = 0;
     let target = 0;
     let x = 0;
     let raf = 0;
     let inView = false;
 
-    // Measured from the rendered boxes with the row at rest, so borders and padding can't skew it
+    // Measured from the rendered boxes with the row at rest, so borders and padding can't skew it.
+    // --drop puts the row a wide gap below the heading in the middle of the screen; it rises to the
+    // middle itself (--lift centres the cards, not cards plus progress bar) once the heading has gone.
     const measure = () => {
+      const title = s.firstElementChild as HTMLElement;
       const panel = t.firstElementChild as HTMLElement;
       const last = t.lastElementChild as HTMLElement;
       t.style.transform = "none";
@@ -56,16 +60,24 @@ export function Skills() {
       const first = panel.getBoundingClientRect();
       start = stageBox.left + stageBox.width / 2 - first.width / 2 - first.left;
       distance = last.getBoundingClientRect().left - first.left;
-      o.style.height = `${window.innerHeight + distance * pace}px`;
+      lead = window.innerHeight * 0.5;
+      o.style.height = `${window.innerHeight + lead + distance * pace}px`;
+      const gap = parseFloat(getComputedStyle(title).marginBottom);
+      s.style.setProperty("--drop", `${s.clientHeight / 2 + title.offsetHeight / 2 + gap - t.offsetTop}px`);
+      s.style.setProperty("--lift", `${t.offsetTop + t.offsetHeight / 2 - s.clientHeight / 2}px`);
       read();
       x = target;
       t.style.transform = `translate3d(${x}px, 0, 0)`;
     };
 
-    // Each skill rests in the light for a moment before the next one slides in
+    // Over the first stretch of scroll (the lead) the heading rises out of view and the row rises to
+    // the middle, both tied to the scroll so nothing plays on its own. Only then does the row slide.
+    // Each skill rests in the light for a moment before the next one slides in.
     const read = () => {
       const steps = skills.length - 1;
-      const progress = distance ? Math.min(1, Math.max(0, -o.getBoundingClientRect().top / (distance * pace))) : 0;
+      const scrolled = -o.getBoundingClientRect().top;
+      s.style.setProperty("--intro", lead ? Math.min(1, Math.max(0, scrolled / lead)).toFixed(4) : "0");
+      const progress = distance ? Math.min(1, Math.max(0, (scrolled - lead) / (distance * pace))) : 0;
       const i = Math.min(steps - 1, Math.floor(progress * steps));
       const g = Math.min(1, Math.max(0, (progress * steps - i - 0.2) / 0.6));
       const step = i + g * g * (3 - 2 * g);
@@ -106,6 +118,9 @@ export function Skills() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", measure);
       o.style.height = "";
+      s.style.removeProperty("--drop");
+      s.style.removeProperty("--lift");
+      s.style.removeProperty("--intro");
       t.style.transform = "";
     };
   }, [mode]);
@@ -138,7 +153,7 @@ export function Skills() {
     >
       <div ref={stage} className={styles.skillsStage}>
         <h2 id="e-skills" className={styles.skillsTitle}>
-          From the first interview to the last line of code.
+          <Scramble text="The best projects start with the hardest problems. That’s where I do my best work." />
         </h2>
         <ol ref={track} className={styles.skillsTrack}>
           {skills.map((s, i) => (
@@ -169,6 +184,106 @@ export function Skills() {
         )}
       </div>
     </section>
+  );
+}
+
+const RAMP = "·:-+=*#"; // the glyphs of the hero's Glyph Swell
+
+/**
+ * Text that loads in when it scrolls into view from above: the letters appear left to right as
+ * the hero's glyphs, flicker for a moment and then settle into the real text. Each letter keeps
+ * its own width the whole time, so the lines never reflow. It plays again only after the text has
+ * left the screen at the bottom (scrolled back up past it); coming back from below it is already
+ * there. Screen readers get the plain text; with reduced motion or without JS it is plain text.
+ */
+function Scramble({ text }: { text: string }) {
+  const box = useRef<HTMLSpanElement>(null);
+  const [split, setSplit] = useState(false);
+
+  useEffect(() => {
+    if (!window.matchMedia("(prefers-reduced-motion: no-preference)").matches) return;
+    setSplit(true);
+  }, []);
+
+  useEffect(() => {
+    const b = box.current;
+    if (!split || !b) return;
+    const chars = Array.from(b.querySelectorAll<HTMLElement>("[data-ch]"));
+    const step = 14; // ms between one letter appearing and the next
+    const flicker = 320; // ms a letter shows glyphs before it settles
+    const tick = 55; // ms between glyph changes
+    let raf = 0;
+    let t0 = 0;
+    let state: "armed" | "playing" | "done" = "armed";
+
+    const hide = () => chars.forEach((c) => c.setAttribute("data-s", ""));
+    const show = () => chars.forEach((c) => c.removeAttribute("data-s"));
+    const frame = (now: number) => {
+      const t = now - t0;
+      const swap = Math.floor(t / tick);
+      chars.forEach((c, i) => {
+        const at = i * step;
+        if (t < at) return;
+        if (t >= at + flicker) {
+          c.removeAttribute("data-s");
+          return;
+        }
+        c.setAttribute("data-s", "g");
+        c.setAttribute("data-g", RAMP[(i * 13 + swap * 5 + ((i * swap) % 3)) % RAMP.length]);
+      });
+      if (t < chars.length * step + flicker) raf = requestAnimationFrame(frame);
+      else state = "done";
+    };
+
+    hide();
+    const seen = new IntersectionObserver(
+      ([e]) => {
+        const below = e.boundingClientRect.top > 0;
+        if (e.intersectionRatio >= 0.6 && state === "armed") {
+          if (below) {
+            state = "playing";
+            t0 = performance.now();
+            raf = requestAnimationFrame(frame);
+          } else {
+            state = "done";
+            show();
+          }
+        } else if (!e.isIntersecting && below && state !== "armed") {
+          cancelAnimationFrame(raf);
+          state = "armed";
+          hide();
+        }
+      },
+      { threshold: [0, 0.6] },
+    );
+    seen.observe(b);
+    return () => {
+      cancelAnimationFrame(raf);
+      seen.disconnect();
+      show();
+    };
+  }, [split]);
+
+  if (!split) return <>{text}</>;
+  const words = text.split(" ");
+  return (
+    <>
+      <span className="visually-hidden">{text}</span>
+      <span ref={box} aria-hidden="true">
+        {words.map((w, wi) => (
+          <span key={wi}>
+            <span className={styles.scrambleWord}>
+              {Array.from(w).map((c, ci) => (
+                <span key={ci} className={styles.scrambleChar} data-ch="">
+                  {c}
+                </span>
+              ))}
+            </span>
+            {wi < words.length - 1 && " "}
+          </span>
+        ))}
+      </span>
+    </>
   );
 }
 

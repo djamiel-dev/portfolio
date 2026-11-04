@@ -7,7 +7,7 @@ export const caseGrounds: Record<string, string> = {
   "01": "#dde2e3",
   "02": "#e1e2dc",
   "03": "#e4ded4",
-  "04": "#e2d4c2",
+  "04": "#e3dbcf",
 };
 
 // Page ground, quiet grey marks, the lighter shade of --accent where a swell crests
@@ -17,22 +17,26 @@ export const heroGlyphs: [string, string, string] = ["#eeefeb", "#a3a6a3", "#da9
 export type Skill = { title: string; text: string; tools: string[] };
 
 // The apps' own desktop icons, in public/tools. Anything without an app shows its name.
+// In each skill's tools, icons and names take turns where there are enough of both.
 export const toolIcons: Record<string, string> = {
   Figma: "/tools/figma.png",
   "DaVinci Resolve": "/tools/davinciresolve.png",
   "Claude Code": "/tools/claude.png",
+  ResearchRabbit: "/tools/researchrabbit.png",
+  "Design Thinking": "/tools/designthinking.png",
+  "Claude Design": "/tools/claudedesign.png",
 };
 
 export const skills: Skill[] = [
   {
     title: "Research & problem framing",
     text: "[How I find out what the real problem is and put it into words]",
-    tools: ["ResearchRabbit", "User interviews", "Desk research", "Problem statements", "Jobs to be done"],
+    tools: ["ResearchRabbit", "Double Diamond", "Research questions", "Design Thinking", "Desk research", "Problem statements", "Acceptance criteria"],
   },
   {
     title: "UI/UX & design systems",
     text: "[Flows and interfaces in Figma, with tokens and components that stay in sync with the code]",
-    tools: ["Figma", "DaVinci Resolve", "Wireframes", "User flows", "Design tokens", "Component library"],
+    tools: ["Figma", "Wireframes", "Claude Design", "User flows", "DaVinci Resolve", "Design tokens", "Component library"],
   },
   {
     title: "Prototyping & user testing",

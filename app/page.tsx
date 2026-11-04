@@ -1,4 +1,5 @@
-import { exploreCases } from "@/content/explore";
+import Image from "next/image";
+import { cases } from "@/content/cases";
 import { links } from "@/content/site";
 import { GlyphSwell } from "@/components/home/glyph-swell";
 import styles from "@/components/home/home.module.css";
@@ -72,12 +73,16 @@ export default function Home() {
             <h2 id="e-work" className={styles.workTitle}>
               Selected work
             </h2>
-            <p className={styles.workIntro}>Four projects, from a live coaching site to the making of this portfolio.</p>
+            <p className={styles.workIntro}>Each case walks through the problem, the research and the decisions behind what I built.</p>
           </div>
 
-          {exploreCases.map((c) => (
-            <article key={c.num} className={styles.case} id={c.num === "04" ? "ai" : undefined}>
-              <div className={styles.media} style={{ background: caseGrounds[c.num] }} />
+          {cases.map((c) => (
+            <article key={c.num} className={styles.case}>
+              <div className={styles.media} style={{ background: caseGrounds[c.num] }} data-fit={c.media.fit}>
+                {c.media.image && (
+                  <Image src={c.media.image} alt="" fill sizes="(max-width: 48em) 100vw, 50vw" />
+                )}
+              </div>
               <h3 className={styles.caseTitle}>
                 <a href={c.href}>{c.outcome}</a>
               </h3>
