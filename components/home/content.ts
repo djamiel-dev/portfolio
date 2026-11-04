@@ -30,32 +30,32 @@ export const toolIcons: Record<string, string> = {
 export const skills: Skill[] = [
   {
     title: "Research & problem framing",
-    text: "[How I find out what the real problem is and put it into words]",
+    text: "A problem well stated is a problem half solved.",
     tools: ["ResearchRabbit", "Double Diamond", "Research questions", "Design Thinking", "Desk research", "Problem statements", "Acceptance criteria"],
   },
   {
     title: "UI/UX & design systems",
-    text: "[Flows and interfaces in Figma, with tokens and components that stay in sync with the code]",
+    text: "Good looks can help a product, but they are never the reason it works.",
     tools: ["Figma", "Wireframes", "Claude Design", "User flows", "DaVinci Resolve", "Design tokens", "Component library"],
   },
   {
     title: "Prototyping & user testing",
-    text: "[Clickable and coded prototypes, tested with real people early]",
+    text: "An hour of testing beats a week of opinions.",
     tools: ["Figma", "Clickable prototypes", "Coded prototypes", "5-second test", "A/B test", "Card sorting"],
   },
   {
     title: "Frontend development",
-    text: "[Building what I design in Next.js, TypeScript and CSS]",
+    text: "A design isn’t finished until it runs.",
     tools: ["Next.js", "Tailwind CSS", "TypeScript", "CSS", "Accessibility"],
   },
   {
     title: "AI workflows",
-    text: "[How I use AI to explore more and check my own work]",
+    text: "AI helps me make a better product first, and get there faster second.",
     tools: ["Claude Code", "Concept exploration", "Code review", "Prompt design"],
   },
   {
     title: "Collaboration",
-    text: "[How I work with developers, designers and stakeholders]",
+    text: "The best ideas rarely come from one person.",
     tools: ["Design critique", "Developer handoff", "Stakeholder updates", "Giving feedback"],
   },
 ];

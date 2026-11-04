@@ -552,9 +552,77 @@
   inset: 0;
 }
 
+/* Hover: the picture dims and leans in a little; CaseCursor puts "View case" next to the pointer */
+.media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(18 19 24 / 0.28);
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+
+.media img {
+  transition: scale 700ms var(--ease-out);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .case:hover .caseTitle a {
     background-size: 100% 1px;
+  }
+
+  .case:hover .media::after {
+    opacity: 1;
+  }
+
+  .case:hover .media img {
+    scale: 1.05;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case:hover .media img {
+    scale: none;
+  }
+}
+
+/* The label that follows the pointer over a case; Skills-style pill, white on the dimmed picture */
+.caseCursor {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.caseCursor span {
+  display: block;
+  translate: 18px 18px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.875rem;
+  font-weight: 520;
+  white-space: nowrap;
+  color: var(--fg);
+  opacity: 0;
+  scale: 0.6;
+  transform-origin: top left;
+  transition:
+    opacity 200ms ease,
+    scale 300ms var(--ease-out);
+}
+
+.caseCursor[data-on] span {
+  opacity: 1;
+  scale: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caseCursor span {
+    scale: none;
+    transition: opacity 200ms ease;
   }
 }
 

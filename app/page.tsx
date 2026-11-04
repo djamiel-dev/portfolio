@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { cases } from "@/content/cases";
 import { links } from "@/content/site";
+import { CaseCursor } from "@/components/home/CaseCursor";
 import { GlyphSwell } from "@/components/home/glyph-swell";
 import styles from "@/components/home/home.module.css";
 import { Menu } from "@/components/home/Menu";
@@ -77,7 +78,7 @@ export default function Home() {
           </div>
 
           {cases.map((c) => (
-            <article key={c.num} className={styles.case}>
+            <article key={c.num} className={styles.case} data-case>
               <div className={styles.media} style={{ background: caseGrounds[c.num] }} data-fit={c.media.fit}>
                 {c.media.image && (
                   <Image src={c.media.image} alt="" fill sizes="(max-width: 48em) 100vw, 50vw" />
@@ -88,6 +89,7 @@ export default function Home() {
               </h3>
             </article>
           ))}
+          <CaseCursor className={styles.caseCursor} />
         </section>
 
         <Skills />
