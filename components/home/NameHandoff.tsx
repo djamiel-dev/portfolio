@@ -1,56 +1,52 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect } from "react";
+import { Letters, scramble } from "./Skills";
 
-// The greeting in the hero hands the name over to the nav: once the reader is about
-// a fifth into the hero, the greeting types itself away and the nav types the full name.
-// Scrolling back reverses it. Both sides read one small shared store.
+// The greeting in the hero hands the name over to the nav: once the reader is about a fifth into
+// the hero, the greeting flickers away into the hero's glyphs and the nav's name flickers in, the
+// same load-in as the section headings. Scrolling back reverses it. Without JS the greeting stays
+// and the nav stays empty; with reduced motion the swap happens without the flicker.
 
 const HELLO = "Hi,";
 const INTRO = "I’m Djamiel";
 const NAME = "Djamiel Saou";
-const GREETING_LENGTH = HELLO.length + INTRO.length;
-
-type State = { greeting: number; name: number; typing: "greeting" | "name" | null };
-
-let state: State = { greeting: GREETING_LENGTH, name: 0, typing: null };
-const listeners = new Set<() => void>();
-const set = (next: Partial<State>) => {
-  state = { ...state, ...next };
-  listeners.forEach((l) => l());
-};
-const subscribe = (l: () => void) => {
-  listeners.add(l);
-  return () => listeners.delete(l);
-};
-const SERVER: State = { greeting: GREETING_LENGTH, name: 0, typing: null };
-const useHandoff = () => useSyncExternalStore(subscribe, () => state, () => SERVER);
 
 /** The small greeting at the top of the hero, with the photo between its two parts. */
-export function HeroGreeting({ className, photoClassName, caretClassName }: { className: string; photoClassName: string; caretClassName: string }) {
-  const { greeting, typing } = useHandoff();
-
+export function HeroGreeting({ className, photoClassName }: { className: string; photoClassName: string }) {
   useEffect(() => {
     const hero = document.querySelector<HTMLElement>("[data-hero]");
-    if (!hero) return;
+    const greeting = document.querySelector<HTMLElement>("[data-greeting]");
+    const nav = document.querySelector<HTMLElement>("[data-nav-name]");
+    if (!hero || !greeting || !nav) return;
+    const letters = (el: HTMLElement) => Array.from(el.querySelectorAll<HTMLElement>("[data-ch]"));
+    const hello = letters(greeting);
+    const name = letters(nav);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let forward = false;
-    let timer = 0;
+    let cancel = () => {};
 
-    // One step at a time towards the goal, so a change of direction mid-way just turns around
-    const step = () => {
-      const { greeting: g, name: n } = state;
-      if (forward && g > 0) return next({ greeting: g - 1, typing: "greeting" }, 30);
-      if (forward && n < NAME.length) return next({ name: n + 1, typing: "name" }, 60);
-      if (!forward && n > 0) return next({ name: n - 1, typing: "name" }, 30);
-      if (!forward && g < GREETING_LENGTH) return next({ greeting: g + 1, typing: "greeting" }, 50);
-      timer = 0;
-      set({ typing: null });
+    // One side goes before the other comes, so the name is only ever in one place
+    const run = () => {
+      cancel();
+      if (forward) {
+        cancel = scramble(hello, false, () => {
+          nav.dataset.shown = "";
+          cancel = scramble(name, true);
+        });
+      } else {
+        cancel = scramble(name, false, () => {
+          delete nav.dataset.shown;
+          cancel = scramble(hello, true);
+        });
+      }
     };
-    const next = (s: Partial<State>, wait: number) => {
-      set(s);
-      timer = window.setTimeout(step, wait);
+
+    const snap = () => {
+      for (const c of forward ? hello : name) c.setAttribute("data-s", "");
+      for (const c of forward ? name : hello) c.removeAttribute("data-s");
+      nav.toggleAttribute("data-shown", forward);
     };
 
     const onScroll = () => {
@@ -58,48 +54,42 @@ export function HeroGreeting({ className, photoClassName, caretClassName }: { cl
       const past = -r.top > r.height * 0.2;
       if (past === forward) return;
       forward = past;
-      if (reduced) return set(past ? { greeting: 0, name: NAME.length } : { greeting: GREETING_LENGTH, name: 0 });
-      if (!timer) step();
+      if (reduced) snap();
+      else run();
     };
 
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.clearTimeout(timer);
+      cancel();
     };
   }, []);
-
-  const hello = HELLO.slice(0, Math.min(greeting, HELLO.length));
-  const intro = INTRO.slice(0, Math.max(0, greeting - HELLO.length));
-  const caret = typing === "greeting" && <span className={caretClassName} data-typing aria-hidden="true" />;
 
   return (
     <p className={className} data-greeting>
       <span className="visually-hidden">Hi, I&rsquo;m Djamiel</span>
       <span aria-hidden="true">
-        {hello}
-        {greeting <= HELLO.length && caret}
+        <Letters text={HELLO} />
       </span>
       <span className={photoClassName}>
         {/* The name is right beside it, so the photo needs no text of its own */}
         <Image src="/images/djamiel.jpg" alt="" fill sizes="(max-width: 48em) 72px, 120px" priority />
       </span>
       <span aria-hidden="true">
-        {intro}
-        {greeting > HELLO.length && caret}
+        <Letters text={INTRO} />
       </span>
     </p>
   );
 }
 
-/** The name slot in the nav: empty at the top of the page, typed in once the greeting has gone. */
-export function NavName({ className, caretClassName }: { className: string; caretClassName: string }) {
-  const { name, typing } = useHandoff();
+/** The name slot in the nav: empty at the top of the page, flickers in once the greeting has gone. */
+export function NavName({ className }: { className: string }) {
   return (
-    <a href="#main" className={className} data-shown={name > 0 || undefined} aria-label="Djamiel Saou, back to top">
-      <span aria-hidden="true">{NAME.slice(0, name)}</span>
-      <span className={caretClassName} data-typing={typing === "name" || undefined} aria-hidden="true" />
+    <a href="#main" className={className} data-nav-name aria-label="Djamiel Saou, back to top">
+      <span aria-hidden="true">
+        <Letters text={NAME} hidden />
+      </span>
     </a>
   );
 }

@@ -145,7 +145,7 @@ export default function DesignSystem() {
             <span className={styles.tool}>5-second test</span>
           </div>
           <div className={`${ds.panel} ${styles.night}`}>
-            <span className={`${styles.mail} ${ds.mailLit}`}>Email me</span>
+            <span className={`${styles.mail} ${ds.mailLit}`}>Contact me</span>
           </div>
         </section>
 

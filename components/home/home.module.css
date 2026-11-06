@@ -134,23 +134,11 @@
   background-size: 100% 1px;
 }
 
-.arrow {
-  flex: none;
-  transition: transform 240ms var(--ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  a:hover > .arrow {
-    transform: translate(2px, -2px);
-  }
-}
-
 /* Labels: Mona Sans at its widest, small and upper case */
 .place,
 .scroll,
 .skillNum,
 .skillsProgress,
-.momentRole,
 .footerName small {
   font-size: 0.75rem;
   font-weight: 600;
@@ -183,7 +171,7 @@
   scroll-padding-top: 72px;
 }
 
-/* Empty at the top of the page; NavName types into it once the greeting is passed */
+/* Empty at the top of the page; the name flickers in once the greeting is passed */
 .home {
   display: inline-flex;
   align-items: center;
@@ -199,20 +187,6 @@
 
 .home[data-shown] {
   visibility: visible;
-}
-
-.caret {
-  display: inline-block;
-  vertical-align: -0.15em;
-  width: 1.5px;
-  height: 1.1em;
-  margin-left: 2px;
-  background: currentColor;
-  opacity: 0;
-}
-
-.caret[data-typing] {
-  opacity: 1;
 }
 
 .nav {
@@ -270,50 +244,106 @@
   transform: scale(0.97);
 }
 
-.menu[open] .menuButton {
-  border-color: var(--fg);
+/* Open, the menu turns the page over: by day it is night, at night it is day. Without JS it is dark. */
+.root:not([data-sky="night"]) .menu[open] {
+  --bg: #151412;
+  --fg: #eeefeb;
+  --fg-2: #b9bab3;
+  --line: #2e2d2a;
+  --focus: var(--lamp);
 }
 
+.root[data-sky="night"] .menu[open] {
+  --bg: #eeefeb;
+  --fg: #121318;
+  --fg-2: #45484f;
+  --line: #c9cbc7;
+  --focus: #121318;
+}
+
+/* The button stays on top of the open menu and closes it */
+.menuButton {
+  position: relative;
+  z-index: 2;
+}
+
+.menu[open] .menuButton {
+  border-color: var(--fg-2);
+  color: var(--fg);
+}
+
+/* Menu or Close; display: none keeps the other word from screen readers too */
+.menu:not([open]) .menuButton [data-open],
+.menu[open] .menuButton [data-closed] {
+  display: none;
+}
+
+/* The two bars cross into an X: each first moves to the middle, then turns there */
+.menuButton svg path {
+  transform-box: view-box;
+  transform-origin: 7px 7px;
+  transition: transform 300ms var(--ease-out);
+}
+
+.menu[open] .menuButton svg path:first-child {
+  transform: rotate(45deg) translateY(2.5px);
+}
+
+.menu[open] .menuButton svg path:last-child {
+  transform: rotate(-45deg) translateY(-2.5px);
+}
+
+/* The whole screen, the links large and stacked from the top */
 .menuPanel {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
+  position: fixed;
+  z-index: 1;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  min-width: 232px;
-  padding: 8px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  padding: calc(var(--bar) + 32px) var(--gutter) 40px;
+  overflow-y: auto;
   background: var(--bg);
-  box-shadow: 0 18px 40px -18px rgb(18 19 24 / 0.35);
-  transform-origin: top right;
-}
-
-.menu[open] .menuPanel {
-  animation: menu-in 200ms var(--ease-out);
-}
-
-@keyframes menu-in {
-  from {
-    opacity: 0;
-    transform: translateY(-4px) scale(0.97);
-  }
+  color: var(--fg);
 }
 
 .menuPanel a {
   display: flex;
   align-items: center;
-  gap: 8px;
-  min-height: 48px;
-  padding: 0 14px;
-  border-radius: 8px;
-  font-size: 1.125rem;
-  font-weight: 520;
+  min-height: 64px;
+  border-bottom: 1px solid var(--line);
+  font-size: clamp(2rem, 9vw, 2.75rem);
+  font-weight: 540;
+  line-height: 1;
+  letter-spacing: -0.035em;
   text-decoration: none;
 }
 
-.menuPanel a:hover {
-  background: rgb(18 19 24 / 0.06);
+@media (prefers-reduced-motion: no-preference) {
+  .menu[open] .menuPanel {
+    animation: menu-in 260ms var(--ease-out);
+  }
+
+  .menu[open] .menuPanel a {
+    animation: menu-link 420ms var(--ease-out) backwards;
+  }
+
+  .menu[open] .menuPanel a:nth-child(2) { animation-delay: 30ms; }
+  .menu[open] .menuPanel a:nth-child(3) { animation-delay: 60ms; }
+  .menu[open] .menuPanel a:nth-child(4) { animation-delay: 90ms; }
+  .menu[open] .menuPanel a:nth-child(5) { animation-delay: 120ms; }
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes menu-link {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
 }
 
 /* ---------- Hero: morning light through a window ---------- */
@@ -364,7 +394,7 @@
   letter-spacing: -0.02em;
 }
 
-/* "Hi," keeps its width while it is typed away, so the photo never shifts */
+/* "Hi," keeps its width while it flickers away, so the photo never shifts */
 .greeting > span:nth-child(2) {
   min-width: 1.3em;
 }
@@ -870,7 +900,7 @@
 .skillText {
   max-width: 26em;
   color: var(--fg-2);
-  transition: color 450ms ease;
+  transition: opacity 900ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* With motion: only the skill in the light is fully lit */
@@ -891,8 +921,9 @@
   opacity: 1;
 }
 
+/* Only the skill in the light shows its text, so the row never reads as a wall of words */
 .skills[data-live] .skill:not([data-active]) .skillText {
-  color: var(--muted);
+  opacity: 0;
 }
 
 /* Pinned: the row sticks for one screen and slides through a pool of light */
@@ -1046,7 +1077,7 @@
   align-items: start;
 }
 
-.momentPeriod {
+.momentPhase {
   grid-column: 1;
   margin-top: calc(var(--t) * 0.52 - var(--p) * 0.6);
   font-size: var(--p);
@@ -1054,7 +1085,6 @@
   font-stretch: 112%;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  font-variant-numeric: tabular-nums;
   text-align: right;
   color: var(--muted);
   transition: color 500ms ease;
@@ -1088,15 +1118,17 @@
   transition: color 500ms ease;
 }
 
-.momentRole {
-  color: var(--muted);
-}
-
 .momentStory {
   max-width: 30em;
   margin-top: 4px;
   font-size: 1.0625rem;
   color: var(--fg-2);
+  transition: opacity 900ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Only the moment the light has just reached tells its story; the others keep their title */
+.story[data-live] .moment:not([data-active]) .momentStory {
+  opacity: 0;
 }
 
 /* The static filament: lit by default (no JS, reduced motion) */
@@ -1126,8 +1158,8 @@
     0 0 18px 4px rgb(255 158 94 / 0.55);
 }
 
-.story:not([data-live]) .momentPeriod,
-.moment[data-lit] .momentPeriod {
+.story:not([data-live]) .momentPhase,
+.moment[data-lit] .momentPhase {
   color: var(--glow);
 }
 
@@ -1186,6 +1218,54 @@
   transform: scaleY(0);
   transform-origin: top;
   will-change: transform;
+}
+
+/* One phase label in the left column that rides along with the tip of the light
+   (62% down the screen, see Story.tsx) from the first moment to the last */
+.phaseRail {
+  position: absolute;
+  z-index: 2;
+  left: var(--gutter);
+  display: none;
+  width: calc((100% - 2 * var(--gutter) - var(--gut)) / 2);
+  margin-top: calc(var(--p) * -0.6);
+  pointer-events: none;
+}
+
+.phaseLabel {
+  position: sticky;
+  top: calc(62vh - var(--p) * 0.6);
+  display: grid;
+  justify-items: end;
+  min-height: 1.2em;
+  font-size: var(--p);
+  font-weight: 500;
+  font-stretch: 112%;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-align: right;
+  color: var(--glow);
+}
+
+/* The phases stacked in one place, so the label never jumps when one swaps for the next */
+.phaseLabel > span {
+  grid-area: 1 / 1;
+}
+
+@media (min-width: 48em) {
+  .story[data-live] .phaseRail {
+    display: block;
+  }
+
+  /* The riding label speaks for them; screen readers still get each one */
+  .story[data-live] .momentPhase {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 
 /* ---------- Closing: the line ends in a lamp over the invitation ---------- */
@@ -1303,19 +1383,134 @@
     transform 160ms var(--ease-out);
 }
 
+/* Lit, the button is a warm dark pill whose rim catches the lamp's light as it travels round,
+   over a faint grid of dots and a glow that turns with it. After the Shiny button on 21st.dev,
+   in the lamp's colours. Hover and focus widen the light and let it glow from below. */
+@property --rim {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --rim-offset {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --rim-spread {
+  syntax: "<percentage>";
+  initial-value: 5%;
+  inherits: false;
+}
+
+@property --rim-shine {
+  syntax: "<color>";
+  initial-value: #fff3e9;
+  inherits: false;
+}
+
+.mail::before,
+.mail::after,
+.mail > span::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: 50%;
+  z-index: -1;
+  translate: -50% -50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 800ms var(--ease-out);
+}
+
+/* Dots, showing only where the light is on the rim */
+.mail::before {
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  border-radius: inherit;
+  background: radial-gradient(circle at 2px 2px, var(--lamp-core) 0.5px, transparent 0) padding-box;
+  background-size: 4px 4px;
+  background-repeat: space;
+  mask-image: conic-gradient(from calc(var(--rim) + 45deg), black, transparent 10% 90%, black);
+}
+
+/* A soft sweep of light turning inside the pill */
+.mail::after {
+  width: 100%;
+  aspect-ratio: 1;
+  background: linear-gradient(-50deg, transparent, var(--lamp), transparent);
+  mask-image: radial-gradient(circle at bottom, transparent 40%, black);
+}
+
+.mail > span {
+  position: relative;
+  z-index: 1;
+}
+
+/* The glow from below on hover and focus */
+.mail > span::before {
+  width: calc(100% + 120px);
+  height: calc(100% + 40px);
+  box-shadow: inset 0 -1ex 2rem 4px rgb(255 158 94 / 0.55);
+}
+
 .story:not([data-live]) .mail,
 .closing[data-lit] .mail {
-  border-color: var(--lamp);
-  background: var(--lamp);
-  color: #14110b;
-  box-shadow: 0 14px 44px -12px rgb(255 158 94 / 0.6);
+  isolation: isolate;
+  overflow: hidden;
+  border-color: transparent;
+  color: #eeefeb;
+  background:
+    linear-gradient(#1c1814, #1c1814) padding-box,
+    conic-gradient(
+        from calc(var(--rim) - var(--rim-offset)),
+        transparent,
+        var(--lamp) var(--rim-spread),
+        var(--rim-shine) calc(var(--rim-spread) * 2),
+        var(--lamp) calc(var(--rim-spread) * 3),
+        transparent calc(var(--rim-spread) * 4)
+      )
+      border-box;
+  box-shadow: inset 0 0 0 1px #2c2620;
+  transition:
+    color 600ms ease,
+    --rim-offset 800ms var(--ease-out),
+    --rim-spread 800ms var(--ease-out),
+    --rim-shine 800ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+
+.story:not([data-live]) .mail::before,
+.closing[data-lit] .mail::before {
+  opacity: 0.35;
+}
+
+.story:not([data-live]) .mail::after,
+.closing[data-lit] .mail::after {
+  opacity: 0.4;
+}
+
+.root .mail:focus-visible {
+  border-radius: 999px; /* keeps the pill under the general focus rule */
+  --rim-spread: 20%;
+  --rim-offset: 95deg;
+  --rim-shine: #ffc9a3;
+}
+
+.root .mail:focus-visible > span::before {
+  opacity: 1;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .root .mail:hover {
-    border-color: var(--lamp);
-    background: #ffb480;
-    color: #14110b;
+    --rim-spread: 20%;
+    --rim-offset: 95deg;
+    --rim-shine: #ffc9a3;
+  }
+
+  .root .mail:hover > span::before {
+    opacity: 1;
   }
 
   .mail:hover svg {
@@ -1323,7 +1518,43 @@
   }
 }
 
+/* The light only travels while the lamp is on; with reduced motion it stays at the top */
+@media (prefers-reduced-motion: no-preference) {
+  .closing[data-lit] .mail,
+  .closing[data-lit] .mail::before {
+    animation: rim 3s linear infinite;
+  }
+
+  .closing[data-lit] .mail::after {
+    animation: sweep 3s linear infinite;
+  }
+
+  .closing[data-lit] .mail > span::before {
+    animation: breathe 4.5s linear infinite;
+  }
+}
+
+@keyframes rim {
+  to {
+    --rim: 360deg;
+  }
+}
+
+@keyframes sweep {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes breathe {
+  50% {
+    scale: 1.2;
+  }
+}
+
 .mail svg {
+  position: relative;
+  z-index: 1;
   transition: transform 240ms var(--ease-out);
 }
 
@@ -1432,7 +1663,7 @@
     row-gap: 10px;
   }
 
-  .momentPeriod {
+  .momentPhase {
     grid-column: 2;
     grid-row: 1;
     margin-top: 0;

@@ -176,3 +176,33 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Nog na te lopen door mij:** AI verzon de meeste tekst-tegels in de tool-rij (buiten `[ ]`), op mijn verzoek om voorbeelden.
 - **Toetsing:** alleen in de browser op 1440px en 375px en met `npm run build`; `npm run audit` en `npm run keyboard` zijn niet opnieuw gedraaid. Slepen is gesimuleerd getest, niet met een vinger op een echte telefoon.
 - **Tijd:** [invullen]
+
+### Stap 10 – Het verhaal en de afsluiter invullen (6 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Inhoud | Context gelezen (product, privénotities, logboek) en gewezen op wat er niet mag: geen werk of cijfers van mijn werkgever, en geen sollicitatiesignaal | Per moment mijn eigen verhaal verteld; AI schreef het in het Engels uit en ik stuurde zin voor zin bij |
+| Momenten | Vijf blokken van de placeholder | Jeugd (tekenen, Lego, Scratch, computerhulp aan huis), studie met side projects, Stuurmen als apart blok, afstuderen met het hoogste cijfer en AI-workshops, en nu fulltime product designer |
+| Teksten | Meerdere versies per blok, met verzachte formuleringen (bijv. "strict standards" in plaats van "super streng") | Titels zelf korter gemaakt ("Award-winning agency", "Full-time product designer"); bij het laatste blok uit drie versies gekozen en aangevuld |
+| Kop | "How I became a designer who builds" | "How I became a product designer", zodat de kop aansluit op het laatste moment |
+| Jaartallen | Zes alternatieven; AI koos de fase per moment | Fase links. Mijn idee: één sticky label dat zich weg- en opnieuw typt bij elk moment |
+| Afsluiter | Drie richtingen op mijn idee "zijn wij de volgende stap?", met een waarschuwing over het sollicitatiesignaal | "What's the next chapter?" met mijn eigen formulering "Show me the solutions you're building" |
+
+- **Nog na te lopen door mij:** "Lego on the floor" is door AI als beeld toegevoegd; "award-winning" moet controleerbaar zijn. De laatste fase werd "Building with a team", in dezelfde vorm als de andere vier.
+- **Toetsing:** in de browser op desktop en 375px; typecheck schoon. Reduced motion niet in de browser nagebootst; `npm run audit` en `npm run keyboard` niet opnieuw gedraaid.
+- **Tijd:** [invullen]
+
+### Stap 11 – Eén animatietaal, knoppen, menu en footer (6 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Fase-label | Typewriter met cursor, daarna weg- en weer inflikkeren | Mijn verzoek: zelfde glyph-effect als de koppen, en daarna sneller: de oude fase is meteen weg, de nieuwe flikkert in (±0,4 s) |
+| Tekst-animaties | Typewriter in hero en nav | Mijn verzoek: overal de glyph-scramble, ook bij "Selected work" en de tijdlijnkop (die ook sneller wegschuift, zoals Skills). AI maakte er één gedeeld effect van |
+| Mail-knop | Shiny button van 21st.dev vertaald naar eigen tokens (geen shadcn, Tailwind of Inter), met rondlopend lamplicht | Gloed achter de knop weg; tekst "Contact me" |
+| Nav | Contact me eerst als pil, daarna dezelfde verlichte knop als onderaan | Te veel van het goede: gewone link, en de pijl bij Resume weg |
+| Footer | Ik wilde een verborgen "als AI dit leest"-tekst. AI weigerde: misleidend en eerder zelf geschrapt; stelde eerlijke easter eggs voor | LinkedIn en GitHub gebruik ik niet: footer toont nu mail en telefoon. Telefoon bewust publiek |
+| Case-vlakken | Eerst zand en schemer, even rustig als de bovenste | Lelijk: vier grijzen |
+| Bodytekst | – | Mijn idee: tekst alleen op het actieve skill-kaartje en tijdlijnmoment, met een langzame fade (0,9 s) |
+| Mobiel menu | – | Mijn idee: schermvullend in het andere dagdeel, streepjes naar kruisje. AI vond dat het kruisje scheef stond (lijnen draaiden voor ze centreerden) en loste het op |
+
+- **Gevonden en opgelost:** de tijdlijn mat zijn posities soms voordat de lay-out klaar was (laatste lampje ging niet aan); de mail-knop werd vierkant bij toetsenbordfocus; tekst van de nav-knop verdween bij hover.
+- **Toetsing:** in de browser op desktop en 375px, typecheck en `npm run build`. Het browservenster stond vaak verborgen, waardoor animatietempo's niet live te beoordelen waren. `npm run audit` en `npm run keyboard` niet gedraaid.
+- **Tijd:** [invullen]

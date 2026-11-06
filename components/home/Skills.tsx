@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { skills, toolIcons } from "./content";
+import { skills, toolIcons, wideToolIcons } from "./content";
 import styles from "./home.module.css";
 import { SkillVisual } from "./SkillVisual";
 
@@ -190,13 +190,75 @@ export function Skills() {
 const RAMP = "·:-+=*#"; // the glyphs of the hero's Glyph Swell
 
 /**
+ * Plays the glyph flicker over letters rendered by <Letters>: left to right each letter shows the
+ * hero's glyphs for a moment and then settles, into the real letter (show) or into nothing (hide).
+ * Letters already where they should be are left alone. Returns a cancel that settles any letter
+ * caught mid-flicker, so a change of mind can start the other way straight away.
+ */
+export function scramble(
+  chars: HTMLElement[],
+  show: boolean,
+  done?: () => void,
+  { step = 14, flicker = 320 } = {}, // ms between one letter starting and the next; ms a letter shows glyphs
+) {
+  const tick = 55; // ms between glyph changes
+  const todo = chars.filter((c) => (c.getAttribute("data-s") === "") === show);
+  const settle = (c: HTMLElement) => (show ? c.removeAttribute("data-s") : c.setAttribute("data-s", ""));
+  if (!todo.length) {
+    done?.();
+    return () => {};
+  }
+  const t0 = performance.now();
+  let raf = 0;
+  const frame = (now: number) => {
+    const t = now - t0;
+    const swap = Math.floor(t / tick);
+    todo.forEach((c, i) => {
+      const at = i * step;
+      if (t < at) return;
+      if (t >= at + flicker) return settle(c);
+      c.setAttribute("data-s", "g");
+      c.setAttribute("data-g", RAMP[(i * 13 + swap * 5 + ((i * swap) % 3)) % RAMP.length]);
+    });
+    if (t < todo.length * step + flicker) raf = requestAnimationFrame(frame);
+    else done?.();
+  };
+  raf = requestAnimationFrame(frame);
+  return () => {
+    cancelAnimationFrame(raf);
+    todo.forEach((c) => c.getAttribute("data-s") === "g" && settle(c));
+  };
+}
+
+/** Text split into letters for scramble(); each letter keeps its width, so nothing reflows. */
+export function Letters({ text, hidden }: { text: string; hidden?: boolean }) {
+  const words = text.split(" ");
+  return (
+    <>
+      {words.map((w, wi) => (
+        <span key={wi}>
+          <span className={styles.scrambleWord}>
+            {Array.from(w).map((c, ci) => (
+              <span key={ci} className={styles.scrambleChar} data-ch="" data-s={hidden ? "" : undefined}>
+                {c}
+              </span>
+            ))}
+          </span>
+          {wi < words.length - 1 && " "}
+        </span>
+      ))}
+    </>
+  );
+}
+
+/**
  * Text that loads in when it scrolls into view from above: the letters appear left to right as
  * the hero's glyphs, flicker for a moment and then settle into the real text. Each letter keeps
  * its own width the whole time, so the lines never reflow. It plays again only after the text has
  * left the screen at the bottom (scrolled back up past it); coming back from below it is already
  * there. Screen readers get the plain text; with reduced motion or without JS it is plain text.
  */
-function Scramble({ text }: { text: string }) {
+export function Scramble({ text }: { text: string }) {
   const box = useRef<HTMLSpanElement>(null);
   const [split, setSplit] = useState(false);
 
@@ -209,31 +271,11 @@ function Scramble({ text }: { text: string }) {
     const b = box.current;
     if (!split || !b) return;
     const chars = Array.from(b.querySelectorAll<HTMLElement>("[data-ch]"));
-    const step = 14; // ms between one letter appearing and the next
-    const flicker = 320; // ms a letter shows glyphs before it settles
-    const tick = 55; // ms between glyph changes
-    let raf = 0;
-    let t0 = 0;
+    let cancel = () => {};
     let state: "armed" | "playing" | "done" = "armed";
 
     const hide = () => chars.forEach((c) => c.setAttribute("data-s", ""));
     const show = () => chars.forEach((c) => c.removeAttribute("data-s"));
-    const frame = (now: number) => {
-      const t = now - t0;
-      const swap = Math.floor(t / tick);
-      chars.forEach((c, i) => {
-        const at = i * step;
-        if (t < at) return;
-        if (t >= at + flicker) {
-          c.removeAttribute("data-s");
-          return;
-        }
-        c.setAttribute("data-s", "g");
-        c.setAttribute("data-g", RAMP[(i * 13 + swap * 5 + ((i * swap) % 3)) % RAMP.length]);
-      });
-      if (t < chars.length * step + flicker) raf = requestAnimationFrame(frame);
-      else state = "done";
-    };
 
     hide();
     const seen = new IntersectionObserver(
@@ -242,14 +284,13 @@ function Scramble({ text }: { text: string }) {
         if (e.intersectionRatio >= 0.6 && state === "armed") {
           if (below) {
             state = "playing";
-            t0 = performance.now();
-            raf = requestAnimationFrame(frame);
+            cancel = scramble(chars, true, () => (state = "done"));
           } else {
             state = "done";
             show();
           }
         } else if (!e.isIntersecting && below && state !== "armed") {
-          cancelAnimationFrame(raf);
+          cancel();
           state = "armed";
           hide();
         }
@@ -258,30 +299,18 @@ function Scramble({ text }: { text: string }) {
     );
     seen.observe(b);
     return () => {
-      cancelAnimationFrame(raf);
+      cancel();
       seen.disconnect();
       show();
     };
   }, [split]);
 
   if (!split) return <>{text}</>;
-  const words = text.split(" ");
   return (
     <>
       <span className="visually-hidden">{text}</span>
       <span ref={box} aria-hidden="true">
-        {words.map((w, wi) => (
-          <span key={wi}>
-            <span className={styles.scrambleWord}>
-              {Array.from(w).map((c, ci) => (
-                <span key={ci} className={styles.scrambleChar} data-ch="">
-                  {c}
-                </span>
-              ))}
-            </span>
-            {wi < words.length - 1 && " "}
-          </span>
-        ))}
+        <Letters text={text} />
       </span>
     </>
   );
@@ -400,7 +429,9 @@ function ToolReel({ tools, running, drift }: { tools: string[]; running: boolean
     <ul className={styles.toolRow} aria-hidden={copy || undefined}>
       {tools.map((t, i) => (
         <li key={i} className={styles.tool} data-icon={toolIcons[t] ? "" : undefined}>
-          {toolIcons[t] ? <img src={toolIcons[t]} alt={t} width={92} height={92} draggable={false} /> : t}
+          {toolIcons[t] ? (
+            <img src={toolIcons[t]} alt={t} width={wideToolIcons.has(t) ? 184 : 92} height={92} draggable={false} />
+          ) : t}
         </li>
       ))}
     </ul>

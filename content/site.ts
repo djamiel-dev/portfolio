@@ -2,7 +2,8 @@
 export const links = {
   about: "#about",
   resume: "#resume", // will become "/resume.pdf", opened in a new tab
-  email: "#email",
+  email: "mailto:djamielsaou@gmail.com",
+  phone: "tel:+31683890250",
   call: "#call",
   linkedin: "#linkedin",
   github: "https://github.com/djamiel-dev",

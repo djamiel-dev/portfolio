@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="368" height="184" viewBox="0 0 368 184">
+  <rect width="368" height="184" fill="#e6f2d8"/>
+  <g fill="#202128">
+    <rect x="26" y="14" width="150" height="156" rx="8"/>
+    <rect x="192" y="14" width="150" height="156" rx="8"/>
+  </g>
+  <g fill="#66676c">
+    <circle cx="42" cy="30" r="4"/><circle cx="54" cy="30" r="4"/><circle cx="66" cy="30" r="4"/>
+    <circle cx="208" cy="30" r="4"/><circle cx="220" cy="30" r="4"/><circle cx="232" cy="30" r="4"/>
+  </g>
+  <path d="M38 42h126M204 42h126" stroke="#4a4b51" stroke-width="2" stroke-linecap="round"/>
+  <g font-family="Helvetica Neue, Arial, sans-serif" font-weight="800" text-anchor="middle">
+    <text x="101" y="104" font-size="56" fill="#fff">A</text>
+    <text x="267" y="104" font-size="56" fill="#fff">B</text>
+    <text x="101" y="152" font-size="32" fill="#ff5f57">32%</text>
+    <text x="267" y="152" font-size="32" fill="#4ade80">68%</text>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="368" height="184" viewBox="0 0 368 184">
+  <rect width="368" height="184" fill="#ece6fb"/>
+  <g stroke="#282828" stroke-width="2" stroke-linejoin="miter">
+    <path d="M56 92 120 28v128z" fill="#f4b995"/>
+    <path d="M120 28l64 64-64 64z" fill="#fdbf00"/>
+    <path d="M184 92l64-64v128z" fill="#e0c6ff"/>
+    <path d="M248 28l64 64-64 64z" fill="#ffadb0"/>
+  </g>
+</svg>

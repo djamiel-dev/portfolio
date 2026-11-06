@@ -22,7 +22,7 @@ Visitors arrive cold from an email, compare several candidates, and have little 
 
 ## Capabilities and Constraints
 - Stack: Next.js App Router + TypeScript, CSS Modules with CSS variables as tokens, no UI kit overriding the style. Canvas 2D is fine; heavy WebGL must earn its place.
-- Homepage structure: full-screen hero with greeting and positioning statement, then work, skills, timeline and a closing invitation. Nav targets: Work, How I use AI, About, Resume (PDF in a new tab). No Contact link in the nav; contact is the closing section.
+- Homepage structure: full-screen hero with greeting and positioning statement, then work, skills, timeline and a closing invitation. Nav targets: Work, How I use AI, About, Resume (PDF in a new tab), and Contact me last, as a plain link; the closing section is the main invitation, with the lit button.
 - Cases in order: 01 Collaborative Strength (powerlifting coach site, live), 02 Lash studio (to be made), 03 Incentive portal (internship, only after permission; company shown as `[Company]` until then), 04 Making of this portfolio.
 - Real case content follows after the design is settled. Until then placeholder text is allowed only between `[ ]`.
 - Undecided: final case images, outcomes, résumé PDF, contact links.
