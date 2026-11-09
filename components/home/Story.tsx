@@ -188,7 +188,7 @@ export function Story({ email }: { email: string }) {
         <h2 id="e-closing" className={styles.closingTitle}>
           What’s the next chapter?
         </h2>
-        <p className={styles.closingText}>Maybe it’s yours. Show me the solutions you’re building, and let’s find out.</p>
+        <p className={styles.closingText}>Maybe it starts with a problem your team hasn’t cracked yet. Let’s talk.</p>
         <a href={email} className={styles.mail}>
           <span>Contact me</span>
           <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none">

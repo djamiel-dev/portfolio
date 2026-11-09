@@ -1,0 +1,385 @@
+/* About – one quiet afternoon: the whole page in daylight. Uses the day tokens from home.module.css (.root). */
+
+/* Same gutter as the nav and the homepage, so the edges line up */
+.page {
+  --block: clamp(96px, 10vw, 168px);
+  padding: 0 var(--gutter);
+}
+
+/* Space alone separates the blocks; lines are kept for lists inside them */
+.section,
+.split {
+  padding-top: var(--block);
+}
+
+.intro {
+  padding-top: clamp(48px, 6vw, 96px);
+}
+
+/* The mirror of the intro: photo on the left, text on the right, on the same bottom line */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: 40px clamp(40px, 6vw, 120px);
+  align-items: end;
+}
+
+/* Under a heading, the lead follows at the same distance as body text */
+.heading + .lead {
+  margin-top: clamp(20px, 2.4vw, 32px);
+}
+
+.lead + .body {
+  margin-top: 16px;
+}
+
+/* The statement leads, the photo answers it from the right; both meet on the bottom line */
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+  gap: 40px clamp(40px, 6vw, 120px);
+  align-items: end;
+}
+
+/* Grey pane with a note on which photo goes here */
+.photo {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  padding: 24px;
+  background: #dfe1e0;
+  color: var(--muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.photo[data-tall] {
+  aspect-ratio: 4 / 5;
+}
+
+/* Label above the statement, as the greeting sits above the hero line */
+.eyebrow {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-stretch: 125%;
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Same size and cut as the hero statement */
+.title {
+  max-width: 11em;
+  margin-top: clamp(16px, 2vw, 28px);
+  font-size: clamp(2.25rem, 5vw, 5.25rem);
+  font-weight: 540;
+  font-stretch: 104%;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.lead {
+  max-width: 28em;
+  margin-top: clamp(24px, 3vw, 40px);
+  color: var(--fg-2);
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+}
+
+.heading {
+  max-width: 14em;
+  font-size: clamp(2rem, 3.8vw, 3.5rem);
+  font-weight: 560;
+  font-stretch: 104%;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.body {
+  max-width: 36em;
+  margin-top: 20px;
+  color: var(--fg-2);
+}
+
+.note {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* Heading on the left, the principles as rows on the right, like a short spec */
+.work {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: 32px clamp(40px, 6vw, 120px);
+  align-items: start;
+}
+
+.principles {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--line);
+}
+
+.principles li {
+  display: grid;
+  grid-template-columns: 3.5em minmax(0, 5fr) minmax(0, 6fr);
+  gap: 8px clamp(20px, 3vw, 48px);
+  align-items: baseline;
+  padding: clamp(24px, 2.6vw, 36px) 0;
+  border-top: 1px solid var(--line);
+}
+
+.principles h3 {
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.principles p {
+  color: var(--fg-2);
+}
+
+.num {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-stretch: 125%;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Expanding cards. Hover, focus or a tap opens a card; with none chosen, the first stays open.
+   Like the skill in the light on the homepage, the open card is the lit one: it turns near-white
+   and shows its text, the others stay grey and show only their name, turned on its side. */
+.cards {
+  display: flex;
+  gap: 12px;
+  height: clamp(380px, 34vw, 480px);
+  margin: clamp(40px, 5vw, 72px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  min-width: 0;
+  padding: clamp(20px, 2vw, 28px);
+  overflow: hidden;
+  background: #dfe1e0;
+  cursor: pointer;
+  transition: flex-grow 600ms var(--ease-out);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: rgb(253 251 246 / 0.6);
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.card:hover,
+.card:focus,
+.cards:not(:has(.card:hover, .card:focus)) .card:first-child {
+  flex-grow: 5;
+}
+
+.cardPhoto {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: var(--muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.cardPhoto,
+.cardBody {
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+/* Read from the bottom up, at the foot of the card */
+.cardLabel {
+  position: absolute;
+  bottom: clamp(20px, 2vw, 28px);
+  left: 50%;
+  font-weight: 560;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: translateX(-50%) rotate(180deg);
+  transition: opacity 200ms ease;
+}
+
+/* A fixed width, so the text doesn't reflow while the card opens */
+.cardBody {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+  width: 34ch;
+}
+
+.cardTitle {
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.cardText {
+  color: var(--fg-2);
+}
+
+/* Open: the light comes up, then the text; the side label goes first.
+   Stacked on a phone every card is open, so none is lit there. */
+@media (min-width: 48em) {
+  .card:hover::before,
+  .card:focus::before,
+  .cards:not(:has(.card:hover, .card:focus)) .card:first-child::before {
+    opacity: 1;
+  }
+}
+
+.card:hover > :is(.cardPhoto, .cardBody),
+.card:focus > :is(.cardPhoto, .cardBody),
+.cards:not(:has(.card:hover, .card:focus)) .card:first-child > :is(.cardPhoto, .cardBody) {
+  opacity: 1;
+  transition-delay: 200ms;
+}
+
+.card:hover > .cardLabel,
+.card:focus > .cardLabel,
+.cards:not(:has(.card:hover, .card:focus)) .card:first-child > .cardLabel {
+  opacity: 0;
+}
+
+/* The facts as one ruled row, like a spec line: label above, value below, a line over each */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0 clamp(20px, 2.4vw, 40px);
+  margin: 0;
+}
+
+.facts > div {
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.facts dt {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-stretch: 125%;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.facts dd {
+  max-width: 18em;
+  margin: 10px 0 0;
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+/* The question in the middle of the page, as on the homepage, but in daylight and without the lamp */
+.closer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(var(--block) * 1.25) 0;
+  text-align: center;
+}
+
+.closer > h2 {
+  margin-top: 0;
+}
+
+@media (max-width: 47.99em) {
+  .intro,
+  .split,
+  .work {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Number and title on one line, the text below */
+  .principles li {
+    grid-template-columns: 2.75em minmax(0, 1fr);
+  }
+
+  .principles p {
+    grid-column: 2;
+  }
+
+  /* One fact per line: label left, value right */
+  .facts {
+    grid-template-columns: minmax(0, 1fr);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .facts > div {
+    display: grid;
+    grid-template-columns: 7.5em minmax(0, 1fr);
+    gap: 16px;
+    align-items: baseline;
+    padding: 16px 0;
+  }
+
+  .facts dd {
+    margin: 0;
+  }
+
+  /* Stacked on a phone: every card shows its photo note and title */
+  .cards {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .card {
+    min-height: 200px;
+  }
+
+  .card > :is(.cardPhoto, .cardBody) {
+    opacity: 1;
+  }
+
+  .cardLabel {
+    display: none;
+  }
+
+  .cardBody {
+    flex-shrink: 1;
+    width: auto;
+  }
+
+  /* The photo note moves to the top, clear of the text */
+  .cardPhoto {
+    place-items: start center;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card::before,
+  .card > span {
+    transition: none;
+  }
+}
+

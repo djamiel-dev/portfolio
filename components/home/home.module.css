@@ -134,6 +134,11 @@
   background-size: 100% 1px;
 }
 
+/* The page you are on keeps its line */
+.nav a[aria-current="page"] > span {
+  background-size: 100% 1px;
+}
+
 /* Labels: Mona Sans at its widest, small and upper case */
 .place,
 .scroll,

@@ -17,7 +17,7 @@ Werkwijze:
 - **Live:** https://portfolio-kappa-gilt-e200sltsky.vercel.app/ (Vercel bouwt `main` bij elke push). De site staat bewust op `noindex`.
 - **Branches:** `main` en `explore` wijzen naar dezelfde stand. Push naar beide met `git push origin explore && git push origin explore:main` en zet daarna lokaal `git branch -f main explore`. Niet uitchecken of mergen naar `main` zonder de lokale versies te controleren: een checkout kan genegeerde bestanden overschrijven of verwijderen.
 - **Alleen lokaal, in `.gitignore`:** `app/explore/` (concepten A–D en overzicht), `components/explore/`, de oude homepage J (`components/Nav.*`, `Hero.*`, `ParticleField.tsx` enz.) en `app/page.module.css`. Ze staan nog wel in de git-geschiedenis.
-- **Laatste stap (6 nov):** de verhaalsectie (tijdlijn en afsluiter) is inhoudelijk ingevuld: vijf momenten met een fase links in plaats van jaartallen, en de afsluiter "What's the next chapter?". Alle tekst-animaties (begroeting, naam in de nav, koppen Selected work, Skills en tijdlijn, fase-label) gebruiken nu één glyph-scramble uit `Skills.tsx` (`scramble`, `Letters`, `Scramble`). Bodytekst in Skills en tijdlijn fadet alleen in op het actieve kaartje of moment. Mobiel menu is schermvullend in het andere dagdeel. Footer toont mail en telefoon.
+- **Laatste stap (6 nov):** de verhaalsectie (tijdlijn en afsluiter) is inhoudelijk ingevuld: vijf momenten met een fase links in plaats van jaartallen, en de afsluiter "What's the next chapter?". Alle tekst-animaties (begroeting, naam in de nav, koppen Selected projects, Skills en tijdlijn, fase-label) gebruiken nu één glyph-scramble uit `Skills.tsx` (`scramble`, `Letters`, `Scramble`). Bodytekst in Skills en tijdlijn fadet alleen in op het actieve kaartje of moment. Mobiel menu is schermvullend in het andere dagdeel. Footer toont mail en telefoon.
 - **Laatste meting (1 nov):** axe 0 op desktop en mobiel; Lighthouse desktop 100/100/100, mobiel Performance 96 (drie herhalingen; één uitschieter van 79 in de run daarvoor), Accessibility 100, Best Practices 100. SEO 63 komt door de `noindex`. Toetsenbord: 14 tabstops, focus overal zichtbaar.
 
 ### Open punten
@@ -55,7 +55,7 @@ Belangrijkste boodschap: niet "AI maakt mij sneller", maar "AI helpt mij een pro
 - Repo: https://github.com/djamiel-dev/portfolio (publiek). Commits met het GitHub-noreply-adres, nooit met het werkmailadres.
 
 ## Homepage-opbouw
-1. **Nav**: vaste balk. Rechts Work · How I use AI · About · Resume · Contact me, allemaal als gewone links (mobiel: schermvullend menu in het andere dagdeel, knop wordt een kruisje). Links leeg tot de naam verschijnt.
+1. **Nav**: vaste balk. Rechts Projects · How I use AI · About · Resume · Contact me, allemaal als gewone links (mobiel: schermvullend menu in het andere dagdeel, knop wordt een kruisje). Links leeg tot de naam verschijnt.
 2. **Hero**: schermvullend met Glyph Swell. Kleine begroeting "Hi, [foto] I'm Djamiel" boven de grote positioneringszin met "product designer" in oranje. Geen knop, wel een scroll-hint. Na 20% van de hero flikkert de begroeting weg in glyphs en flikkert "Djamiel Saou" in de nav in (zelfde effect als de sectiekoppen).
 3. **Work**: vier cases in twee kolommen, rechterkolom lager (zigzag 01–04).
 4. **Skills**: zes kaarten die bij verticaal scrollen horizontaal door een lichtpoel schuiven; het actieve kaartje wordt lichter en toont een doorlopende rij tool-widgets. Op mobiel een verticale lijst.

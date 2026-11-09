@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Djamiel – AI-native product designer",
   description:
-    "AI-native product designer who researches, designs and builds, from real problem to live product.",
+    "AI-native product designer who researches, designs and builds, from real problems to live products.",
   // Hidden from search engines until launch: content is still placeholder
   robots: { index: false, follow: false },
 };

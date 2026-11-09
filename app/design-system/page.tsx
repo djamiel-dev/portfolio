@@ -103,7 +103,7 @@ export default function DesignSystem() {
               </p>
             </TypeRow>
             <TypeRow name="Section heading">
-              <p className={styles.workTitle}>Selected work</p>
+              <p className={styles.workTitle}>Selected projects</p>
             </TypeRow>
             <TypeRow name="Skills heading">
               <p className={styles.skillsTitle}>From the first interview to the last line of code.</p>

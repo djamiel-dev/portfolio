@@ -206,3 +206,20 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Gevonden en opgelost:** de tijdlijn mat zijn posities soms voordat de lay-out klaar was (laatste lampje ging niet aan); de mail-knop werd vierkant bij toetsenbordfocus; tekst van de nav-knop verdween bij hover.
 - **Toetsing:** in de browser op desktop en 375px, typecheck en `npm run build`. Het browservenster stond vaak verborgen, waardoor animatietempo's niet live te beoordelen waren. `npm run audit` en `npm run keyboard` niet gedraaid.
 - **Tijd:** [invullen]
+
+### Stap 12 – De about-pagina: inhoud en design (9 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Opbouw | Eerst samen de inhoud bepaald, daarna een wireframe op `/about` met grijze vlakken en een fotobeschrijving | Mijn verzoek: wireframe eerst, daarna stap voor stap inhoud en design scherp krijgen |
+| Intro | Drie richtingen | Richting B, met mijn eigen formulering over eigenaarschap; de laatste zin weggehaald |
+| How I work | Vier principes, gebaseerd op mijn eigen vacature-onderzoek naar design engineers, met links naar bewijs | Principes overgenomen; de "See it in"-links voorlopig weg |
+| Coaching | Een apart coaching-blok | Vervangen door een persoonlijkheidsblok binnen professionele scope: meedenkend, redelijk extrovert, eerlijk (soms te), deels gevormd door 4 jaar coachen |
+| Hobby's | Expanding cards naar mijn voorbeeld op 21st.dev, met zes kaartjes | Mijn onderwerpen en per kaart mijn eigen richting voor de zin; "Still curious" als laatste |
+| Feiten | Met Collaborative Strength en tekst tussen haken | Collaborative Strength weg, haken eruit, coach sinds 2022 erbij |
+| Afsluiter | "What I'm looking for" en een donkere afsluiter | Beide weg: een vraag of ik in het team pas, in daglicht |
+| Design | Zeven stappen vanaf de wireframe: basis, intro, How I work, persoonlijkheid, hobby's, feiten en afsluiter, checks | Per stap goedgekeurd. Kaartjes recht en het open kaartje licht op zoals bij Skills, alleen CSS (geen extra component); feiten als rij met lijnen; afsluiter gecentreerd zoals op de homepage |
+
+- **Nog na te lopen door mij:** de zinnen tussen `[ ]` in het persoonlijkheidsblok; of 2022 klopt als startjaar coaching (berekend, niet bevestigd); alle foto's ontbreken nog.
+- **Open:** het mobiele menu markeert de huidige pagina niet; met echte foto's krijgen dichte kaartjes misschien een gedimde foto en tekst op foto's een scrim.
+- **Toetsing:** in de browser op 1440px en 375px (geen horizontale scroll, geen consolefouten), met echte Tab-toetsen. `npm run audit` op `/about`: axe 0 op desktop en mobiel; Lighthouse desktop 100/100/100, mobiel Performance 99, Accessibility 100, Best Practices 100; SEO 60 alleen door `noindex`. `npm run keyboard` op `/about`: 16 tabstops, focus overal zichtbaar (crasht daarna op de canvas-check van J, bekend). Reduced motion nagebootst met Playwright: geen overgangen, alle koppen direct leesbaar.
+- **Tijd:** [invullen]

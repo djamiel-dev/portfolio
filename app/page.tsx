@@ -22,7 +22,7 @@ export default function Home() {
         <NavName className={styles.home} />
         <nav aria-label="Main" className={styles.nav}>
           <a href="#work">
-            <span>Work</span>
+            <span>Projects</span>
           </a>
           <a href="#ai">
             <span>How I use AI</span>
@@ -38,7 +38,7 @@ export default function Home() {
           </a>
         </nav>
         <Menu className={styles.menu} summaryClassName={styles.menuButton} panelClassName={styles.menuPanel}>
-          <a href="#work">Work</a>
+          <a href="#work">Projects</a>
           <a href="#ai">How I use AI</a>
           <a href={links.about}>About</a>
           <a href={links.resume}>Resume</a>
@@ -56,7 +56,7 @@ export default function Home() {
             <HeroGreeting className={styles.greeting} photoClassName={styles.photo} />
             <h1 id="e-title" className={styles.statement}>
               AI-native <mark className={styles.role}>product designer</mark> who researches, designs and builds, from real
-              problem to live product.
+              problems to live products.
             </h1>
           </div>
 
@@ -74,7 +74,7 @@ export default function Home() {
         <section id="work" className={styles.work} aria-labelledby="e-work" data-zone="day">
           <div className={styles.workHead}>
             <h2 id="e-work" className={styles.workTitle}>
-              <Scramble text="Selected work" />
+              <Scramble text="Selected projects" />
             </h2>
             <p className={styles.workIntro}>Each case walks through the problem, the research and the decisions behind what I built.</p>
           </div>
