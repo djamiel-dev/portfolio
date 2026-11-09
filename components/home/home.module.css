@@ -1461,7 +1461,8 @@
 }
 
 .story:not([data-live]) .mail,
-.closing[data-lit] .mail {
+.closing[data-lit] .mail,
+.root .mail[data-lit] {
   isolation: isolate;
   overflow: hidden;
   border-color: transparent;
@@ -1487,13 +1488,41 @@
 }
 
 .story:not([data-live]) .mail::before,
-.closing[data-lit] .mail::before {
+.closing[data-lit] .mail::before,
+.mail[data-lit]::before {
   opacity: 0.35;
 }
 
 .story:not([data-live]) .mail::after,
-.closing[data-lit] .mail::after {
+.closing[data-lit] .mail::after,
+.mail[data-lit]::after {
   opacity: 0.4;
+}
+
+/* The daylight version (About page): a light pill with dark text and the same travelling light,
+   in deeper oranges so the rim and the dots still show against the light ground */
+.root .mail[data-lit="light"] {
+  --lamp-core: #c04a00;
+  --rim-shine: #e0763a;
+  color: var(--fg);
+  background:
+    linear-gradient(#fdfbf6, #fdfbf6) padding-box,
+    conic-gradient(
+        from calc(var(--rim) - var(--rim-offset)),
+        transparent,
+        var(--lamp) var(--rim-spread),
+        var(--rim-shine) calc(var(--rim-spread) * 2),
+        var(--lamp) calc(var(--rim-spread) * 3),
+        transparent calc(var(--rim-spread) * 4)
+      )
+      border-box;
+  box-shadow:
+    inset 0 0 0 1px var(--line),
+    0 1px 2px rgb(18 19 24 / 0.06);
+}
+
+.root .mail[data-lit="light"]::after {
+  opacity: 0.25;
 }
 
 .root .mail:focus-visible {
@@ -1507,6 +1536,10 @@
   opacity: 1;
 }
 
+.root .mail[data-lit="light"]:focus-visible {
+  --rim-shine: #c04a00;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .root .mail:hover {
     --rim-spread: 20%;
@@ -1518,23 +1551,32 @@
     opacity: 1;
   }
 
+  .root .mail[data-lit="light"]:hover {
+    --rim-shine: #c04a00;
+  }
+
   .mail:hover svg {
     transform: translate(2px, -2px);
   }
 }
 
-/* The light only travels while the lamp is on; with reduced motion it stays at the top */
+/* The light only travels while the lamp is on; with reduced motion it stays at the top.
+   A button marked data-lit (the About page closer) is always lit. */
 @media (prefers-reduced-motion: no-preference) {
   .closing[data-lit] .mail,
-  .closing[data-lit] .mail::before {
+  .closing[data-lit] .mail::before,
+  .mail[data-lit],
+  .mail[data-lit]::before {
     animation: rim 3s linear infinite;
   }
 
-  .closing[data-lit] .mail::after {
+  .closing[data-lit] .mail::after,
+  .mail[data-lit]::after {
     animation: sweep 3s linear infinite;
   }
 
-  .closing[data-lit] .mail > span::before {
+  .closing[data-lit] .mail > span::before,
+  .mail[data-lit] > span::before {
     animation: breathe 4.5s linear infinite;
   }
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { links } from "@/content/site";
 import home from "@/components/home/home.module.css";
 import { Menu } from "@/components/home/Menu";
@@ -30,37 +31,82 @@ const principles = [
   },
 ];
 
-// Expanding cards: one open, the rest narrow strips
-const hobbies = [
+// Expanding cards: one open, the rest narrow strips. A card with an image shows it; the rest
+// keep a note on which photo goes there. `focus` and `focusSm` are the object-position that keeps the faces in view
+// in the open card on a wide screen and in the photo above the text on a phone.
+type Hobby = {
+  title: string;
+  text: string;
+  photo: string;
+  image?: string;
+  alt?: string;
+  focus?: string;
+  focusSm?: string;
+};
+
+const hobbies: Hobby[] = [
   {
     title: "Powerlifting",
     text: "I’m building towards the 2027 national championships.",
     photo: "(Photo: me on the platform, mid-lift)",
+    image: "/images/about/powerlifting.jpg",
+    alt: "Djamiel smiling under a loaded barbell in a squat rack, ready to squat",
+    focus: "50% 15%",
+    focusSm: "50% 15%",
   },
   {
     title: "Coaching",
     text: "Bringing out the best version of each person, working around their own obstacles and challenges.",
     photo: "(Photo: me coaching a client)",
+    image: "/images/about/coaching.jpg",
+    alt: "Djamiel and a lifter he coaches, both flexing, at a powerlifting meet",
+    focus: "50% 60%",
+    focusSm: "50% 37%",
   },
   {
     title: "Cooking",
     text: "Beating the average Western diet every day, with better flavours.",
     photo: "(Photo: something I cooked)",
+    image: "/images/about/cooking.jpg",
+    alt: "A plate of spiced chicken with chilli, rice and a fresh carrot and cucumber salad",
+    focus: "50% 55%",
+    focusSm: "50% 55%",
   },
   {
     title: "Travel",
     text: "I’m adventurous, so I’d rather try something new than go back to what I know.",
     photo: "(Photo: a place I visited)",
+    image: "/images/about/travel-2.jpg",
+    alt: "Djamiel pulling a surprised face in front of the Colosseum in Rome",
+    focus: "50% 20%",
+    focusSm: "50% 24%",
   },
   {
     title: "Gaming",
     text: "Less than I used to, but I’ve recently started sim racing.",
     photo: "(Photo: my sim racing setup)",
+    image: "/images/about/gaming.jpg",
+    alt: "Djamiel's sim racing rig with a steering wheel, and his ginger cat sitting in the seat",
+    focus: "60% 50%",
+    focusSm: "50% 40%",
+  },
+  {
+    title: "Keyboards",
+    text: "I build custom mechanical keyboards, picking and putting together every part myself.",
+    photo: "(Photo: one of my keyboards)",
+    image: "/images/about/keyboards.jpg",
+    alt: "Hands typing on a custom mechanical keyboard with a green case and colourful keycaps",
+    focus: "50% 100%",
+    focusSm: "50% 61%",
   },
   {
     title: "Still curious",
     text: "I turned my hobby into my work, and I still go looking for inspiration in my own time.",
     photo: "(Photo: a side experiment on my screen)",
+    image: "/images/about/curious.jpg",
+    alt: "Djamiel at his desk at home with a headset on, working across two monitors",
+    focus: "50% 30%",
+    focusSm: "50% 10%",
   },
 ];
 
@@ -124,7 +170,14 @@ export default function About() {
               </p>
             </div>
             <div className={styles.photo} data-tall>
-              <span>(Photo: portrait, more relaxed than the one in the hero)</span>
+              <Image
+                src="/images/about/restaurant.jpg"
+                alt="Djamiel smiling at a table in a colourful Japanese restaurant"
+                fill
+                sizes="(max-width: 48em) 100vw, 34vw"
+                priority
+                className={styles.portrait}
+              />
             </div>
           </section>
 
@@ -145,7 +198,13 @@ export default function About() {
 
           <section className={styles.split} aria-labelledby="about-person">
             <div className={styles.photo}>
-              <span>(Photo: me with a client in the gym, or with colleagues, informal)</span>
+              <Image
+                src="/images/about/terrace.jpg"
+                alt="Djamiel smiling in a wicker chair on a sunny terrace"
+                fill
+                sizes="(max-width: 48em) 100vw, 50vw"
+                className={styles.terrace}
+              />
             </div>
             <div>
               <h2 id="about-person" className={styles.heading}>
@@ -170,7 +229,22 @@ export default function About() {
             <ul className={styles.cards}>
               {hobbies.map((h) => (
                 <li key={h.title} className={styles.card} tabIndex={0}>
-                  <span className={styles.cardPhoto}>{h.photo}</span>
+                  {h.image ? (
+                    <span
+                      className={styles.cardPhoto}
+                      data-image=""
+                      style={{ "--crop": h.focus, "--crop-sm": h.focusSm } as React.CSSProperties}
+                    >
+                      <Image
+                        src={h.image}
+                        alt={h.alt ?? ""}
+                        fill
+                        sizes="(max-width: 48em) 100vw, 50vw"
+                      />
+                    </span>
+                  ) : (
+                    <span className={styles.cardPhoto}>{h.photo}</span>
+                  )}
                   {/* Only for the eye, so a closed card still says what it is */}
                   <span className={styles.cardLabel} aria-hidden="true">
                     {h.title}
@@ -203,7 +277,7 @@ export default function About() {
               <Scramble text="Think I’d fit your team?" />
             </h2>
             <p className={home.closingText}>I’d love to hear what you’re working on. Send me a message and let’s talk.</p>
-            <a href={links.email} className={home.mail}>
+            <a href={links.email} className={home.mail} data-lit="light">
               <span>Contact me</span>
               <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path d="M2.5 9.5l7-7M4 2.5h5.5V8" stroke="currentColor" strokeWidth="1.4" />

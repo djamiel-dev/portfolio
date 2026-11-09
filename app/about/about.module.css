@@ -2,7 +2,7 @@
 
 /* Same gutter as the nav and the homepage, so the edges line up */
 .page {
-  --block: clamp(96px, 10vw, 168px);
+  --block: clamp(144px, 15vw, 252px);
   padding: 0 var(--gutter);
 }
 
@@ -43,6 +43,8 @@
 
 /* Grey pane with a note on which photo goes here */
 .photo {
+  position: relative;
+  overflow: hidden;
   display: grid;
   place-items: center;
   aspect-ratio: 4 / 3;
@@ -53,8 +55,29 @@
   text-align: center;
 }
 
+/* Square: a little wider than the upright photo, so part of the ceiling is cut off */
 .photo[data-tall] {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
+}
+
+/* The crop drops mostly the top (ceiling) and a little of the menu on the table */
+.portrait {
+  object-fit: cover;
+  object-position: 50% 80%;
+}
+
+/* Next to the text the terrace photo is a little narrower than 4:3. It fills two thirds of its
+   column, so it is as wide as the intro photo while the text keeps its place on the right. */
+.split .photo {
+  width: 66.667%;
+  aspect-ratio: 5 / 4;
+}
+
+/* The photo is wider than the 5:4 frame: the frame shows about 1400 of the 2000 px. The crop
+   keeps the right side, so the left of the terrace goes and the head sits just right of centre. */
+.terrace {
+  object-fit: cover;
+  object-position: 100% 50%;
 }
 
 /* Label above the statement, as the greeting sits above the hero line */
@@ -213,9 +236,67 @@
   transition: opacity 300ms ease;
 }
 
+/* A real photo fills the card */
+.cardPhoto[data-image] {
+  padding: 0;
+}
+
+.cardPhoto[data-image] img {
+  object-fit: cover;
+  object-position: var(--crop, 50% 50%);
+}
+
+/* On a wide screen a card with a photo always shows a slice of it. Closed, the photo is dimmed
+   so the white name on its side stays readable; open, the dimming lifts and a dark shade rises
+   from the foot of the card behind the white text. */
+@media (min-width: 48em) {
+  .card:has(> [data-image]) > .cardPhoto {
+    opacity: 1;
+  }
+
+  .cardPhoto[data-image]::before,
+  .cardPhoto[data-image]::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .cardPhoto[data-image]::before {
+    inset: 0;
+    background: rgb(18 19 24 / 0.5);
+    transition: opacity 500ms ease;
+  }
+
+  .cardPhoto[data-image]::after {
+    inset: 40% 0 0;
+    background: linear-gradient(to top, rgb(18 19 24 / 0.82) 25%, rgb(18 19 24 / 0));
+  }
+
+  .card:hover > .cardPhoto[data-image]::before,
+  .card:focus > .cardPhoto[data-image]::before,
+  .cards:not(:has(.card:hover, .card:focus)) .card:first-child > .cardPhoto[data-image]::before {
+    opacity: 0;
+  }
+
+  .card:has(> [data-image]) :is(.cardLabel, .cardTitle) {
+    color: #fff;
+  }
+
+  /* A soft shadow straight behind the letters, no offset, so they lift off the busy parts of a photo */
+  .card:has(> [data-image]) :is(.cardLabel, .cardTitle, .cardText) {
+    text-shadow: 0 0 12px rgb(18 19 24 / 0.6);
+  }
+
+  .card:has(> [data-image]) .cardText {
+    color: rgb(255 255 255 / 0.86);
+  }
+}
+
 /* Read from the bottom up, at the foot of the card */
 .cardLabel {
   position: absolute;
+  z-index: 2;
   bottom: clamp(20px, 2vw, 28px);
   left: 50%;
   font-weight: 560;
@@ -228,6 +309,7 @@
 /* A fixed width, so the text doesn't reflow while the card opens */
 .cardBody {
   position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -303,7 +385,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: calc(var(--block) * 1.25) 0;
+  /* Bottom: the same distance from the button to the footer as on the homepage (.closing) */
+  padding: calc(var(--block) * 1.25) 0 clamp(120px, 14vw, 208px);
   text-align: center;
 }
 
@@ -316,6 +399,10 @@
   .split,
   .work {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .split .photo {
+    width: auto;
   }
 
   /* Number and title on one line, the text below */
@@ -366,6 +453,26 @@
   .cardBody {
     flex-shrink: 1;
     width: auto;
+  }
+
+  /* A real photo goes above the text, edge to edge, instead of behind it */
+  .card:has(> [data-image]) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cardPhoto[data-image] {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    margin: -20px -20px 20px;
+  }
+
+  .cardPhoto[data-image]::after {
+    content: none;
+  }
+
+  .cardPhoto[data-image] img {
+    object-position: var(--crop-sm, var(--crop, 50% 50%));
   }
 
   /* The photo note moves to the top, clear of the text */
