@@ -223,3 +223,17 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Open:** het mobiele menu markeert de huidige pagina niet; met echte foto's krijgen dichte kaartjes misschien een gedimde foto en tekst op foto's een scrim.
 - **Toetsing:** in de browser op 1440px en 375px (geen horizontale scroll, geen consolefouten), met echte Tab-toetsen. `npm run audit` op `/about`: axe 0 op desktop en mobiel; Lighthouse desktop 100/100/100, mobiel Performance 99, Accessibility 100, Best Practices 100; SEO 60 alleen door `noindex`. `npm run keyboard` op `/about`: 16 tabstops, focus overal zichtbaar (crasht daarna op de canvas-check van J, bekend). Reduced motion nagebootst met Playwright: geen overgangen, alle koppen direct leesbaar.
 - **Tijd:** [invullen]
+
+### Stap 13 – How I use AI: inhoud en wireframe (10 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Onderzoek | Online gezocht waar recruiters op letten bij AI-gebruik: oordeel boven tools, laten zien waar je AI níet inzet en hoe je de output controleert; rode vlaggen zijn modewoorden en gladde output zonder zichtbare beslissingen. Gecombineerd met mijn eerdere onderzoek. Voorstel: bewijs in plaats van een essay, met een link naar de making-of | Making-of voorlopig geen case; de pagina per fase opbouwen, zoals de skills op de homepage |
+| Opbouw | Wireframe op `/ai`: korte versie, per fase wat AI doet, wat ik doe en hoe ik het controleer, wat ik zelf in handen houd, drie momenten uit dit logboek waarop AI het fout had, links om het werk te controleren, afsluiter. De nav-link `#ai` wees nergens heen en gaat nu naar `/ai` | Akkoord |
+| Fases | Mijn ingesproken uitleg per fase verdeeld over de drie kolommen en in het Engels uitgeschreven | Per fase mijn eigen werkwijze verteld |
+| Frontend | "Pick components from 21st.dev or React Bits" | "Make use of component libraries such as 21st.dev or React Bits" |
+| Collaboration | Weggelaten dat ik AI vraag wat iemand in een chat bedoelt: kan lezen als "begrijpt collega's niet zonder AI" | Twijfelde zelf al; weggelaten |
+| Tools en voorbeelden | Per fase een regel met tools en een voorbeeld uit een project | Voor nu weg |
+
+- **Nog na te lopen door mij:** de Engelse formulering van de fases en de drie momenten; "Writes most of the code" (eerlijk, maar daar wordt in gesprekken op doorgevraagd); white-label genoemd zonder bedrijfsnaam; Claude aangenomen als AI-tool bij research; de placeholders in "What I keep in my own hands", het teamblok en de afsluiter; de cellen zijn lang voor een recruiter die scant.
+- **Toetsing:** in de browser op 1440px en 375px (geen horizontale scroll, geen consolefouten), typecheck en `npm run build`. `npm run audit` en `npm run keyboard` niet gedraaid. Live gezet in commit `64ddd6f`.
+- **Tijd:** [invullen]
