@@ -132,7 +132,7 @@ export default function About() {
           <a href="/#work">
             <span>Projects</span>
           </a>
-          <a href="/#ai">
+          <a href={links.ai}>
             <span>How I use AI</span>
           </a>
           <a href={links.about} aria-current="page">
@@ -147,7 +147,7 @@ export default function About() {
         </nav>
         <Menu className={home.menu} summaryClassName={home.menuButton} panelClassName={home.menuPanel}>
           <a href="/#work">Projects</a>
-          <a href="/#ai">How I use AI</a>
+          <a href={links.ai}>How I use AI</a>
           <a href={links.about} aria-current="page">
             About
           </a>

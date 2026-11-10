@@ -1,0 +1,155 @@
+/* How I use AI – wireframe. Builds on the About page (about.module.css) and the day tokens from home.module.css. */
+
+/* Small label above each cell, as on the facts row */
+.cells dt,
+.moments dt {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-stretch: 125%;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cells dd,
+.moments dd {
+  margin: 8px 0 0;
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+/* The statement on the left, the short version as three ruled lines on the right */
+.intro {
+  align-items: end;
+}
+
+.short {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--line);
+}
+
+.short li {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.short h2 {
+  font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
+  font-weight: 560;
+  letter-spacing: -0.015em;
+}
+
+.short p {
+  margin-top: 4px;
+  color: var(--fg-2);
+}
+
+/* One row per phase: number, phase, then what AI does, what I do and how I check, side by side */
+.phases {
+  margin: clamp(40px, 5vw, 72px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--line);
+}
+
+.phases > li {
+  display: grid;
+  grid-template-columns: 3.5em minmax(0, 3fr) minmax(0, 9fr);
+  gap: 20px clamp(20px, 3vw, 48px);
+  align-items: baseline;
+  padding: clamp(28px, 3vw, 44px) 0;
+  border-top: 1px solid var(--line);
+}
+
+.phases h3 {
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.cells {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px clamp(20px, 2.4vw, 40px);
+  margin: 0;
+}
+
+/* Three moments side by side, each a ruled column */
+.moments {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px clamp(20px, 2.4vw, 40px);
+  margin: clamp(40px, 5vw, 72px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.moments > li {
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.moments h3 {
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.moments dl {
+  display: grid;
+  gap: 20px;
+  margin: 24px 0 0;
+}
+
+/* The proof row sits under its heading, links underlined so they read as links */
+.proof {
+  margin-top: clamp(40px, 5vw, 72px);
+}
+
+.proof a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.2em;
+}
+
+.proof a:hover {
+  text-decoration-color: currentColor;
+}
+
+.teamLead {
+  max-width: 28em;
+  color: var(--fg-2);
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+}
+
+@media (max-width: 63.99em) {
+  /* On a tablet the three cells move under the phase name */
+  .phases > li {
+    grid-template-columns: 3.5em minmax(0, 1fr);
+  }
+
+  .cells {
+    grid-column: 2;
+  }
+
+  .moments {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 47.99em) {
+  .phases > li {
+    grid-template-columns: 2.75em minmax(0, 1fr);
+  }
+
+  .cells {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

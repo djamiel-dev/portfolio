@@ -24,7 +24,7 @@ export default function Home() {
           <a href="#work">
             <span>Projects</span>
           </a>
-          <a href="#ai">
+          <a href={links.ai}>
             <span>How I use AI</span>
           </a>
           <a href={links.about}>
@@ -39,7 +39,7 @@ export default function Home() {
         </nav>
         <Menu className={styles.menu} summaryClassName={styles.menuButton} panelClassName={styles.menuPanel}>
           <a href="#work">Projects</a>
-          <a href="#ai">How I use AI</a>
+          <a href={links.ai}>How I use AI</a>
           <a href={links.about}>About</a>
           <a href={links.resume}>Resume</a>
           <a href={links.email}>Contact me</a>
