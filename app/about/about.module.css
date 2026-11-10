@@ -390,7 +390,10 @@
   text-align: center;
 }
 
+/* Full width (up to its max-width) instead of shrinking to its text: the flickering glyphs make
+   the text a few pixels wider for a moment, which would otherwise push it onto two lines */
 .closer > h2 {
+  width: 100%;
   margin-top: 0;
 }
 
