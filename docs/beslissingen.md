@@ -237,3 +237,15 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Nog na te lopen door mij:** de Engelse formulering van de fases en de drie momenten; "Writes most of the code" (eerlijk, maar daar wordt in gesprekken op doorgevraagd); white-label genoemd zonder bedrijfsnaam; Claude aangenomen als AI-tool bij research; de placeholders in "What I keep in my own hands", het teamblok en de afsluiter; de cellen zijn lang voor een recruiter die scant.
 - **Toetsing:** in de browser op 1440px en 375px (geen horizontale scroll, geen consolefouten), typecheck en `npm run build`. `npm run audit` en `npm run keyboard` niet gedraaid. Live gezet in commit `64ddd6f`.
 - **Tijd:** [invullen]
+
+### Stap 14 – Paginaovergang: glyph-golf (11 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Richting | Drie opties: een glyph-golf vanaf de klik (met de glyph swell van de hero), een rustige variant waarin alleen de kop scramblet (View Transitions), of een overgang via het dagdeel van `Sky.tsx` | Glyph-golf |
+| Bouw | `components/PageTransition.tsx` in de layout. Een canvas over de pagina: een ring vanaf de klik vult het scherm met het rustige glyph-veld, de pagina wisselt in de browser zelf (geen volledige lading), en een tweede ring vanaf hetzelfde punt haalt het veld weer weg. Naar Home valt het veld samen met de hero. In het donkere deel nachtkleuren met de lamp als accent | Akkoord. AI maakte het nieuwe bestand zonder het eerst te vragen; mijn keuze voor optie 1 was als akkoord opgevat |
+| Fout | Eén leeg frame tussen dekken en onthullen liet de nieuwe pagina even zien | Opgelost: het eerste frame wordt meteen getekend |
+| Verfijning (Emil) | Dekken met ease-in begon traag op het moment van de klik; toetsenbordnavigatie animeerde mee; de onthulling blokkeerde klikken op de nieuwe pagina | Beide ringen ease-out (300 ms dekken, 380 ms onthullen); met het toetsenbord geen golf; tijdens de onthulling is de pagina al klikbaar. Noodtimer (volledige lading na 4 s) start pas na de wissel; in een verborgen tabblad wordt de golf overgeslagen |
+
+- **Niet van toepassing:** links naar een plek op dezelfde pagina, mail, telefoon, bestanden (resume-pdf), nieuwe tabbladen en klikken met Cmd/Ctrl. Met reduced motion navigeren links zoals altijd.
+- **Toetsing:** in de browser op 1440px en 375px, met de animatieframes stap voor stap nagebootst (het browservenster stond verborgen). De dekking loopt op en af zonder flits; navigatie in beide richtingen en via het mobiele menu (menu dicht, scrollslot eraf, geen horizontale scroll); focus gaat naar de kop van de nieuwe pagina of naar de sectie bij `/#work`. Typecheck. Niet gezien op echte snelheid, niet op een echte telefoon; `npm run audit` en `npm run keyboard` niet gedraaid.
+- **Tijd:** [invullen]

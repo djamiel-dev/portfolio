@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Mona_Sans } from "next/font/google";
+import { PageTransition } from "@/components/PageTransition";
 import "./globals.css";
 
 // One family for the page: the width axis does the work a second face would do
@@ -33,7 +34,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${mona.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <PageTransition />
+      </body>
     </html>
   );
 }
