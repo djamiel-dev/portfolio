@@ -4,6 +4,7 @@ import home from "@/components/home/home.module.css";
 import { Menu } from "@/components/home/Menu";
 import { Scramble } from "@/components/home/Skills";
 import about from "../about/about.module.css";
+import { SkillTabs } from "./SkillTabs";
 import styles from "./ai.module.css";
 
 // Wireframe: the layout is set, the content follows. Text in [brackets] is a placeholder.
@@ -16,21 +17,21 @@ export const metadata: Metadata = {
 const short = [
   { title: "Range", text: "AI lets me explore more directions and test sooner." },
   { title: "Judgement", text: "The decisions are mine, and I can explain and test the code it writes." },
-  { title: "Checks", text: "[Nothing goes live on AI’s word: every step is reviewed and tested.]" },
+  { title: "Checks", text: "Nothing goes live on AI’s word: every step is reviewed and tested." },
 ];
 
-// The same phases as the skills on the homepage. AI itself runs through all of them.
+// The same skills as on the homepage, in no fixed order. AI itself runs through all of them.
 const phases = [
   {
     title: "Research & problem framing",
     ai: "Finds research that actually fits my problem statement, so I spend my time reading instead of searching. It turns interview transcripts into briefings and next steps, and helps draft research questions and scenarios that make the problem concrete.",
-    me: "I set the problem statement and the research questions, and decide which sources matter.",
+    me: "I talk to stakeholders to understand what the business needs, and keep them involved as the picture changes. I set the problem statement and the research questions, and decide which sources matter.",
     check: "I read the key sources myself and form a rough view first. That view steers AI towards more research, or towards the conclusions it writes up.",
   },
   {
     title: "UI/UX & design systems",
-    ai: "Widens the options before the style is set: from a moodboard, I generate early directions with Claude Design or Figma AI.",
-    me: "I build the moodboard, pull what a client’s style guide already fixes into both the AI project and the design file, and design the final UI in Figma or straight in code.",
+    ai: "Widens the options before the style is set, with early directions from Claude Design or Figma AI. Through MCP it works in tools like Figma, component-based and with Auto Layout, so the design carries over cleanly into development.",
+    me: "I start from a moodboard I put together myself, pull what a client’s style guide already fixes into both the AI project and the design file, and design the final UI in Figma or straight in code.",
     check: "I show the directions to the client or colleagues and test which one creates the feeling the research called for. Only then do I build the design system.",
   },
   {
@@ -53,11 +54,20 @@ const phases = [
   },
 ];
 
-const ownHands = [
-  { title: "[Talking to users]", text: "[Interviews and tests are where I learn what people really need, so I run them myself.]" },
-  { title: "[The final choice]", text: "[AI gives me options; which one fits the problem and the business is my call.]" },
-  { title: "[Client and company data]", text: "[Nothing confidential goes into an AI tool.]" },
-  { title: "[The last check before release]", text: "[I review and test everything myself before it goes live.]" },
+// Where the ideas come from, and the two questions taste asks of anything AI makes
+const taste = [
+  {
+    title: "The spark comes from outside",
+    text: "Left to itself, AI drifts towards the average. My best starting points come from users, research and references I collect myself: award-winning sites, apps I admire, things I notice away from my desk. When I give AI a concrete example and say what to keep and what to drop, the result comes right much faster than when it invents the concept itself.",
+  },
+  {
+    title: "Does it fit?",
+    text: "The first question I ask of anything AI makes: does this fit the problem, the users and the brand? A polished answer to the wrong question is still wrong.",
+  },
+  {
+    title: "Is it good enough?",
+    text: "AI output often looks finished before it is. Seeing that gap, and knowing how to close it, takes taste, and I keep training mine by looking at a lot of good work.",
+  },
 ];
 
 // Real moments from building this site, from the decision log
@@ -82,20 +92,9 @@ const moments = [
   },
 ];
 
-const proof = [
-  { label: "Design system", href: "/design-system", text: "The live tokens behind this site" },
-  { label: "Source code", href: "https://github.com/djamiel-dev/portfolio", text: "The code of this site, public on GitHub" },
-  {
-    label: "Decision log",
-    href: "https://github.com/djamiel-dev/portfolio/blob/main/docs/beslissingen.md",
-    text: "[What AI suggested and what I decided, step by step (in Dutch)]",
-  },
-  { label: "Quality checks", text: "[Accessibility and speed checked with axe and Lighthouse before every release]" },
-];
-
 export default function HowIUseAI() {
   return (
-    <div className={home.root} data-sky="day">
+    <div className={home.root} data-sky="night">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
@@ -151,43 +150,32 @@ export default function HowIUseAI() {
           </section>
 
           <section className={about.section} aria-labelledby="ai-phases">
-            <h2 id="ai-phases" className={about.heading}>
-              <Scramble text="Where AI fits in each phase" />
-            </h2>
-            <ol className={styles.phases}>
-              {phases.map((p, i) => (
-                <li key={p.title}>
-                  <span className={about.num}>0{i + 1}</span>
-                  <h3>{p.title}</h3>
-                  <dl className={styles.cells}>
-                    <div>
-                      <dt>What AI does</dt>
-                      <dd>{p.ai}</dd>
-                    </div>
-                    <div>
-                      <dt>What I do</dt>
-                      <dd>{p.me}</dd>
-                    </div>
-                    <div>
-                      <dt>How I check it</dt>
-                      <dd>{p.check}</dd>
-                    </div>
-                  </dl>
-                </li>
-              ))}
-            </ol>
+            <SkillTabs
+              skills={phases}
+              title={
+                <h2 id="ai-phases" className={about.heading}>
+                  <Scramble text="Where AI fits, skill by skill" />
+                </h2>
+              }
+            />
           </section>
 
-          <section className={`${about.section} ${about.work}`} aria-labelledby="ai-own">
-            <h2 id="ai-own" className={about.heading}>
-              <Scramble text="What I keep in my own hands" />
-            </h2>
+          <section className={`${about.section} ${about.work}`} aria-labelledby="ai-taste">
+            <div>
+              <h2 id="ai-taste" className={about.heading}>
+                <Scramble text="The more AI can make, the more taste matters" />
+              </h2>
+              <p className={about.lead}>
+                AI can make almost anything I ask for, and fast. But it doesn’t know what’s worth making. Ideas start with
+                people and the world outside the screen, and taste decides what survives.
+              </p>
+            </div>
             <ol className={about.principles}>
-              {ownHands.map((o, i) => (
-                <li key={o.title}>
+              {taste.map((t, i) => (
+                <li key={t.title}>
                   <span className={about.num}>0{i + 1}</span>
-                  <h3>{o.title}</h3>
-                  <p>{o.text}</p>
+                  <h3>{t.title}</h3>
+                  <p>{t.text}</p>
                 </li>
               ))}
             </ol>
@@ -221,37 +209,25 @@ export default function HowIUseAI() {
             </ol>
           </section>
 
-          <section className={about.section} aria-labelledby="ai-proof">
-            <h2 id="ai-proof" className={about.heading}>
-              <Scramble text="Check it yourself" />
-            </h2>
-            <dl className={`${about.facts} ${styles.proof}`}>
-              {proof.map((p) => (
-                <div key={p.label}>
-                  <dt>{p.label}</dt>
-                  <dd>{p.href ? <a href={p.href}>{p.text}</a> : p.text}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-
           <section className={`${about.section} ${about.work}`} aria-labelledby="ai-team">
             <h2 id="ai-team" className={about.heading}>
-              <Scramble text="[What I could bring to your team]" />
+              <Scramble text="What I can bring to a team" />
             </h2>
             <div>
               <p className={styles.teamLead}>
-                [A few lines on the AI workflows I could set up in a team in my first months, kept modest and concrete.]
+                Design systems and Auto Layout once changed how design teams work. AI is that shift now, and I can help a
+                team make it: a shared setup the whole team’s AI tools work from, a design system AI can build with, and
+                prototypes to test before anyone builds. Not to replace anyone’s craft, but to give everyone more room for it.
               </p>
             </div>
           </section>
 
           <section className={about.closer} aria-labelledby="ai-closer">
             <h2 id="ai-closer" className={home.closingTitle}>
-              <Scramble text="[Curious how I’d work in your team?]" />
+              <Scramble text="Curious how I’d work in your team?" />
             </h2>
             <p className={home.closingText}>I’d love to hear what you’re working on. Send me a message and let’s talk.</p>
-            <a href={links.email} className={home.mail} data-lit="light">
+            <a href={links.email} className={home.mail} data-lit="">
               <span>Contact me</span>
               <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path d="M2.5 9.5l7-7M4 2.5h5.5V8" stroke="currentColor" strokeWidth="1.4" />

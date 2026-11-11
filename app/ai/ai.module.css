@@ -1,7 +1,7 @@
-/* How I use AI – wireframe. Builds on the About page (about.module.css) and the day tokens from home.module.css. */
+/* How I use AI – at night. Builds on the About page (about.module.css) and the night tokens from home.module.css. */
 
 /* Small label above each cell, as on the facts row */
-.cells dt,
+.panelCells dt,
 .moments dt {
   color: var(--muted);
   font-size: 0.75rem;
@@ -11,7 +11,6 @@
   text-transform: uppercase;
 }
 
-.cells dd,
 .moments dd {
   margin: 8px 0 0;
   color: var(--fg-2);
@@ -19,8 +18,32 @@
 }
 
 /* The statement on the left, the short version as three ruled lines on the right */
+/* The intro starts at the same height as on About, but fills the first screen (below the 72px bar),
+   so the next heading starts just past the fold */
 .intro {
+  container-type: inline-size;
   align-items: end;
+  align-content: start;
+  min-height: calc(100svh - 72px - var(--block) + 24px);
+}
+
+/* On a wide screen the label starts where it does on About. There the text sits at the foot of a
+   square photo in the 4fr column, so its top is the photo's height minus the text's height:
+   label (0.75rem × 1.35), title margin, two title lines, lead margin and three lead lines. */
+@media (min-width: 48em) {
+  .intro > :first-child {
+    align-self: start;
+    padding-top: max(
+      0px,
+      calc(
+        (100cqw - clamp(40px, 6vw, 120px)) * 4 / 11 -
+          (
+            0.75rem * 1.35 + clamp(16px, 2vw, 28px) + clamp(2.25rem, 5vw, 5.25rem) * 2.04 +
+              clamp(24px, 3vw, 40px) + clamp(1.0625rem, 1.4vw, 1.25rem) * 4.5
+          )
+      )
+    );
+  }
 }
 
 .short {
@@ -46,36 +69,233 @@
   color: var(--fg-2);
 }
 
-/* One row per phase: number, phase, then what AI does, what I do and how I check, side by side */
-.phases {
-  margin: clamp(40px, 5vw, 72px) 0 0;
-  padding: 0;
-  list-style: none;
-  border-bottom: 1px solid var(--line);
+/* Skills as tabs along a filament: the list on the left, the lit skill's three cells on the right */
+/* The section heading sits on the stage, just above the block */
+.stageTitle {
+  margin-bottom: clamp(40px, 5vw, 72px);
 }
 
-.phases > li {
+.tabGrid {
   display: grid;
-  grid-template-columns: 3.5em minmax(0, 3fr) minmax(0, 9fr);
-  gap: 20px clamp(20px, 3vw, 48px);
-  align-items: baseline;
-  padding: clamp(28px, 3vw, 44px) 0;
-  border-top: 1px solid var(--line);
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: 40px clamp(40px, 6vw, 120px);
 }
 
-.phases h3 {
+/* Pinned: the block stays in view under the nav bar while the page scrolls through the skills.
+   The outer box gets its height from SkillTabs (one screen plus a stretch of scroll per skill). */
+.skillTabs[data-mode="pinned"] {
+  position: relative;
+}
+
+.skillTabs[data-mode="pinned"] .stage {
+  position: sticky;
+  top: 72px;
+  height: calc(100svh - 72px);
+  padding-top: clamp(32px, 6svh, 72px);
+}
+
+/* Pinned, the heading starts a little closer to the block. As you scroll in (--intro, 0 → 1, set by
+   SkillTabs) it slides up out of view under the nav bar, and the block rises to the middle of the
+   screen, as the skills do on the homepage */
+.skillTabs[data-mode="pinned"] .stageTitle {
+  margin-bottom: clamp(36px, 4.5vw, 64px);
+  translate: 0 calc(var(--out, 0px) * -1 * var(--intro, 0));
+}
+
+.skillTabs[data-mode="pinned"] .tabGrid {
+  translate: 0 calc(var(--lift, 0px) * -1 * var(--intro, 0));
+}
+
+/* As tall as the panels on the right: the first skill sits at their top, the last at their foot */
+.tablist {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* The dark filament the bulbs hang on, from the first bulb to the last. Over it a lit stretch runs
+   from the first bulb through the skills passed, and while pinned on towards the next one
+   (--seg-top, --seg-height). */
+.tablist::before,
+.tablist::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  width: 1px;
+}
+
+.tablist::before {
+  top: 28px;
+  bottom: 28px;
+  background: var(--line);
+}
+
+.tablist::after {
+  top: var(--seg-top, 0px);
+  height: var(--seg-height, 0px);
+  background: var(--lamp);
+  box-shadow: 0 0 6px rgb(255 158 94 / 0.35);
+}
+
+.tab {
+  position: relative;
+  display: grid;
+  grid-template-columns: 13px minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+  min-height: 56px;
+  padding: 10px 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
   font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
   font-weight: 540;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  text-wrap: balance;
+  text-align: left;
+  cursor: pointer;
+  transition: color 600ms var(--ease-out);
 }
 
-.cells {
+.tab[data-lit] {
+  color: var(--fg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tab:not([data-lit]):hover {
+    color: var(--fg-2);
+  }
+}
+
+/* Above the filament, so the line never runs through a bulb */
+.tabBulb {
+  position: relative;
+  z-index: 1;
+  width: 13px;
+  height: 13px;
+  border: 1px solid var(--dim);
+  border-radius: 50%;
+  background: var(--bg);
+  transition:
+    border-color 700ms var(--ease-out),
+    background-color 700ms var(--ease-out),
+    box-shadow 700ms var(--ease-out);
+}
+
+/* The skills already passed keep a quiet orange bulb, without glow */
+.tab[data-passed] .tabBulb {
+  border-color: var(--lamp);
+  background: var(--lamp);
+}
+
+/* The lit skill: a white-hot bulb that really glows, warming up softly instead of flickering */
+.tab[data-lit] .tabBulb {
+  border-color: #fff3e9;
+  background: #fffaf5;
+  box-shadow:
+    0 0 0 3px rgb(255 158 94 / 0.18),
+    0 0 12px 3px rgb(255 190 140 / 0.7),
+    0 0 32px 8px rgb(255 158 94 / 0.35);
+}
+
+/* All panels share one cell, so the page never jumps when the skill changes */
+.panels {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px clamp(20px, 2.4vw, 40px);
+}
+
+.skillTabs[data-live] .panel {
+  grid-area: 1 / 1;
+}
+
+.skillTabs[data-live] .panel:not([data-active]) {
+  visibility: hidden;
+}
+
+/* The old skill fades out quickly, then the new one fades in, so the two texts never overlap */
+.skillTabs[data-live] .panel {
+  opacity: 0;
+  transition:
+    opacity 150ms ease,
+    visibility 0s 150ms;
+}
+
+.skillTabs[data-live] .panel[data-active] {
+  opacity: 1;
+  transition: opacity 500ms var(--ease-out) 150ms;
+}
+
+/* The tab names the panel; the title is only for the page without JS */
+.skillTabs[data-live] .panelTitle {
+  display: none;
+}
+
+.panelTitle {
+  margin-bottom: 16px;
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.panel + .panel {
+  margin-top: clamp(40px, 5vw, 72px);
+}
+
+.skillTabs[data-live] .panel + .panel {
+  margin-top: 0;
+}
+
+.panelCells {
   margin: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.panelCells > div {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 8fr);
+  gap: 8px clamp(20px, 3vw, 48px);
+  align-items: baseline;
+  padding: clamp(20px, 2.2vw, 28px) 0;
+  border-top: 1px solid var(--line);
+}
+
+.panelCells dd {
+  max-width: 34em;
+  margin: 0;
+  color: var(--fg-2);
+  font-size: clamp(1.0625rem, 1.3vw, 1.1875rem);
+  text-wrap: pretty;
+}
+
+/* While it fades in, the text settles a few pixels, one row just after the other */
+.skillTabs[data-live] .panelCells dd {
+  translate: 0 4px;
+  transition: translate 250ms ease;
+}
+
+.skillTabs[data-live] .panel[data-active] .panelCells dd {
+  translate: 0 0;
+  transition: translate 700ms var(--ease-out) 150ms;
+}
+
+.skillTabs[data-live] .panel[data-active] .panelCells > div:nth-child(2) dd {
+  transition-delay: 190ms;
+}
+
+.skillTabs[data-live] .panel[data-active] .panelCells > div:nth-child(3) dd {
+  transition-delay: 230ms;
+}
+
+/* Without JS the tabs can't switch, so every skill is shown in full instead */
+.skillTabs:not([data-live]) .tabGrid {
+  display: block;
+}
+
+.skillTabs:not([data-live]) .tablist {
+  display: none;
 }
 
 /* Three moments side by side, each a ruled column */
@@ -107,22 +327,6 @@
   margin: 24px 0 0;
 }
 
-/* The proof row sits under its heading, links underlined so they read as links */
-.proof {
-  margin-top: clamp(40px, 5vw, 72px);
-}
-
-.proof a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: var(--line);
-  text-underline-offset: 0.2em;
-}
-
-.proof a:hover {
-  text-decoration-color: currentColor;
-}
-
 .teamLead {
   max-width: 28em;
   color: var(--fg-2);
@@ -130,13 +334,9 @@
 }
 
 @media (max-width: 63.99em) {
-  /* On a tablet the three cells move under the phase name */
-  .phases > li {
-    grid-template-columns: 3.5em minmax(0, 1fr);
-  }
-
-  .cells {
-    grid-column: 2;
+  /* On a tablet the label sits above its text */
+  .panelCells > div {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .moments {
@@ -145,11 +345,21 @@
 }
 
 @media (max-width: 47.99em) {
-  .phases > li {
-    grid-template-columns: 2.75em minmax(0, 1fr);
+  /* On a phone the list sits above the lit skill */
+  .tabGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab,
+  .tabBulb,
+  .skillTabs[data-live] .panel,
+  .skillTabs[data-live] .panelCells dd {
+    transition: none;
   }
 
-  .cells {
-    grid-template-columns: minmax(0, 1fr);
+  .skillTabs[data-live] .panelCells dd {
+    translate: none;
   }
 }
