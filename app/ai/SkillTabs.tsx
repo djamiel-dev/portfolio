@@ -54,7 +54,7 @@ export function SkillTabs({ skills, title }: { skills: SkillUse[]; title: ReactN
       const g = grid.current;
       const h = head.current;
       // Heading and block must fit together, since they start out side by side on the pinned stage
-      const fits = !!g && !!h && h.offsetHeight + g.offsetHeight + 48 <= window.innerHeight - BAR - 48;
+      const fits = !!g && !!h && h.offsetHeight + g.offsetHeight + 144 <= window.innerHeight - BAR - 48;
       setMode(!picked.current && motion.matches && wide.matches && fits ? "pinned" : "tabs");
     };
     update();

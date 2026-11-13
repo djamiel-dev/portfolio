@@ -5,6 +5,8 @@ import { Menu } from "@/components/home/Menu";
 import { Scramble } from "@/components/home/Skills";
 import about from "../about/about.module.css";
 import { SkillTabs } from "./SkillTabs";
+import { TasteSieve } from "./TasteSieve";
+import { TeamBento } from "./TeamBento";
 import styles from "./ai.module.css";
 
 // Wireframe: the layout is set, the content follows. Text in [brackets] is a placeholder.
@@ -58,37 +60,32 @@ const phases = [
 const taste = [
   {
     title: "The spark comes from outside",
-    text: "Left to itself, AI drifts towards the average. My best starting points come from users, research and references I collect myself: award-winning sites, apps I admire, things I notice away from my desk. When I give AI a concrete example and say what to keep and what to drop, the result comes right much faster than when it invents the concept itself.",
+    text: "Left alone, AI drifts to the average. I start from users, research and work I admire.",
   },
   {
     title: "Does it fit?",
-    text: "The first question I ask of anything AI makes: does this fit the problem, the users and the brand? A polished answer to the wrong question is still wrong.",
+    text: "Right problem, right users, right brand? A polished answer to the wrong question is still wrong.",
   },
   {
     title: "Is it good enough?",
-    text: "AI output often looks finished before it is. Seeing that gap, and knowing how to close it, takes taste, and I keep training mine by looking at a lot of good work.",
+    text: "AI output looks finished before it is. Taste sees the gap, and I train mine on a lot of good work.",
   },
 ];
 
 // Real moments from building this site, from the decision log
+
 const moments = [
   {
-    title: "It guessed instead of looking",
-    ai: "Asked to work from a reference site’s design system, it guessed the colours without opening the site. The result looked generic.",
-    me: "Rejected it, and had it measure the real values in the browser first.",
-    lesson: "Measure the real source first, then design.",
+    lesson: "Other colours aren’t other ideas",
+    story: "Asked for four style directions, AI gave me one layout in four colour schemes. I sent it back for real concepts.",
   },
   {
-    title: "It wrote something that never happened",
-    ai: "It drafted a note about an AI decision for this site that never took place.",
-    me: "Caught it and replaced it with a real entry from my decision log.",
-    lesson: "Everything AI writes is a claim until I’ve checked it.",
+    lesson: "Test where it’s slow",
+    story: "An animation AI wrote counted frames instead of time, so it stalled on a slow phone. Testing caught it; now it runs on time.",
   },
   {
-    title: "It went faster than I could judge",
-    ai: "It built three complete homepage concepts in one go.",
-    me: "Stopped it: I could no longer follow or steer the choices.",
-    lesson: "Small steps, and I review each one before the next.",
+    lesson: "Everything AI writes is a claim",
+    story: "It drafted a note for this site about a decision that never happened. I replaced it with a real entry from my log.",
   },
 ];
 
@@ -160,66 +157,43 @@ export default function HowIUseAI() {
             />
           </section>
 
-          <section className={`${about.section} ${about.work}`} aria-labelledby="ai-taste">
-            <div>
-              <h2 id="ai-taste" className={about.heading}>
-                <Scramble text="The more AI can make, the more taste matters" />
-              </h2>
-              <p className={about.lead}>
-                AI can make almost anything I ask for, and fast. But it doesn’t know what’s worth making. Ideas start with
-                people and the world outside the screen, and taste decides what survives.
-              </p>
-            </div>
-            <ol className={about.principles}>
-              {taste.map((t, i) => (
-                <li key={t.title}>
-                  <span className={about.num}>0{i + 1}</span>
-                  <h3>{t.title}</h3>
-                  <p>{t.text}</p>
-                </li>
-              ))}
-            </ol>
+          <section className={about.section} aria-labelledby="ai-taste">
+            <TasteSieve
+              steps={taste}
+              head={
+                <>
+                  <h2 id="ai-taste" className={about.heading}>
+                    <Scramble text="The more AI can make, the more taste matters" />
+                  </h2>
+                  <p className={about.lead}>AI can make almost anything. Taste decides what’s worth keeping.</p>
+                </>
+              }
+            />
           </section>
 
           <section className={about.section} aria-labelledby="ai-wrong">
             <h2 id="ai-wrong" className={about.heading}>
               <Scramble text="When AI got it wrong" />
             </h2>
-            <p className={about.lead}>Three moments from building this site, and what each one changed in how I work.</p>
+            <p className={about.lead}>Three real moments from building this site, and what each one taught me.</p>
             <ol className={styles.moments}>
               {moments.map((m) => (
-                <li key={m.title}>
-                  <h3>{m.title}</h3>
-                  <dl>
-                    <div>
-                      <dt>What AI did</dt>
-                      <dd>{m.ai}</dd>
-                    </div>
-                    <div>
-                      <dt>What I did</dt>
-                      <dd>{m.me}</dd>
-                    </div>
-                    <div>
-                      <dt>What changed</dt>
-                      <dd>{m.lesson}</dd>
-                    </div>
-                  </dl>
+                <li key={m.lesson}>
+                  <h3>{m.lesson}</h3>
+                  <p>{m.story}</p>
                 </li>
               ))}
             </ol>
           </section>
 
-          <section className={`${about.section} ${about.work}`} aria-labelledby="ai-team">
+          <section className={`${about.section} ${styles.teamSection}`} aria-labelledby="ai-team">
             <h2 id="ai-team" className={about.heading}>
               <Scramble text="What I can bring to a team" />
             </h2>
-            <div>
-              <p className={styles.teamLead}>
-                Design systems and Auto Layout once changed how design teams work. AI is that shift now, and I can help a
-                team make it: a shared setup the whole team’s AI tools work from, a design system AI can build with, and
-                prototypes to test before anyone builds. Not to replace anyone’s craft, but to give everyone more room for it.
-              </p>
-            </div>
+            <p className={about.lead}>
+              Five things I can help a team set up, so AI raises the quality of the work, not just the speed.
+            </p>
+            <TeamBento />
           </section>
 
           <section className={about.closer} aria-labelledby="ai-closer">

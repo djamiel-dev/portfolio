@@ -1,20 +1,13 @@
 /* How I use AI – at night. Builds on the About page (about.module.css) and the night tokens from home.module.css. */
 
 /* Small label above each cell, as on the facts row */
-.panelCells dt,
-.moments dt {
+.panelCells dt {
   color: var(--muted);
   font-size: 0.75rem;
   font-weight: 600;
   font-stretch: 125%;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-}
-
-.moments dd {
-  margin: 8px 0 0;
-  color: var(--fg-2);
-  text-wrap: pretty;
 }
 
 /* The statement on the left, the short version as three ruled lines on the right */
@@ -98,7 +91,7 @@
    SkillTabs) it slides up out of view under the nav bar, and the block rises to the middle of the
    screen, as the skills do on the homepage */
 .skillTabs[data-mode="pinned"] .stageTitle {
-  margin-bottom: clamp(36px, 4.5vw, 64px);
+  margin-bottom: clamp(72px, 9vw, 144px);
   translate: 0 calc(var(--out, 0px) * -1 * var(--intro, 0));
 }
 
@@ -298,7 +291,7 @@
   display: none;
 }
 
-/* Three moments side by side, each a ruled column */
+/* Three moments side by side, each a ruled column: the lesson as its heading */
 .moments {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -321,16 +314,11 @@
   text-wrap: balance;
 }
 
-.moments dl {
-  display: grid;
-  gap: 20px;
-  margin: 24px 0 0;
-}
-
-.teamLead {
-  max-width: 28em;
+/* What happened, in one or two lines under the lesson */
+.moments p {
+  max-width: 26em;
+  margin-top: 12px;
   color: var(--fg-2);
-  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
 }
 
 @media (max-width: 63.99em) {
@@ -361,5 +349,772 @@
 
   .skillTabs[data-live] .panelCells dd {
     translate: none;
+  }
+}
+
+/* Taste as a sieve: the heading and three short steps on the left; on the right a grid of glyph
+   tiles stays in the middle of the screen while the steps pass. Every tile is something AI could
+   make. At "Does it fit?" most go dark, at "Is it good enough?" one is left, lit like the lamp. */
+.taste {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  grid-template-rows: auto 1fr;
+  column-gap: clamp(40px, 6vw, 120px);
+}
+
+.tasteHead {
+  grid-area: 1 / 1;
+}
+
+.sieveCol {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  container-type: inline-size;
+}
+
+/* Centred in the screen below the bar: the grid is about three quarters as tall as it is wide */
+.sieve {
+  position: sticky;
+  top: calc(72px + (100svh - 72px) / 2 - 37cqw);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(8px, 1.6cqw, 14px);
+}
+
+.sieveTile {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--fg-2);
+  font-family: var(--font-mono);
+  /* Spaced out to a square field that fills about two thirds of the tile; the indent balances the
+     spacing after the last glyph of each row */
+  font-size: clamp(0.6875rem, 3cqw, 1.25rem);
+  line-height: 1.05;
+  letter-spacing: 0.45em;
+  text-indent: 0.45em;
+  white-space: pre;
+  transition:
+    color 700ms var(--ease-out),
+    opacity 700ms var(--ease-out),
+    border-color 700ms var(--ease-out),
+    background-color 700ms var(--ease-out),
+    box-shadow 700ms var(--ease-out),
+    text-shadow 700ms var(--ease-out);
+  /* --i is the tile's place in a scattered line, so they drop out one by one across the grid */
+  transition-delay: calc(var(--i) * 70ms);
+}
+
+.sieveTile[data-state="out"] {
+  color: var(--dim);
+  opacity: 0.3;
+}
+
+/* The one that survives: warm and glowing, its glyphs still moving */
+.sieveTile[data-state="kept"] {
+  border-color: rgb(255 158 94 / 0.55);
+  background: rgb(255 158 94 / 0.06);
+  color: var(--lamp);
+  text-shadow: 0 0 10px rgb(255 158 94 / 0.6);
+  box-shadow:
+    0 0 0 3px rgb(255 158 94 / 0.1),
+    0 0 40px 6px rgb(255 158 94 / 0.22);
+}
+
+/* Each step takes about half a screen, so the grid has time to change while it passes */
+.tasteSteps {
+  grid-area: 2 / 1;
+  margin: clamp(24px, 4vw, 56px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tasteSteps li {
+  display: grid;
+  grid-template-columns: 3.5em minmax(0, 1fr);
+  gap: 12px 0;
+  align-content: center;
+  align-items: baseline;
+  min-height: 50svh;
+}
+
+.tasteSteps h3 {
+  grid-column: 2;
+  color: var(--muted);
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  font-weight: 540;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  transition: color 600ms var(--ease-out);
+}
+
+.tasteSteps li[data-active] h3 {
+  color: var(--fg);
+}
+
+.tasteSteps p {
+  grid-column: 2;
+  max-width: 26em;
+  color: var(--fg-2);
+}
+
+/* Only the step in the middle shows its text, fading in and settling a few pixels as on the
+   homepage. The text keeps its place, so nothing shifts, and screen readers still read it all. */
+.tasteSteps[data-live] p {
+  opacity: 0;
+  translate: 0 6px;
+  transition:
+    opacity 250ms ease,
+    translate 250ms ease;
+}
+
+.tasteSteps[data-live] li[data-active] p {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 500ms ease 150ms,
+    translate 500ms var(--ease-out) 150ms;
+}
+
+.tasteNum {
+  grid-area: 1 / 1;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-stretch: 125%;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* On a phone the grid sits small under the bar, and the steps scroll underneath it */
+@media (max-width: 47.99em) {
+  .taste {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+
+  .tasteHead,
+  .tasteSteps {
+    grid-area: auto;
+  }
+
+  .sieveCol {
+    display: contents;
+  }
+
+  .sieve {
+    top: 72px;
+    z-index: 1;
+    grid-template-columns: repeat(4, 52px);
+    gap: 8px;
+    margin-top: 32px;
+    padding: 16px 0;
+    background: var(--bg);
+  }
+
+  .sieveTile {
+    font-size: 0.4375rem;
+  }
+
+  .tasteSteps li {
+    min-height: 45svh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sieveTile,
+  .tasteSteps h3 {
+    transition: none;
+  }
+
+  /* Nothing fades: every step's text stays readable */
+  .tasteSteps[data-live] p {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+}
+
+/* A quarter more room above than between the other sections, so it doesn't sit right on the
+   three moments before it */
+section.teamSection {
+  padding-top: calc(var(--block) * 1.25);
+}
+
+/* What I can bring: five cards in a grid, two wide ones on top and three below. Straight corners
+   and 1px lines like the rest of the site, a shade lighter than the street. The lamp follows the
+   pointer: a soft pool on the card under it, and the edges nearby catch the light. Each card has a
+   small picture that plays its point on hover; without a fine pointer it shows the end state. */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin: clamp(40px, 5vw, 72px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bCard {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  grid-column: span 2;
+  min-height: 340px;
+  padding: clamp(20px, 2vw, 28px);
+  border: 1px solid var(--line);
+  background: #1a1917;
+}
+
+.bCard[data-wide] {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  grid-column: span 3;
+  align-items: stretch;
+}
+
+/* The pool of light under the pointer, and the edge that catches it */
+.bCard::before,
+.bCard::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -1px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+
+.bCard::before {
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgb(255 158 94 / 0.09), transparent 70%);
+}
+
+.bCard::after {
+  z-index: 1;
+  padding: 1px;
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 0%), rgb(255 158 94 / 0.95), rgb(255 158 94 / 0.25) 45%, transparent 75%);
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+.bento:not([data-static]):hover .bCard::after {
+  opacity: 1;
+}
+
+.bento:not([data-static]) .bCard:hover::before {
+  opacity: 1;
+}
+
+.bText h3 {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
+  font-weight: 540;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+/* The point first, in full white; the rest of the sentence in grey */
+.bText p {
+  max-width: 26em;
+  margin-top: 16px;
+  color: var(--fg-2);
+}
+
+.bText p > span {
+  color: var(--fg);
+}
+
+.bIcon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--lamp);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The picture fills the rest of the card */
+/* Clipped here rather than on the card, so the light can still reach the card's own edge */
+.bVis {
+  position: relative;
+  flex: 1;
+  min-height: 140px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.bVis * {
+  transition-timing-function: var(--ease-out);
+}
+
+/* The state each picture plays to: on hover with a fine pointer, always otherwise */
+
+/* 1. Design system: a small component as a spec sheet. At rest it is grey and unmarked; on hover
+   it lights up (bulb, title, border, button) and the callouts draw in one after the other, each a
+   line from its part to the token it is built from, like redlines in a handoff. */
+.vSystem {
+  display: flex;
+  align-items: center;
+  overflow: visible;
+}
+
+.vSpec {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  width: 58%;
+  padding: 24px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  transition: border-color 500ms;
+}
+
+/* The padding, shown as a dashed inner box with its size */
+.vSpec::before {
+  content: "";
+  position: absolute;
+  inset: 24px;
+  outline: 1px dashed rgb(255 158 94 / 0.4);
+  opacity: 0;
+  transition: opacity 400ms 200ms;
+}
+
+.vPad {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  color: var(--lamp);
+  font-size: 0.625rem;
+  opacity: 0;
+  transition: opacity 400ms 200ms;
+}
+
+.vRow {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+
+.vBulb {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--dim);
+  border-radius: 50%;
+  transition: border-color 500ms 300ms, background-color 500ms 300ms, box-shadow 500ms 300ms;
+}
+
+.vTitle {
+  width: 72%;
+  height: 10px;
+  background: var(--dim);
+  transition: background-color 500ms 300ms;
+}
+
+.vCopy > span:not(.vTag) {
+  width: 92%;
+  height: 6px;
+  background: var(--line);
+}
+
+.vCopy > span:nth-child(2) {
+  width: 60%;
+}
+
+.vPill {
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  transition: border-color 500ms 300ms, color 500ms 300ms;
+}
+
+/* The bottom edge carries the border's callout */
+.vEdge {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 1px;
+}
+
+/* A callout: a line from the right edge of its part, across the card's padding and border, to the
+   token name beyond the card */
+.vTag {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 40px);
+  color: var(--fg-2);
+  font-size: 0.6875rem;
+  white-space: nowrap;
+  opacity: 0;
+  translate: -4px -50%;
+  transition:
+    opacity 300ms,
+    translate 300ms;
+  transition-delay: calc(250ms + var(--i) * 110ms);
+}
+
+.vEdge .vTag {
+  left: calc(100% + 16px);
+}
+
+.vTag::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 6px);
+  width: 34px;
+  height: 1px;
+  background: rgb(255 158 94 / 0.7);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 300ms;
+  transition-delay: calc(150ms + var(--i) * 110ms);
+}
+
+.vEdge .vTag::before {
+  width: 10px;
+}
+
+/* A dot where the callout meets its part */
+.vTag::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 2px);
+  right: calc(100% + 38px);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--lamp);
+  opacity: 0;
+  transition: opacity 200ms;
+  transition-delay: calc(150ms + var(--i) * 110ms);
+}
+
+.vEdge .vTag::after {
+  right: calc(100% + 14px);
+}
+
+.bCard:hover .vSpec,
+.bento[data-static] .vSpec {
+  border-color: rgb(255 158 94 / 0.45);
+}
+
+.bCard:hover .vPad,
+.bento[data-static] .vPad {
+  opacity: 1;
+}
+
+.bCard:hover .vSpec::before,
+.bento[data-static] .vSpec::before {
+  opacity: 1;
+}
+
+.bCard:hover .vBulb,
+.bento[data-static] .vBulb {
+  border-color: #fff3e9;
+  background: #fffaf5;
+  box-shadow: 0 0 10px 2px rgb(255 158 94 / 0.55);
+}
+
+.bCard:hover .vTitle,
+.bento[data-static] .vTitle {
+  background: var(--fg);
+}
+
+.bCard:hover .vPill,
+.bento[data-static] .vPill {
+  border-color: var(--lamp);
+  color: var(--fg);
+}
+
+.bCard:hover .vTag,
+.bento[data-static] .vTag {
+  opacity: 1;
+  translate: 0 -50%;
+}
+
+.bCard:hover .vTag::before,
+.bento[data-static] .vTag::before {
+  transform: scaleX(1);
+}
+
+.bCard:hover .vTag::after,
+.bento[data-static] .vTag::after {
+  opacity: 1;
+}
+
+/* 2. Prototype: the cursor moves to the button and presses it */
+.vPrototype {
+  display: grid;
+  align-items: center;
+}
+
+.vFrame {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  padding: 36px 20px 20px;
+  border: 1px solid var(--line);
+}
+
+.vDots {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line);
+  box-shadow: 10px 0 var(--line), 20px 0 var(--line);
+}
+
+.vBar {
+  height: 6px;
+  background: var(--line);
+}
+
+.vButton {
+  justify-self: start;
+  margin-top: 8px;
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  transition: color 300ms 650ms, border-color 300ms 650ms, scale 200ms 600ms;
+}
+
+/* Waits in the empty part of the frame, then moves onto the button */
+.vCursor {
+  position: absolute;
+  top: 38%;
+  left: 82%;
+  width: 22px;
+  height: 22px;
+  fill: var(--fg);
+  stroke: var(--bg);
+  stroke-width: 1.25;
+  stroke-linejoin: round;
+  transition:
+    top 700ms var(--ease-out),
+    left 700ms var(--ease-out);
+}
+
+.bCard:hover .vCursor,
+.bento[data-static] .vCursor {
+  top: calc(100% - 34px);
+  left: 72px;
+}
+
+.bCard:hover .vButton,
+.bento[data-static] .vButton {
+  border-color: var(--lamp);
+  color: var(--fg);
+}
+
+/* 3. Shared setup: one file, and the line to each tool lights up in turn */
+.vSetup {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.vFile {
+  display: grid;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.vFileName {
+  color: var(--fg-2);
+}
+
+.vTools {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vTools li {
+  position: relative;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  transition: color 400ms, border-color 400ms;
+  transition-delay: calc(150ms + var(--i) * 120ms);
+}
+
+/* The line from the file to this tool */
+.vTools li::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: 28px;
+  height: 1px;
+  background: var(--line);
+  transition: background-color 400ms, box-shadow 400ms;
+  transition-delay: inherit;
+}
+
+.bCard:hover .vTools li,
+.bento[data-static] .vTools li {
+  border-color: rgb(255 158 94 / 0.55);
+  color: var(--fg);
+}
+
+.bCard:hover .vTools li::before,
+.bento[data-static] .vTools li::before {
+  background: var(--lamp);
+  box-shadow: 0 0 6px rgb(255 158 94 / 0.35);
+}
+
+/* 4. Research: a transcript as grey lines; the parts that matter get marked, the rest fades back */
+.vResearch {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+
+.vLine {
+  height: 6px;
+  background: var(--line);
+  transition: background-color 500ms, opacity 500ms;
+}
+
+.vLine[data-key] {
+  transition-delay: calc(var(--i) * 160ms);
+}
+
+.bCard:hover .vLine:not([data-key]),
+.bento[data-static] .vLine:not([data-key]) {
+  opacity: 0.45;
+}
+
+.bCard:hover .vLine[data-key],
+.bento[data-static] .vLine[data-key] {
+  background: var(--lamp);
+}
+
+/* 5. Checks: each one ticks off in turn */
+.vChecks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+
+.vChecks li {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  transition: color 300ms;
+  transition-delay: calc(var(--i) * 140ms);
+}
+
+.vChecks svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.vChecks rect {
+  stroke: var(--dim);
+  transition: stroke 300ms;
+  transition-delay: inherit;
+}
+
+.vChecks path {
+  stroke: var(--lamp);
+  stroke-dasharray: 12;
+  stroke-dashoffset: 12;
+  transition: stroke-dashoffset 300ms;
+  transition-delay: inherit;
+}
+
+.vChecks svg {
+  transition-delay: inherit;
+}
+
+.bCard:hover .vChecks li,
+.bento[data-static] .vChecks li {
+  color: var(--fg-2);
+}
+
+.bCard:hover .vChecks rect,
+.bento[data-static] .vChecks rect {
+  stroke: rgb(255 158 94 / 0.55);
+}
+
+.bCard:hover .vChecks path,
+.bento[data-static] .vChecks path {
+  stroke-dashoffset: 0;
+}
+
+/* Tablet: the three small cards wrap two and one; phone: one column, picture under the text */
+@media (max-width: 63.99em) {
+  .bCard,
+  .bCard[data-wide] {
+    grid-column: span 6;
+  }
+
+  .bCard:not([data-wide]) {
+    grid-column: span 3;
+  }
+
+  .bCard:last-child {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 47.99em) {
+  .bCard,
+  .bCard[data-wide],
+  .bCard:not([data-wide]),
+  .bCard:last-child {
+    grid-column: span 6;
+    min-height: 0;
+  }
+
+  .bCard[data-wide] {
+    display: flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bCard::before,
+  .bCard::after,
+  .bVis,
+  .bVis * {
+    transition: none;
   }
 }
