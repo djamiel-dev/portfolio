@@ -24,7 +24,7 @@ export const cases: Case[] = [
   {
     num: "01",
     label: "Incentive portal",
-    href: "#case-1",
+    href: "/work/incentive-portal",
     outcome: "A rewards portal managers can use without training",
     meta: "[Company] · Internship [Year]",
     media: { aspect: "4 / 3", caption: "[Screens: rewards, points and undo]", image: "/images/cases/jobrewards.png", fit: "contain" },
