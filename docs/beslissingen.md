@@ -249,3 +249,21 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Niet van toepassing:** links naar een plek op dezelfde pagina, mail, telefoon, bestanden (resume-pdf), nieuwe tabbladen en klikken met Cmd/Ctrl. Met reduced motion navigeren links zoals altijd.
 - **Toetsing:** in de browser op 1440px en 375px, met de animatieframes stap voor stap nagebootst (het browservenster stond verborgen). De dekking loopt op en af zonder flits; navigatie in beide richtingen en via het mobiele menu (menu dicht, scrollslot eraf, geen horizontale scroll); focus gaat naar de kop van de nieuwe pagina of naar de sectie bij `/#work`. Typecheck. Niet gezien op echte snelheid, niet op een echte telefoon; `npm run audit` en `npm run keyboard` niet gedraaid.
 - **Tijd:** [invullen]
+
+### Stap 15 – How I use AI: secties verfijnd (11–13 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Skills-titel | Meer ruimte onder "Where AI fits, skill by skill" | In drie stappen groter gemaakt, tot ongeveer 2× de oorspronkelijke afstand |
+| Taste-sectie | Onderzoek op React Bits, 21st.dev, Awwwards en CSS Design Awards; vier richtingen: oplichtende zinnen, een zeef, gestapelde kaarten, tekst pas bij hover. De laatste afgeraden (geen hover op telefoons) | De zeef: twaalf glyph-tegels naast drie korte stappen; bij "Does it fit?" vallen er acht af, bij "Is it good enough?" blijft er één over die oranje oplicht |
+| Verfijning zeef | Voller veld per tegel (5×5), uitdoven in een verspreide volgorde per groep | Akkoord. Mijn verzoeken: subtekst alleen bij de actieve stap, en de laatste tegel blijft bewegen |
+| Teksten taste | Intro en stappen ongeveer gehalveerd | Akkoord |
+| When AI got it wrong | Mijn vraag of de sectie waarde heeft. Advies: weinig voor de recruiter die scant, veel voor de hiring manager die bang is voor ongecontroleerde AI-output; wel inkorten. Op mijn verzoek om betere of verzonnen voorbeelden: niets verzonnen (regel van dit project, en het zou precies voorbeeld 3 zijn), wel twee echte uit dit logboek (vier stijlrichtingen die één layout bleken; een animatie die frames telde in plaats van tijd) | Akkoord; per moment de les als kop en één of twee zinnen |
+| What I can bring | Eerst drie richtingen. B (uitklapkaarten zoals op About) en A (een draad met Design systems, Auto Layout en AI) gebouwd | Beide niet leuk genoeg; het Auto Layout-voorbeeld vond ik zwak en de sectie leek op die erboven. Mijn idee: vijf kaartjes in een grid, twee breed en drie smal, SaaS-stijl naar Supabase |
+| Bento | Vijf kaartjes met eigen lijniconen en een klein beeld per kaartje dat bij hover zijn punt laat zien; een lampgloed volgt de cursor en de randen vangen het licht (naar Magic Bento en Spotlight Card op React Bits). Twee nieuwe punten uit wat al op de site staat: research en kwaliteitschecks | Punten kloppen. Design-system-kaartje te simpel: nu een component als redline-spec waarvan de verwijzingen naar tokens zich bij hover intekenen |
+| Ruimte | De team-sectie stond te dicht op de momenten | 25% meer ruimte erboven |
+
+- **Fout van AI:** de randgloed bleef eerst onzichtbaar omdat het kaartje zijn eigen rand wegknipte; gevonden bij het testen.
+- **Werkwijze:** de dev-server crashte met Turbopack zonder melding op `/ai`; draait nu met `--webpack`. Oorzaak niet uitgezocht.
+- **Nog na te lopen door mij:** de ingekorte teksten van de taste-stappen; "Testing caught it" bij het frames-voorbeeld (het logboek zegt niet wie het vond); de zinnen op de vijf kaartjes.
+- **Toetsing:** in de browser op 1440px en 375px (geen horizontale scroll), typecheck. Hover-toestanden en randgloed gecontroleerd; de zeef deels via berekende stijlen omdat het browservenster verborgen stond. Reduced motion niet nagebootst; `npm run build`, `npm run audit` en `npm run keyboard` niet gedraaid. Live gezet in commit `0d172ca`.
+- **Tijd:** [invullen]
