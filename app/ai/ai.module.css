@@ -26,16 +26,13 @@
 @media (min-width: 48em) {
   .intro > :first-child {
     align-self: start;
-    padding-top: max(
-      0px,
-      calc(
-        (100cqw - clamp(40px, 6vw, 120px)) * 4 / 11 -
-          (
-            0.75rem * 1.35 + clamp(16px, 2vw, 28px) + clamp(2.25rem, 5vw, 5.25rem) * 2.04 +
-              clamp(24px, 3vw, 40px) + clamp(1.0625rem, 1.4vw, 1.25rem) * 4.5
-          )
-      )
+    /* Split into two variables: written as one nested max(calc()), Turbopack crashes on the build */
+    --photo: calc((100cqw - clamp(40px, 6vw, 120px)) * 4 / 11);
+    --text: calc(
+      0.75rem * 1.35 + clamp(16px, 2vw, 28px) + clamp(2.25rem, 5vw, 5.25rem) * 2.04 +
+        clamp(24px, 3vw, 40px) + clamp(1.0625rem, 1.4vw, 1.25rem) * 4.5
     );
+    padding-top: max(0px, var(--photo) - var(--text));
   }
 }
 
