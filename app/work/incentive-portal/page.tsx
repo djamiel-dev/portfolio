@@ -7,10 +7,10 @@ import { Sky } from "@/components/home/Sky";
 import about from "../../about/about.module.css";
 import ai from "../../ai/ai.module.css";
 import styles from "./case.module.css";
-import { Departments, Dots, EaseChart, FlowAB, Landscape, Rounds, ShiftBar, Tenants } from "./visuals";
+import { Changes, Departments, Dots, EaseChart, FlowAB, Landscape, Phone, Rounds, Tenants } from "./visuals";
 
 // Case 01. Wireframe: the layout and the visuals are set, the content still needs checking.
-// Text in [brackets] is a placeholder. No company name, screens or numbers until permission is given.
+// Text in [brackets] is a placeholder. The company name and the screens may be shown (permission given).
 // No "live since" or launch dates: not every case on the site is live, and this one is not new.
 
 export const metadata: Metadata = {
@@ -19,29 +19,50 @@ export const metadata: Metadata = {
 
 // The 30-second version, for the recruiter who reads nothing else
 const short = [
-  { title: "Problem", text: "[Company] had an app for employees, but no place for team leads to reward them." },
+  { title: "Problem", text: "JobRewards had an app for employees, but no place for team leads to reward them." },
   { title: "What I did", text: "Research, design rounds, two expert reviews and a test with seven team leads. Then I built the front-end." },
   { title: "Result", text: "Several client companies use it. Every client I’ve asked calls it fast and easy to use." },
 ];
 
 const facts = [
-  { label: "Role", value: "Product designer and front-end developer" },
+  { label: "Role", value: "Product designer and front-end developer. I also came up with the name and the logo" },
   { label: "Team", value: "A product owner, and a backend developer who built the APIs" },
   { label: "Context", value: "Graduation project, which I kept building on after" },
   { label: "Built with", value: "Figma, Next.js, Microsoft Entra, Azure" },
 ];
 
+// The reward flow in three steps. The screens are the real designs, in Dutch as they were built.
+const heroScreens = [
+  {
+    src: "/images/cases/incentive-portal/reward.png",
+    alt: "Reward screen: the points left this month, four quick rewards and a manual reward with a reason field.",
+  },
+  {
+    src: "/images/cases/incentive-portal/pick-employees.png",
+    alt: "Picking employees for the quick reward Great teamwork, with search, select all and each person’s points.",
+  },
+  {
+    src: "/images/cases/incentive-portal/confirmation.png",
+    alt: "Confirmation: three employees rewarded with 10 points each, 30 points used in total.",
+    // the pop-up dims the app, so the status bar dims with it
+    screen: "#7c7c7c",
+  },
+];
+
 const callouts = [
-  { title: "Quick rewards", text: "Templates for what happens every week, like great teamwork." },
-  { title: "Manual points", text: "So the small things that don’t fit a template still get seen." },
-  { title: "A reason with every reward", text: "Added after an expert review, so people know what they’re rewarded for." },
+  // pin: the middle of the area on reward.png, from the top of the screenshot
+  { title: "Quick rewards", text: "Templates for what happens often, like great teamwork.", pin: "48.7%" },
+  { title: "Manual points", text: "So the small things that don’t fit a template still get seen.", pin: "70.8%" },
+  { title: "A reason with the reward", text: "So the employee knows what the points are for.", pin: "79.8%" },
 ];
 
 const building = [
-  { title: "Roles and permissions", text: "Added after the first launch, on the same structure." },
-  { title: "Departments, when the data has them", text: "On any screen where you pick people, you can show everyone or one department." },
-  { title: "Mock data first", text: "The whole flow ran on mock data, so it could be demoed and tested before the APIs existed." },
-  { title: "Calls run on the server", text: "Login tokens never reach the browser." },
+  {
+    title: "One app for every client",
+    text: "The company comes from the Microsoft login, so every client company uses the same app.",
+  },
+  { title: "Only your own team", text: "The portal asks the API for the team of whoever is logged in, and nothing more." },
+  { title: "Calls run on the server", text: "The browser only talks to the portal’s own server. Login tokens stay there." },
 ];
 
 export default function IncentivePortal() {
@@ -102,10 +123,8 @@ export default function IncentivePortal() {
           </section>
 
           <div className={styles.hero}>
-            {["[Reward screen with quick rewards]", "[Picking employees]", "[Confirmation]"].map((n) => (
-              <div key={n} className={styles.phone}>
-                {n}
-              </div>
+            {heroScreens.map((s) => (
+              <Phone key={s.src} {...s} sizes="(max-width: 768px) 30vw, 240px" />
             ))}
           </div>
 
@@ -124,11 +143,13 @@ export default function IncentivePortal() {
               <Scramble text="An app for employees, but no place for team leads" />
             </h2>
             <p className={about.lead}>
-              [Company] was new: a white-label app that lets employers reward their staff, running on the back-office the
-              company already used. What was missing was a place for team leads to hand out rewards. The back-office holds
-              every client together, so that couldn’t be it.
+              JobRewards was new: a white-label app that lets employers reward their staff. But there was no way yet for
+              team leads to actually hand out those rewards. JobRewards was missing an incentive portal, and I was going
+              to make it.
             </p>
-            <p className={about.body}>My deadline was simple: the launch of the first client.</p>
+            <p className={about.body}>
+              For a new product, the first clients matter most. My deadline was simple: the launch of the first client.
+            </p>
             <Landscape />
           </section>
 
@@ -138,8 +159,13 @@ export default function IncentivePortal() {
               <Scramble text="Designed and tested before the first line of code" />
             </h2>
             <p className={about.lead}>
-              Before I built anything, the design went through rounds of feedback from the client, two UX experts and seven
-              team leads. Each round changed something.
+              Before I built anything, the design went through rounds of feedback: stakeholders at JobRewards, two UX
+              experts, and then a test with seven team leads. Each round changed something.
+            </p>
+            <p className={about.body}>
+              It started with narrowing the brief. Interviews with the product owner and user stories brought it back to
+              the one task that matters: rewarding. A webshop, automatic points from HR systems and badges were left for
+              later.
             </p>
             <Rounds />
           </section>
@@ -150,14 +176,17 @@ export default function IncentivePortal() {
               <Scramble text="Quick for what happens often, manual for what doesn’t" />
             </h2>
             <div className={styles.anatomy}>
-              <div className={styles.phone}>
+              <Phone
+                src="/images/cases/incentive-portal/reward.png"
+                alt="The reward screen: quick rewards at the top, manual points below, then a field for the reason."
+                sizes="(max-width: 768px) 70vw, 260px"
+              >
                 {callouts.map((c, i) => (
-                  <span key={c.title} className={styles.pin} style={{ top: `${30 + i * 20}%` }} aria-hidden="true">
+                  <span key={c.title} className={styles.pin} style={{ top: c.pin }} aria-hidden="true">
                     {i + 1}
                   </span>
                 ))}
-                [Final reward screen]
-              </div>
+              </Phone>
               <ol className={styles.callouts}>
                 {callouts.map((c, i) => (
                   <li key={c.title}>
@@ -177,11 +206,16 @@ export default function IncentivePortal() {
           <section className={about.section} aria-labelledby="case-test">
             <p className={about.eyebrow}>Decision 2</p>
             <h2 id="case-test" className={`${about.heading} ${styles.heading}`}>
-              <Scramble text="Reward first or person first? Seven team leads decided" />
+              <Scramble text="Reward first or person first? I tested my own assumption" />
             </h2>
             <p className={about.lead}>
-              One prototype, two flows that differ in a single step. Seven people who lead or led a team tried both: not
-              [Company] users, but team leads in retail, fast food, logistics, IT and high-tech.
+              I assumed team leads think from the reward first: what do I want to hand out? The expert reviews told me to
+              test that with users, because both orders had strong arguments. So I built one prototype with two flows
+              that differ in a single step.
+            </p>
+            <p className={about.body}>
+              Seven team leads tried both: not JobRewards users, but people leading teams in retail, fast food, logistics,
+              IT and high-tech.
             </p>
             <FlowAB />
             <div className={styles.results}>
@@ -193,30 +227,47 @@ export default function IncentivePortal() {
               </div>
             </div>
             <p className={`${about.body} ${styles.outcome}`}>
-              <strong>So reward-first became the main route.</strong> Person-first stayed too, from an employee’s
-              profile, for the two who think in people first.
+              <strong>Reward-first won, but both flows had their moment.</strong> Two testers preferred person-first,
+              and two more named times they’d want it. So reward-first is the main route, and you can also reward someone
+              straight from the employee list.
             </p>
 
             <div className={styles.aside}>
-              <p className={about.eyebrow}>What I didn’t expect</p>
-              <h3 className={styles.subheading}>Most team leads reward after the shift, not in the moment</h3>
-              <ShiftBar />
-              <p className={about.body}>
-                After the shift they can look back on who earned what. [So the app is built for a calm round of rewards,
-                not for speed between tasks.]
-              </p>
+              <p className={about.eyebrow}>What else the test changed</p>
+              <h3 className={styles.subheading}>Watching people use it showed more than the flow</h3>
+              <Changes />
             </div>
+
           </section>
 
           <section className={about.section} aria-labelledby="case-build">
             <p className={about.eyebrow}>Building it</p>
             <h2 id="case-build" className={`${about.heading} ${styles.heading}`}>
-              <Scramble text="Built to grow with every new client" />
+              <Scramble text="From Figma to a working app, one component at a time" />
             </h2>
             <p className={about.lead}>
-              The company comes from the Microsoft login. So one app serves every client, and each team lead only sees
-              their own people. I set up the front-end to grow: new clients and new features fit in without starting over.
+              I built the front-end in Next.js; a backend developer built the APIs. Some of those APIs already existed,
+              others didn’t yet. Together we worked out what the portal still needed, and I wrote down what each one had
+              to send and return. Until they were ready, the flow ran on mock data, so it could already be demoed and
+              tested.
             </p>
+            <p className={about.body}>
+              I built it with AI in Cursor. Big prompts gave code that didn’t fit together, so I first wrote a project
+              spec: the stack, where code goes, and in which order to build. Then I asked for one component at a time.
+              The app still runs on that structure.
+            </p>
+            <div className={styles.spec}>
+              <pre className={styles.specFile}>
+                <span>PROJECT_SPEC.md</span>
+                {"\n"}UI components must be presentational.{"\n"}Business logic must live in hooks + /lib
+                {"\n\n"}/components/atoms{"\n"}/components/molecules{"\n"}/hooks{"\n"}/lib
+              </pre>
+              <ol className={styles.specSteps} aria-label="The build order in the spec">
+                <li>UI from Figma</li>
+                <li>Interaction and logic</li>
+                <li>The backend, last</li>
+              </ol>
+            </div>
             <div className={styles.build}>
               <Tenants />
               <ol className={styles.points}>
@@ -228,38 +279,28 @@ export default function IncentivePortal() {
                 ))}
               </ol>
             </div>
-            <Departments />
-            <p className={about.body}>
-              After building, I tested the portal with people again. It only needed small refinements. [Who tested, in
-              one line.]
-            </p>
-          </section>
-
-          <section className={about.section} aria-labelledby="case-ai">
-            <p className={about.eyebrow}>How I used AI</p>
-            <h2 id="case-ai" className={`${about.heading} ${styles.heading}`}>
-              <Scramble text="A spec kept AI’s code consistent" />
-            </h2>
-            <p className={about.lead}>
-              I wrote a project spec first, then asked for one component at a time. That code still runs in production.
-            </p>
-            <div className={styles.spec}>
-              <pre className={styles.specFile}>
-                <span>PROJECT_SPEC.md</span>
-                {"\n"}[3–5 real lines: tokens, folder rules, naming]
-              </pre>
-              <ol className={styles.specSteps}>
-                <li>One prompt</li>
-                <li>One component</li>
-                <li>Checked against the spec</li>
-              </ol>
-            </div>
-            <p className={about.body}>
-              Before any of that, AI prototypes in Lovable, Bolt and Stitch helped start the conversation with the client.
-              The research set the direction.{" "}
+            <p className={`${about.body} ${styles.after}`}>
+              A developer on the team reviewed my code, and after building I tested the portal with people again. It
+              only needed small refinements.{" "}
               <a href={links.ai} className={styles.textLink}>
                 <span>How I use AI</span>
               </a>
+            </p>
+          </section>
+
+          <section className={about.section} aria-labelledby="case-later">
+            <p className={about.eyebrow}>After the first client</p>
+            <h2 id="case-later" className={`${about.heading} ${styles.heading}`}>
+              <Scramble text="The project didn’t end at the first launch" />
+            </h2>
+            <p className={about.lead}>
+              New clients brought new needs, so I kept working on it. Departments are one example: some clients organise
+              their teams in departments, so wherever you pick people, a team lead can now show everyone or one of their
+              departments.
+            </p>
+            <Departments />
+            <p className={about.body}>
+              Smaller changes followed too, such as longer team lists and a limit on manual rewards.
             </p>
           </section>
         </div>
@@ -273,8 +314,9 @@ export default function IncentivePortal() {
               <Scramble text="In use at several client companies" />
             </h2>
             <p className={about.lead}>
-              After the first client, more followed. I’ve interviewed every client so far: they all call
-              the portal fast, easy and intuitive to use.
+              The portal was ready for the first client’s launch. More clients followed, and I’ve interviewed every one
+              so far: they all call the portal fast, easy and intuitive to use. Team leads start using it without any
+              training.
             </p>
           </section>
 

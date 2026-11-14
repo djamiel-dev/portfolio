@@ -267,3 +267,69 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Nog na te lopen door mij:** de ingekorte teksten van de taste-stappen; "Testing caught it" bij het frames-voorbeeld (het logboek zegt niet wie het vond); de zinnen op de vijf kaartjes.
 - **Toetsing:** in de browser op 1440px en 375px (geen horizontale scroll), typecheck. Hover-toestanden en randgloed gecontroleerd; de zeef deels via berekende stijlen omdat het browservenster verborgen stond. Reduced motion niet nagebootst; `npm run build`, `npm run audit` en `npm run keyboard` niet gedraaid. Live gezet in commit `0d172ca`.
 - **Tijd:** [invullen]
+
+### Stap 16 – Incentive portal: echte screens in mockups (14 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Toestemming | Vóór het verwerken gevraagd of de screens met JobRewards-logo getoond mogen worden (regel in dit bestand) | Ja; later ook de naam JobRewards op de casepagina. De kaart op de homepage blijft voorlopig `[Company] · Internship [Year]` |
+| Mockup-aanpak | Drie opties: CSS-frame om de PNG, kale screens, of vaste mockup-PNG's renderen. CSS-frame aangeraden (geen nieuwe tools) | CSS-frame; screens blijven Nederlands |
+| Hero | Belonen → medewerkers kiezen → bevestiging, middelste telefoon iets hoger | Akkoord |
+| Fout van AI | Het verkeerde screen in het midden gezet: twee bestandsnamen in de export waren verwisseld. Gezien bij de controle in de browser | Opgelost |
+| Frame, versie 1 | Dunne donkere rand zonder notch; de schermhoeken sneden de app-header af | Afgekeurd: "verder denken in logische fitment". Statusbalk in de app-kleur `#F8F8F8` zodat de hoeken niets wegnemen, en randen als een iPhone met zijknoppen en camera-eiland |
+| Frame, versie 2 | Maten afgeleid van een iPhone-scherm van 393pt (statusbalk 54pt, eiland 126 × 37pt, hoeken ±55pt), alles in `cqw` zodat het op elke breedte klopt; metalen rand, zijknoppen, home-indicator. Bij de pop-up een grijze statusbalk, omdat de pop-up de app dimt. Pins in een eigen laag boven het scherm, in % van de export | Akkoord |
+| Decision 1 | Het beloningsscherm met pins op snelle beloningen, handmatige punten en redenveld | Akkoord |
+| Ontwerprondes | Na mijn vraag zelf in Figma gekeken (MCP) en in de stagedocumenten. Eerst gevraagd welke iteratie bij welke kaart hoort | Mijn uitleg van de volgorde gegeven en gevraagd om zelf het logischste te kiezen. Gekozen: iteratie 3, het testprototype na review 2, iteratie 5 (eerst de beloning, dan de mensen); per kaart één telefoon die uit de onderrand steekt. Het telefoonscherm van iteratie 2 bewust weggelaten (desktop-dashboard onder elkaar) |
+
+- **Nog na te lopen door mij:** de tekst van ronde 2 ("illustrations", "a reason with every reward") tegen wat het screen en het document laten zien; ronde 3 lijkt op het middelste hero-screen; de Engelse alt-teksten.
+- **Toetsing:** in de browser op desktop en 375px (geen horizontale scroll, geen consolefouten), typecheck. Niet op een echte telefoon; `npm run build`, `npm run audit` en `npm run keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 17 – Incentive portal: inhoud van de casepagina (13–14 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Wireframe | Eerst een losse lo-fi HTML-wireframe met per blok een visueel concept: voor/na-flow, tijdbalk op echte verhoudingen, filmstrip van iteraties, geannoteerd scherm, slope chart per tester, stippen voor kleine aantallen, dagbalk, menu-verschil, log-kaartjes met productiebugs | Richting goed, maar een losse pagina die niet in mijn stijl staat werkt niet: direct in de portfolio bouwen. Momenten die beginnersfouten tonen eruit ("first design was for the wrong screen", bugs zoals een redirect naar localhost) |
+| Casepagina | `/work/incentive-portal` in de stijl van About en How I use AI, dag naar nacht bij het resultaat; case 01 op de homepage linkt ernaartoe | Akkoord, live gezet in `0a3da4a` |
+| Inhoud (spraakmemo) | – | Geen "live since"; probleem herschreven; tijdlijn en menu-verschil eruit; testers waren teamleiders uit het veld, geen gebruikers; na het bouwen ook getest; rollen, rechten en afdelingen toegevoegd, met de schaalbaarheid als punt (de afdelingskeuze verschijnt alleen als de data afdelingen heeft); ik bouwde de API's niet |
+| Review chronologie | Pagina naast mijn volgorde van iteraties gelegd en de bestanden nagelopen. Vier afwijkingen: rondes vereenvoudigd, "client" dubbelzinnig, de reden voor de A/B-test ontbrak, de uitkomst te smal ("for the two who think in people first"). In de bestanden komt het advies om de volgorde te testen alleen uit expert review 2 | Rondes mogen vereenvoudigd blijven; de andere drie aangepast. Uitkomst: beide flows hadden hun moment (twee kozen persoon-eerst, twee anderen noemden momenten), dus beloning-eerst is de hoofdroute en belonen kan ook vanuit de medewerkerslijst |
+| Architectuur | – | Geen interne systeemarchitectuur van de werkgever noemen. Het diagram in Building it toont nu alleen wat een teamleider ziet (eigen team, andere teams afgeschermd) |
+
+- **Fout van AI:** in de eerste versie stond "4 of 7" als citaat tussen aanhalingstekens en "two taps" zonder haken; beide nog vóór publicatie gecorrigeerd. Mijn eigen testverslag bleek fouten te hebben (gemiddelde 4,6 i.p.v. 4,4; "4 van 7" terwijl er vijf namen staan); de pagina gebruikt de herberekende cijfers.
+- **Werkwijze:** de lokale build met Turbopack crasht (exit 132); `next build --webpack` lukt.
+- **Nog na te lopen door mij:** zie de placeholders onder "Open punten" in `CLAUDE.md`.
+- **Toetsing:** in de browser op 1440px en 375px (geen horizontale scroll, geen consolefouten), typecheck en `next build --webpack`. `npm run audit` en `npm run keyboard` niet gedraaid. Wijzigingen na `0a3da4a` niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 18 – Incentive portal: feiten rechtgezet en wat onderzoek echt veranderde (14 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Feitencheck | Pagina naast de stagedocumenten gelegd. Drie fouten: het redenveld zat al in iteratie 3 (dus niet "added after an expert review"), ronde 2 noemde illustraties en een reden die niet op het screen staan, één tester was geen teamleider | Callout en ronde 2 aangepast; testers heten voor het gemak "seven team leads"; de tester die zo'n app niet zou gebruiken telt mee bij "na de dienst" (6 en 1) |
+| Rondes | Opgemerkt dat ronde 2 en 3 vrijwel de hero-screens herhalen. Figma (MCP) per pagina vergeleken: testprototype naast development MVP | Process toont nu: AI-schetsen → eerste Figma-ontwerp (iteratie 1) → telefoon-eerst (iteratie 3) → twee expert reviews. Het screen van iteratie 5 eruit |
+| Wat de test veranderde | Drie voor/na-paren die in de testnotities terug te vinden zijn: statistieken (getallen in de staven, kopjes), menu (Geschiedenis → Logboek, beloningenlijst weg, ander icoon), medewerkerprofiel (toevoegen en verwijderen weg, fraude). Eigen eerdere claim geschrapt: het bevestigingsscherm zat al in het testprototype | Akkoord; staat in Decision 2 onder "What else the test changed" |
+| Cursor | Prompt met 15 vragen voor de code van de portal | Antwoorden geplakt; gebruikt als bron voor de volgende stappen |
+
+- **Fout van AI:** ik noemde het bevestigingsscherm eerst een gevolg van de test; Figma liet zien dat het er al was.
+- **Toetsing:** in de browser op desktop en 375px (geen horizontale scroll, geen consolefouten). Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 19 – Incentive portal: Building it, AI per stap, na de eerste klant (14 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| AI-blok | – | Geen apart blok: AI uitleggen bij de stap waar het speelde. AI-prototypes staan bij Exploring, de spec bij Building it |
+| Spec | Echte regels uit `PROJECT_SPEC.md` (via Cursor) in plaats van de placeholder; de door AI bedachte stap "Checked against the spec" vervangen door de bouwvolgorde uit de spec zelf (UI → logica → backend) | Akkoord |
+| Rollen | Cursor liet zien dat de rollen niet worden afgedwongen in de portal; kaart "Roles and permissions" geschrapt. Nieuwe kaarten: één app voor elke klant, alleen je eigen team, aanroepen via de server | Akkoord |
+| Afdelingen | – | Niet als schaalbaarheidspunt, maar als voorbeeld van "de case was niet voorbij bij de eerste klant". Eigen sectie, met één regel over kleinere wijzigingen daarna |
+
+- **Toetsing:** in de browser op desktop en 375px (geen horizontale scroll, geen consolefouten), typecheck. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 20 – Incentive portal: kritische ronde op de inhoud (14 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Vraag | Ik vroeg of dingen ook beter konden lijken dan ze zijn | AI weigerde te overdrijven en zocht in de rest van de stagedocumenten naar ware punten die onderbelicht waren |
+| Toegevoegd | Naam en logo zelf bedacht; eerste klanten tellen het zwaarst; opdracht eerst versmald (webshop, automatische punten, badges voor later); API's in overleg met de backend developer beschreven; code gereviewd; teamleiders gebruiken het zonder training | Akkoord. Bij de review alleen dát het gebeurde, niet de punten |
+| Geschrapt | Het blok "after the shift" (alleen een inzicht), de firewall-fix | Akkoord |
+| Afgewezen | "What I'd do differently", kleinere ontwerpkeuzes, de Europese richtlijn, onderscheid gebouwd/ontworpen | Geen fouten tonen; kleinere punten zijn de lengte niet waard |
+| Overdracht | `docs/cases/incentive-portal.md` herschreven als overzicht voor het inkorten en het design in een nieuwe chat | Akkoord |
+
+- **Toetsing:** in de browser (geen consolefouten), typecheck. Niet gecommit.
+- **Tijd:** [invullen]

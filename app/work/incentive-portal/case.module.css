@@ -32,28 +32,120 @@
 /* Three phones on the same quiet ground as case 01 on the homepage */
 .hero {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 220px));
+  grid-template-columns: repeat(3, minmax(0, 240px));
   justify-content: center;
+  align-items: center;
   gap: clamp(12px, 3vw, 48px);
   margin-top: clamp(48px, 6vw, 96px);
   padding: clamp(32px, 6vw, 96px) clamp(16px, 4vw, 64px);
   background: #dde2e3;
 }
 
-/* Grey phone with a note on which screen goes here */
-.phone {
+/*
+ * An iPhone-like phone. Everything is sized in cqw (1% of the phone's width),
+ * so the proportions hold at 100px and at 260px.
+ * Measured on a 393pt-wide iPhone screen: status bar 54pt, island 126 × 37pt at 11pt from the top,
+ * home indicator 134 × 5pt, screen corners about 55pt.
+ */
+.device {
+  container-type: inline-size;
   position: relative;
-  display: grid;
-  place-items: center;
-  aspect-ratio: 9 / 19;
-  padding: 16px;
-  border: 1px solid rgb(18 19 24 / 0.12);
-  border-radius: clamp(16px, 2.4vw, 32px);
-  background: #eceeec;
-  color: var(--muted);
-  font-size: 0.8125rem;
-  line-height: 1.35;
-  text-align: center;
+}
+
+/* Metal band with a black border inside it */
+.frame {
+  position: relative;
+  padding: 0.9cqw;
+  border-radius: 17.6cqw;
+  background: linear-gradient(135deg, #6a6c72, #34363b 45%, #55575d);
+  box-shadow:
+    0 1px 2px rgb(18 19 24 / 0.14),
+    0 24px 48px -16px rgb(18 19 24 / 0.32);
+}
+
+/* Side buttons: action button and two volume buttons on the left, the side button on the right */
+.frame::before,
+.frame::after {
+  content: "";
+  position: absolute;
+  width: 0.9cqw;
+  border-radius: 0.5cqw;
+}
+
+.frame::before {
+  top: 17%;
+  left: -0.6cqw;
+  height: 23.5%;
+  background: linear-gradient(
+    to bottom,
+    #4c4e54 0 19%,
+    transparent 19% 34%,
+    #4c4e54 34% 62%,
+    transparent 62% 72%,
+    #4c4e54 72% 100%
+  );
+}
+
+.frame::after {
+  top: 27%;
+  right: -0.6cqw;
+  height: 11%;
+  background: #4c4e54;
+}
+
+/* The screen: status bar on top in the app's own background (set per screen), home indicator at the bottom */
+.screen {
+  position: relative;
+  overflow: hidden;
+  padding: 12.7cqw 0 6cqw;
+  border: 2.8cqw solid #0b0b0d;
+  border-radius: 16.7cqw;
+}
+
+/* Camera island */
+.screen::before,
+.screen::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  border-radius: 99px;
+}
+
+.screen::before {
+  top: 2.6cqw;
+  width: 29.7cqw;
+  height: 8.7cqw;
+  background: #000;
+}
+
+.screen::after {
+  bottom: 1.9cqw;
+  width: 31.6cqw;
+  height: 1.2cqw;
+  background: rgb(0 0 0 / 0.85);
+}
+
+.screen img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* A layer exactly over the export (band + border + status bar / home area), outside the clipped screen,
+   so pins are placed in % of the export and can sit on the edge of the phone */
+.pins {
+  position: absolute;
+  inset: 16.4cqw 3.7cqw 9.7cqw;
+}
+
+.pins .pin {
+  left: calc(-3.7cqw - 14px);
+}
+
+/* The middle step sits a little higher, so the three read as a sequence */
+.hero .device:nth-child(2) {
+  translate: 0 calc(-1 * clamp(12px, 2vw, 32px));
 }
 
 .facts {
@@ -179,16 +271,79 @@
   color: var(--fg-2);
 }
 
+/* The phone rises from the bottom edge: you see the top of each screen, where the rounds differ */
 .pane {
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
   aspect-ratio: 4 / 3;
   margin-bottom: 16px;
-  padding: 24px;
+  padding-top: 9%;
   background: #dfe1e0;
-  color: var(--muted);
-  font-size: 0.875rem;
-  text-align: center;
+}
+
+.pane .device {
+  flex: none;
+  width: 54%;
+  translate: 0 var(--shift, 0);
+}
+
+/* A desktop design sits whole in the middle of the pane */
+.pane[data-wide] {
+  align-items: center;
+  padding: 0 7%;
+}
+
+.desktop {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow:
+    0 1px 2px rgb(18 19 24 / 0.12),
+    0 16px 32px -12px rgb(18 19 24 / 0.28);
+}
+
+/* ---------- What the test changed ---------- */
+
+.changes {
+  margin: clamp(32px, 4vw, 48px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--line);
+}
+
+.changes > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 20px clamp(16px, 2vw, 32px);
+  align-items: start;
+  padding: clamp(24px, 3vw, 40px) 0;
+  border-top: 1px solid var(--line);
+}
+
+.change {
+  margin: 0;
+}
+
+.change .pane {
+  aspect-ratio: 1;
+  margin-bottom: 10px;
+}
+
+.changeText h4 {
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.changeText p {
+  margin-top: 8px;
+  color: var(--fg-2);
+}
+
+.changeText p + p {
+  color: var(--fg);
 }
 
 /* ---------- Annotated screen ---------- */
@@ -218,6 +373,7 @@
 .pin {
   position: absolute;
   left: -14px;
+  translate: 0 -50%;
   background: var(--accent);
   color: #fff;
 }
@@ -442,83 +598,6 @@
   text-wrap: balance;
 }
 
-/* A working day: the shift as a block, the rewards as dots where they happen */
-.shift {
-  max-width: 720px;
-  margin: clamp(28px, 3vw, 40px) 0 0;
-}
-
-.shiftDay {
-  position: relative;
-  height: 56px;
-  border-bottom: 1px solid var(--fg);
-}
-
-.shiftBlock {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 6%;
-  width: 58%;
-  display: flex;
-  align-items: center;
-  padding-left: 14px;
-  background: #dfe1e0;
-  color: var(--muted);
-  font-size: 0.875rem;
-}
-
-.shiftSpot,
-.shiftAfter {
-  position: absolute;
-  bottom: 12px;
-  display: flex;
-  gap: 5px;
-}
-
-.shiftSpot {
-  left: 48%;
-}
-
-.shiftAfter {
-  left: 70%;
-}
-
-.shiftSpot i,
-.shiftAfter i {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--fg);
-}
-
-.shiftAfter i {
-  background: var(--accent);
-}
-
-.shiftLegend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 24px;
-  margin-top: 14px;
-  color: var(--fg-2);
-  font-size: 0.875rem;
-}
-
-.shiftLegend span[data-kind]::before {
-  content: "";
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 8px;
-  border-radius: 50%;
-  background: var(--fg);
-}
-
-.shiftLegend span[data-kind="after"]::before {
-  background: var(--accent);
-}
-
 /* ---------- Building it ---------- */
 
 .build {
@@ -535,26 +614,33 @@
   border: 1px solid var(--fg);
 }
 
-.companies {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 14px;
-}
-
 .company {
   display: grid;
   gap: 8px;
+  margin-top: 14px;
   padding: 14px;
   border: 1px dashed var(--dim);
   font-size: 0.9375rem;
 }
 
 .team {
-  padding: 8px 10px;
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
   border: 1px solid var(--line);
   color: var(--fg-2);
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
+}
+
+.team small {
+  font-size: 0.8125rem;
+  opacity: 0.85;
+}
+
+/* Out of reach: dashed and quiet */
+.team[data-hidden] {
+  border-style: dashed;
+  color: var(--muted);
 }
 
 .team[data-lit] {
@@ -623,6 +709,7 @@
   color: var(--bg);
 }
 
+.after,
 .departments + .body {
   margin-top: clamp(32px, 4vw, 48px);
 }
@@ -786,11 +873,6 @@
     padding: 24px 12px;
   }
 
-  .phone {
-    font-size: 0.6875rem;
-    padding: 8px;
-  }
-
   .flowRow {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -826,12 +908,21 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .anatomy .phone {
+  .anatomy .device {
     width: min(220px, 70%);
     justify-self: center;
   }
 
   .picker {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The two screens side by side, the text under them */
+  .changes > li {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .changeText {
+    grid-column: 1 / -1;
   }
 }
