@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 import styles from "./case.module.css";
 
 // An iPhone-like frame: side buttons, a camera island over a status bar in the app's own background,
@@ -35,36 +35,10 @@ export function Phone({
 // Diagrams and charts for the Incentive portal case. Plain SVG and CSS, drawn from the research
 // documents; nothing here moves. Colours come from the page tokens through the CSS classes.
 
-/* Where the portal sits: the app that was already there, and the piece that was missing */
-export function Landscape() {
-  const parts = [
-    { name: "Team lead", note: "Wants to reward their people" },
-    { name: "Incentive Portal", note: "New: where team leads hand out rewards", lit: true },
-    { name: "Employee app", note: "Already there: where staff receive them" },
-  ];
+/* Grey ground with a phone rising from the bottom, so you see the top of each screen */
+function Pane({ wide, children }: { wide?: boolean; children: ReactNode }) {
   return (
-    <figure className={styles.landscape}>
-      <ol className={styles.flow}>
-        {parts.map((p) => (
-          <li key={p.name} className={styles.node} data-lit={p.lit || undefined} data-wide="">
-            <strong>{p.name}</strong>
-            <small>{p.note}</small>
-          </li>
-        ))}
-      </ol>
-    </figure>
-  );
-}
-
-/* Grey ground with a phone rising from the bottom. shift moves the phone up (in % of its own height),
-   so a part lower on the screen comes into view. */
-function Pane({ shift, wide, children }: { shift?: string; wide?: boolean; children: ReactNode }) {
-  return (
-    <div
-      className={styles.pane}
-      data-wide={wide || undefined}
-      style={shift ? ({ "--shift": shift } as CSSProperties) : undefined}
-    >
+    <div className={styles.pane} data-wide={wide || undefined}>
       {children}
     </div>
   );
@@ -130,77 +104,68 @@ export function Rounds() {
   );
 }
 
-/* What the test changed besides the flow: the tested screen next to the screen after the test */
+/* Only the part of a screen that changed, without a phone around it. x, y and w are pixels in the
+   960-wide export; every crop is 4:5, so the height is w × 1.25. Margins in % follow the box's width. */
+function Crop({ src, alt, x, y, w, height, tag }: { src: string; alt: string; x: number; y: number; w: number; height: number; tag: string }) {
+  return (
+    <figure className={styles.crop}>
+      <figcaption className={styles.label}>{tag}</figcaption>
+      <div className={styles.window}>
+        <Image
+          src={src}
+          alt={alt}
+          width={960}
+          height={height}
+          sizes={`(max-width: 768px) ${Math.round((960 / w) * 45)}vw, ${Math.round((960 / w) * 220)}px`}
+          style={{ width: `${(960 / w) * 100}%`, marginLeft: `${(-x / w) * 100}%`, marginTop: `${(-y / w) * 100}%` }}
+        />
+      </div>
+    </figure>
+  );
+}
+
+/* What the test changed besides the flow: one detail per screen, tested on the left, after the test on the right */
 export function Changes() {
   const changes = [
     {
       title: "Numbers you can read",
-      found: "Testers guessed at the bars: was it 200, or 199? And on a busy page, they didn’t know where to look.",
-      change: "Every bar shows its number, and the page is split into clear sections.",
-      before: { src: "/images/cases/incentive-portal/stats-before.png", height: 2622, alt: "Tested statistics screen: bars without numbers under the general figures." },
-      after: { src: "/images/cases/incentive-portal/stats-after.png", height: 2758, alt: "After the test: the bars show their numbers, under the headings Specific data and Leaderboard." },
-      shift: "-38%",
+      found: "Testers guessed at the bars: was it 200, or 199?",
+      change: "Every bar now shows its number, and the page has clear sections.",
+      crop: { x: 100, w: 620, before: 1060, after: 1150 },
+      before: { src: "/images/cases/incentive-portal/stats-before.png", height: 2622, alt: "Tested statistics chart: bars without numbers." },
+      after: { src: "/images/cases/incentive-portal/stats-after.png", height: 2758, alt: "After the test: each bar shows its number." },
     },
     {
       title: "One name per task",
-      found: "History and statistics kept getting mixed up, and one tester said the reward icon didn’t fit.",
-      change: "History became Logbook, the separate reward list went, and rewarding got its own icon.",
-      before: { src: "/images/cases/incentive-portal/menu-before.png", height: 1892, alt: "Tested menu with six items, including History and Reward list." },
-      after: { src: "/images/cases/incentive-portal/menu-after.png", height: 1892, alt: "Menu after the test: five items, with Logbook instead of History and a gift icon for rewarding." },
-      shift: "-16%",
+      found: "History and statistics kept getting mixed up.",
+      change: "History became Logbook, and the separate reward list went.",
+      crop: { x: 30, w: 900, before: 600, after: 600 },
+      before: { src: "/images/cases/incentive-portal/menu-before.png", height: 1892, alt: "Tested menu: Statistics, History, Reward list, Tips for rewarding." },
+      after: { src: "/images/cases/incentive-portal/menu-after.png", height: 1892, alt: "Menu after the test: Statistics, Logbook, Tips for rewarding." },
     },
     {
       title: "Reward, don’t manage",
-      found: "A team lead pointed out that adding and removing staff yourself invites fraud.",
-      change: "Adding and removing people came out. Team leads reward their team; they don’t edit it.",
-      before: { src: "/images/cases/incentive-portal/employee-before.png", height: 1874, alt: "Tested employee profile with buttons to add an employee and to remove this one." },
-      after: { src: "/images/cases/incentive-portal/employee-after.png", height: 1874, alt: "Employee profile after the test: the details and a button to reward, nothing to add or remove." },
+      found: "A team lead warned that adding and removing staff yourself invites fraud.",
+      change: "Team leads now reward their team; they don’t edit it.",
+      crop: { x: 0, w: 960, before: 170, after: 170 },
+      before: { src: "/images/cases/incentive-portal/employee-before.png", height: 1874, alt: "Tested employee profile with an Add employee button and a Remove link." },
+      after: { src: "/images/cases/incentive-portal/employee-after.png", height: 1874, alt: "Employee profile after the test, without add or remove." },
     },
   ];
   return (
-    <ol className={styles.changes}>
+    <ul className={styles.changes}>
       {changes.map((c) => (
         <li key={c.title}>
-          {[c.before, c.after].map((s, i) => (
-            <figure key={s.src} className={styles.change}>
-              <Pane shift={c.shift}>
-                <Phone src={s.src} alt={s.alt} height={s.height} sizes="(max-width: 768px) 45vw, 200px" />
-              </Pane>
-              <figcaption className={styles.label}>{i === 0 ? "Tested" : "After the test"}</figcaption>
-            </figure>
-          ))}
-          <div className={styles.changeText}>
-            <h4>{c.title}</h4>
-            <p>{c.found}</p>
-            <p>{c.change}</p>
+          <div className={styles.pair}>
+            <Crop {...c.before} x={c.crop.x} y={c.crop.before} w={c.crop.w} tag="Tested" />
+            <Crop {...c.after} x={c.crop.x} y={c.crop.after} w={c.crop.w} tag="After the test" />
           </div>
+          <h4>{c.title}</h4>
+          <p>{c.found}</p>
+          <p>{c.change}</p>
         </li>
       ))}
-    </ol>
-  );
-}
-
-/* Flow A and B differ in one step; that step is marked */
-export function FlowAB() {
-  const flows = [
-    { name: "Flow A", steps: ["Pick a reward", "Pick people", "Confirm"], swap: 0 },
-    { name: "Flow B", steps: ["Pick people", "Pick a reward", "Confirm"], swap: 1 },
-  ];
-  return (
-    <div className={styles.flows}>
-      {flows.map((f) => (
-        <div key={f.name} className={styles.flowRow}>
-          <span className={styles.label}>{f.name}</span>
-          <ol className={styles.flow}>
-            {f.steps.map((s, i) => (
-              <li key={s} className={styles.node} data-lit={i === f.swap || undefined}>
-                {s}
-              </li>
-            ))}
-          </ol>
-        </div>
-      ))}
-    </div>
+    </ul>
   );
 }
 
@@ -280,68 +245,6 @@ export function EaseChart() {
         <li data-kind="b">Preferred B</li>
         <li data-kind="avg">Average</li>
       </ul>
-    </figure>
-  );
-}
-
-/* Small counts as dots, not percentages: seven people is not a survey */
-export function Dots({ of, lit, label, tone = "fg" }: { of: number; lit: number; label: string; tone?: "fg" | "accent" }) {
-  return (
-    <div className={styles.dotRow}>
-      <p className={styles.label}>{label}</p>
-      <span className={styles.dots} data-tone={tone} aria-hidden="true">
-        {Array.from({ length: of }, (_, i) => (
-          <i key={i} data-on={i < lit || undefined} />
-        ))}
-      </span>
-      <p className={styles.dotCount}>
-        {lit} of {of}
-      </p>
-    </div>
-  );
-}
-
-/* What a team lead sees after logging in: their company, their team, and nothing else */
-export function Tenants() {
-  return (
-    <figure className={styles.tenants}>
-      <figcaption className={styles.label}>After the Microsoft login</figcaption>
-      <div className={styles.company}>
-        <span>Your company</span>
-        <span className={styles.team} data-lit="">
-          Your team
-          <small>Everyone you can reward</small>
-        </span>
-        <span className={styles.team} data-hidden="">
-          Other teams
-          <small>Not visible to you</small>
-        </span>
-      </div>
-    </figure>
-  );
-}
-
-/* The same people picker for two team leads: the department choice only appears when the team lead has departments */
-export function Departments() {
-  const cases = [
-    { api: "Team lead without departments", options: ["Everyone"] },
-    { api: "Team lead with departments", options: ["Everyone", "Department A", "Department B"] },
-  ];
-  return (
-    <figure className={styles.departments}>
-      {cases.map((c) => (
-        <div key={c.api} className={styles.picker}>
-          <p className={styles.label}>{c.api}</p>
-          <span className={styles.segments} aria-hidden="true">
-            {c.options.map((o, i) => (
-              <span key={o} data-on={i === 0 || undefined}>
-                {o}
-              </span>
-            ))}
-          </span>
-        </div>
-      ))}
-      <figcaption className={styles.small}>Same screen, same code. The data decides what the team lead sees.</figcaption>
     </figure>
   );
 }

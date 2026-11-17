@@ -1,4 +1,5 @@
-/* Case page – daylight for the story, night for the result, like the homepage.
+/* One grey, #dce2e3, sits behind every image and panel on this page.
+   Case page – daylight for the story, night for the result, like the homepage.
    Builds on about.module.css (page, sections, type) and the tokens in home.module.css (.root). */
 
 .label {
@@ -10,6 +11,11 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   font-variant-numeric: tabular-nums;
+}
+
+/* The middle sections each end in a large visual, so they need more air above them than on About */
+.roomy {
+  padding-top: calc(var(--block) * 1.4);
 }
 
 /* Long headings get a little more width than on About */
@@ -38,7 +44,7 @@
   gap: clamp(12px, 3vw, 48px);
   margin-top: clamp(48px, 6vw, 96px);
   padding: clamp(32px, 6vw, 96px) clamp(16px, 4vw, 64px);
-  background: #dde2e3;
+  background: #dce2e3;
 }
 
 /*
@@ -152,99 +158,28 @@
   margin-top: clamp(40px, 5vw, 72px);
 }
 
-/* ---------- Flows (landscape, A/B) ---------- */
+/* ---------- Problem ---------- */
 
-.landscape {
-  margin: clamp(40px, 5vw, 64px) 0 0;
-}
-
-/* A node with a name and a short note under it */
-.node[data-wide] {
+/* The employee app on the left, the problem on the right */
+.problem {
   display: grid;
-  gap: 2px;
-  padding: 14px 18px;
-  white-space: normal;
-  max-width: 15em;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  gap: 32px clamp(40px, 6vw, 120px);
+  align-items: center;
 }
 
-.node[data-wide] strong {
-  font-weight: 540;
-}
-
-.node[data-wide] small {
-  color: var(--fg-2);
-  font-size: 0.875rem;
-  line-height: 1.35;
-}
-
-.node[data-wide]:not([data-lit]) {
-  border-color: var(--line);
-}
-
-.node[data-lit] small {
-  color: var(--accent);
-}
-
-.flows {
-  margin-top: clamp(40px, 5vw, 64px);
-  border-bottom: 1px solid var(--line);
-}
-
-.flowRow {
+/* The export has a white ground: multiply lets the page colour show through */
+/* No grey ground here: the export has its own warm tones, which clash with the grey */
+.problemFrame {
   display: grid;
-  grid-template-columns: 6em minmax(0, 1fr);
-  gap: 12px 24px;
-  align-items: center;
-  padding: 20px 0;
-  border-top: 1px solid var(--line);
+  place-items: center;
 }
 
-.flow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-/* The step itself: a ruled box */
-.node {
-  position: relative;
-  padding: 10px 16px;
-  border: 1px solid var(--fg);
-  font-size: clamp(1rem, 1.3vw, 1.125rem);
-  white-space: nowrap;
-}
-
-/* An arrow between steps, drawn outside the box */
-.node + .node {
-  margin-left: 40px;
-}
-
-.node + .node::before {
-  content: "→";
-  position: absolute;
-  top: 50%;
-  left: -41px;
-  width: 40px;
-  translate: 0 -50%;
-  color: var(--muted);
-  text-align: center;
-}
-
-/* A step that disappears */
-.node[data-gone] {
-  border-style: dashed;
-  border-color: var(--dim);
-  color: var(--muted);
-}
-
-/* The step that matters */
-.node[data-lit] {
-  border-color: var(--accent);
-  color: var(--accent);
+.problemImage {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  mix-blend-mode: multiply;
 }
 
 /* ---------- Design rounds ---------- */
@@ -279,13 +214,12 @@
   aspect-ratio: 4 / 3;
   margin-bottom: 16px;
   padding-top: 9%;
-  background: #dfe1e0;
+  background: #dce2e3;
 }
 
 .pane .device {
   flex: none;
   width: 54%;
-  translate: 0 var(--shift, 0);
 }
 
 /* A desktop design sits whole in the middle of the pane */
@@ -305,57 +239,88 @@
 
 /* ---------- What the test changed ---------- */
 
+/* Three cards side by side: the tested screen next to the same part after the test */
 .changes {
-  margin: clamp(32px, 4vw, 48px) 0 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px clamp(16px, 2vw, 32px);
+  margin: clamp(24px, 3vw, 40px) 0 0;
   padding: 0;
   list-style: none;
-  border-bottom: 1px solid var(--line);
 }
 
-.changes > li {
+.pair {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.15fr);
-  gap: 20px clamp(16px, 2vw, 32px);
-  align-items: start;
-  padding: clamp(24px, 3vw, 40px) 0;
-  border-top: 1px solid var(--line);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #dce2e3;
 }
 
-.change {
+.crop {
+  display: grid;
+  gap: 6px;
   margin: 0;
 }
 
-.change .pane {
-  aspect-ratio: 1;
-  margin-bottom: 10px;
+/* A 4:5 window on the export; the image is scaled and moved inline */
+.window {
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: 6px;
+  background: #f8f8f8;
 }
 
-.changeText h4 {
-  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
-  font-weight: 540;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+.window img {
+  display: block;
+  max-width: none;
+  height: auto;
 }
 
-.changeText p {
-  margin-top: 8px;
+.changes h4 {
+  font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
+  font-weight: 560;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.changes p {
+  margin-top: 6px;
   color: var(--fg-2);
 }
 
-.changeText p + p {
+.changes p + p {
+  margin-top: 4px;
   color: var(--fg);
 }
 
 /* ---------- Annotated screen ---------- */
 
+/* Text and callouts on the left, the annotated screen on its grey ground on the right */
+.decision {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: 40px clamp(32px, 4vw, 64px);
+  align-items: start;
+  margin-top: clamp(24px, 3vw, 40px);
+}
+
+/* Under a full-width heading, text and image start on the same line */
+.decision > div > :first-child,
+.testIntro > div > :first-child {
+  margin-top: 0;
+}
+
 .anatomy {
   display: grid;
-  grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
-  gap: 40px clamp(40px, 6vw, 120px);
-  align-items: center;
-  margin-top: clamp(40px, 5vw, 64px);
-  padding: clamp(32px, 5vw, 72px);
-  background: #dde2e3;
+  place-items: center;
+  padding: clamp(32px, 4vw, 64px) clamp(32px, 4vw, 56px);
+  background: #dce2e3;
+}
+
+.anatomy .device {
+  width: min(280px, 100%);
 }
 
 .pin,
@@ -385,8 +350,8 @@
 
 .callouts {
   display: grid;
-  gap: 28px;
-  margin: 0;
+  gap: 24px;
+  margin: clamp(32px, 4vw, 48px) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -399,7 +364,7 @@
 }
 
 .callouts h3 {
-  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
   font-weight: 540;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -412,18 +377,59 @@
 
 /* ---------- Test results ---------- */
 
+/* The prototype whole on desktop, scrolling sideways on a phone */
+/* The question on the left, the prototype that answered it on the right */
+.testIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: 32px clamp(32px, 4vw, 64px);
+  align-items: start;
+  margin-top: clamp(24px, 3vw, 40px);
+}
+
+.prototype {
+  margin: 0;
+}
+
+/* The Figma canvas brings its own grey, so no ground around it */
+.prototypeScroll {
+  overflow-x: auto;
+}
+
+
+.prototypeScroll img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.prototype figcaption {
+  margin-top: 10px;
+}
+
+/* A bento: the chart as the large tile, the two counts as tiles stacked next to it */
 .results {
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: 24px;
+  gap: 12px;
   margin-top: clamp(32px, 4vw, 48px);
 }
 
 .chart,
-.votes {
+.stat {
   margin: 0;
-  padding: clamp(20px, 2.4vw, 32px);
-  background: #e4e6e2;
+  padding: clamp(24px, 3vw, 40px);
+  background: #dce2e3;
+}
+
+.votes {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+}
+
+.note {
+  margin-top: 12px;
 }
 
 .chart figcaption {
@@ -446,7 +452,7 @@
 .chart svg {
   display: block;
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
   height: auto;
   margin: 0 auto;
   overflow: visible;
@@ -528,47 +534,64 @@
   border-top: 3px solid var(--accent);
 }
 
-.votes {
+/* The count is the headline of the tile */
+.stat {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.dotRow .label {
-  margin-bottom: 10px;
+.statNum {
+  font-size: clamp(3rem, 5.5vw, 5rem);
+  font-weight: 560;
+  font-stretch: 104%;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+}
+
+.statOf {
+  color: var(--muted);
+  font-size: 0.4em;
+  letter-spacing: -0.02em;
+}
+
+.stat[data-tone="accent"] .statNum {
+  color: var(--accent);
+}
+
+.statLabel {
+  color: var(--fg-2);
 }
 
 .dots {
   display: flex;
-  gap: 6px;
+  gap: 5px;
+  margin-top: auto;
 }
 
 .dots i {
-  width: 20px;
-  height: 20px;
-  border: 1.5px solid var(--fg);
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--dim);
   border-radius: 50%;
 }
 
+.dots i {
+  transition:
+    background-color 160ms ease-out,
+    border-color 160ms ease-out;
+}
+
 .dots i[data-on] {
+  border-color: var(--fg);
   background: var(--fg);
 }
 
-.dots[data-tone="accent"] i[data-on] {
+.stat[data-tone="accent"] .dots i[data-on] {
   border-color: var(--accent);
   background: var(--accent);
-}
-
-.dotCount {
-  margin-top: 8px;
-  font-size: clamp(1.5rem, 2.2vw, 2rem);
-  font-weight: 560;
-  line-height: 1;
-  letter-spacing: -0.03em;
-}
-
-.votes .small {
-  margin-top: auto;
 }
 
 .outcome {
@@ -600,64 +623,45 @@
 
 /* ---------- Building it ---------- */
 
-.build {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  gap: 40px clamp(40px, 6vw, 120px);
-  align-items: start;
-  margin-top: clamp(40px, 5vw, 64px);
-}
-
-.tenants {
-  margin: 0;
-  padding: 20px;
-  border: 1px solid var(--fg);
-}
-
-.company {
-  display: grid;
-  gap: 8px;
-  margin-top: 14px;
-  padding: 14px;
-  border: 1px dashed var(--dim);
-  font-size: 0.9375rem;
-}
-
-.team {
-  display: grid;
-  gap: 2px;
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  color: var(--fg-2);
-  font-size: 0.9375rem;
-}
-
-.team small {
-  font-size: 0.8125rem;
-  opacity: 0.85;
-}
-
-/* Out of reach: dashed and quiet */
-.team[data-hidden] {
-  border-style: dashed;
-  color: var(--muted);
-}
-
-.team[data-lit] {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
+/* Three short points under the lead, as a quiet ruled list */
 .points {
-  margin: 0;
+  margin: clamp(32px, 4vw, 48px) 0 0;
   padding: 0;
   list-style: none;
   border-bottom: 1px solid var(--line);
 }
 
 .points li {
-  padding: 20px 0;
+  padding: 16px 0;
   border-top: 1px solid var(--line);
+}
+
+/* The homepage image of case 01 on the same quiet grey */
+.buildImage {
+  display: grid;
+  place-items: center;
+  padding: clamp(32px, 4vw, 56px);
+  background: #dce2e3;
+}
+
+.buildImage img {
+  width: min(100%, 380px);
+  height: auto;
+}
+
+/* AI and the spec: one block under a line, text left and the spec right */
+.aiBlock {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: 32px clamp(32px, 4vw, 64px);
+  align-items: start;
+  margin-top: clamp(64px, 8vw, 112px);
+  padding-top: clamp(32px, 4vw, 48px);
+  border-top: 1px solid var(--line);
+}
+
+.aiBlock .subheading + p {
+  margin-top: 20px;
 }
 
 .points h3 {
@@ -671,64 +675,18 @@
   color: var(--fg-2);
 }
 
-/* The people picker, once without and once with departments */
-.departments {
-  display: grid;
-  gap: 16px;
-  max-width: 720px;
-  margin: clamp(40px, 5vw, 64px) 0 0;
-}
-
-.picker {
-  display: grid;
-  grid-template-columns: 15em minmax(0, 1fr);
-  gap: 8px 24px;
-  align-items: center;
-  padding: 16px 0;
-  border-top: 1px solid var(--line);
-}
-
-.segments {
-  display: inline-flex;
-  flex-wrap: wrap;
-  justify-self: start;
-  padding: 3px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-}
-
-.segments span {
-  padding: 6px 14px;
-  border-radius: 999px;
-  color: var(--fg-2);
-  font-size: 0.875rem;
-}
-
-.segments span[data-on] {
-  background: var(--fg);
-  color: var(--bg);
-}
-
-.after,
-.departments + .body {
-  margin-top: clamp(32px, 4vw, 48px);
-}
 
 /* ---------- AI ---------- */
 
 .spec {
   display: grid;
-  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-  gap: 24px;
-  align-items: stretch;
-  max-width: 900px;
-  margin: clamp(40px, 5vw, 64px) 0 clamp(24px, 3vw, 40px);
+  gap: 16px;
 }
 
 .specFile {
   margin: 0;
   padding: 20px;
-  background: #e4e6e2;
+  background: #dce2e3;
   color: var(--fg-2);
   font-family: var(--font-geist-mono), ui-monospace, monospace;
   font-size: 0.8125rem;
@@ -827,14 +785,28 @@
 
 /* Next case: one large link, so nobody hits a dead end */
 .next {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 320px);
+  gap: 32px clamp(32px, 4vw, 64px);
+  align-items: center;
   margin-top: var(--block);
   padding: clamp(32px, 4vw, 48px) 0 clamp(96px, 10vw, 160px);
   border-top: 1px solid var(--line);
   color: var(--fg);
   text-decoration: none;
+}
+
+.nextText {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* The preview leans in a little on hover, as the title underlines */
+.nextImage {
+  width: 100%;
+  height: auto;
+  transition: transform 250ms var(--ease-out);
 }
 
 .nextTitle {
@@ -858,6 +830,10 @@
   .next:hover .nextTitle span {
     background-size: 100% 2px;
   }
+
+  .next:hover .nextImage {
+    transform: scale(1.03);
+  }
 }
 
 .next:focus-visible .nextTitle span {
@@ -873,39 +849,44 @@
     padding: 24px 12px;
   }
 
-  .flowRow {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  /* Steps stack, the arrow points down */
-  .flow {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-  }
-
-  .node {
-    white-space: normal;
-  }
-
-  .node + .node {
-    margin: 32px 0 0;
-  }
-
-  .node + .node::before {
-    content: "↓";
-    top: -30px;
-    left: 16px;
-    width: auto;
-    translate: none;
-  }
-
+  .problem,
+  .decision,
+  .aiBlock,
+  .testIntro,
   .rounds,
   .anatomy,
   .results,
-  .build,
-  .spec {
+  .spec,
+  .changes,
+  .points {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The spec steps and the points stack: one line between them, not two */
+  .specSteps {
+    border-bottom: 0;
+  }
+
+  .problemImage {
+    width: min(240px, 70%);
+  }
+
+  .next {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nextImage {
+    width: min(260px, 70%);
+  }
+
+  /* On a phone the prototype keeps a readable size and scrolls sideways */
+  .prototypeScroll img {
+    min-width: 640px;
+  }
+
+  .votes {
+    grid-template-rows: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .anatomy .device {
@@ -913,16 +894,14 @@
     justify-self: center;
   }
 
-  .picker {
-    grid-template-columns: minmax(0, 1fr);
+  .pair {
+    padding: 8px;
   }
+}
 
-  /* The two screens side by side, the text under them */
-  .changes > li {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .changeText {
-    grid-column: 1 / -1;
+/* Reduced motion: the preview stays still */
+@media (prefers-reduced-motion: reduce) {
+  .next:hover .nextImage {
+    transform: none;
   }
 }
