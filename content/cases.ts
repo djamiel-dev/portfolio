@@ -32,9 +32,9 @@ export const cases: Case[] = [
   {
     num: "02",
     label: "Collaborative Strength",
-    href: "#case-2",
+    href: "/work/collaborative-strength",
     outcome: "A website for my own powerlifting coaching",
-    meta: "Own coaching business · [Year]",
+    meta: "Own coaching business",
     media: { aspect: "4 / 3", caption: "[Loop: live site on desktop and phone]", badge: "Live · Next.js", image: "/images/cases/powerlifting-laptop.png" },
   },
   {

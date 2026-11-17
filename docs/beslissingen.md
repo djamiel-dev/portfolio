@@ -333,3 +333,45 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 
 - **Toetsing:** in de browser (geen consolefouten), typecheck. Niet gecommit.
 - **Tijd:** [invullen]
+
+### Stap 21 – Incentive portal: de casepagina ingekort voor wie scant (17 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Uitgangspunt | Een recruiter leest de korte versie, de koppen en de beelden, en duikt hooguit in één beslissing. Wat moet blijven: probleem, rol, proces, twee beslissingen met onderbouwing, dat ik het zelf bouwde (met AI) en het resultaat. Wat weg kan: diagrammen die de tekst herhalen en hele telefoons voor één detail | [nog te beoordelen] |
+| Problem | Twee alinea's en het `Landscape`-diagram werden één alinea | [ ] |
+| Process | De versmalde opdracht en de feedbackrondes in één alinea; de drie rondes bleven | [ ] |
+| Decision 2 | `FlowAB` weg (de grafiek noemt beide volgordes al), tekst over de testers samengevoegd. "What else the test changed": zes telefoons vervangen door drie kaarten met alleen het stukje dat veranderde (staven, menu-items, knoppen), getest boven, na de test onder | [ ] |
+| Building it | `Tenants`-diagram weg; de drie punten in één rij onder de spec | [ ] |
+| After the first client | Geen eigen sectie meer: één alinea onder het resultaat. `Departments`-diagram weg | [ ] |
+
+- **Effect:** op 1024px van ca. 9.600 naar 7.650px hoog, van 1.178 naar ca. 950 woorden. Decision 2 van 2.700 naar 1.830px.
+- **Toetsing:** in de browser op 1024px en 375px (geen horizontale scroll, geen consolefouten), typecheck. `npm run build`, `npm run audit` en `npm run keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 22 – Incentive portal: layout per sectie en een Emil-ronde (17 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Problem | – | Tekst rechts, links de medewerkersapp van JobRewards (nieuw beeld `employee-app.webp`) op het grijze vlak |
+| Decision 1 | – | Context toegevoegd: eerst een dashboard vol opties, na afstemming met stakeholders zo min mogelijk tikken, omdat JobRewards wint op eenvoud en snelheid. Scherm met pins rechts van de tekst |
+| Decision 2 | Kop "I tested my own assumption" | Herschreven: stakeholders en twee expert reviews losten veel op, de route bleef open, dus testen met teamleiders; geen eigen voorkeur noemen. Uitkomst in vier stappen herschreven. Figma-testprototype (`test-prototype.webp`) naast de tekst, klikbaar op volle grootte |
+| Resultaten | Na inspiratie bij 21st.dev (stat-bento's) en React Bits (CountUp): grafiek als grote tegel, twee tegels met een groot getal dat optelt als het in beeld komt | Akkoord |
+| Voor/na-kaarten | Eerst te groot en te ver ingezoomd, daarna gestapeld te hoog | Volle breedte, getest en na de test naast elkaar in staande uitsneden; kop "A few other things the test changed" |
+| Building it | Twee blokken: samenwerking + drie punten naast het case-01-beeld van de homepage, en een apart AI-blok met de spec | Akkoord |
+| Emil-ronde | Koppen over de volle breedte met tekst en beeld bovenaan uitgelijnd; één grijs; grijs vlak bij Problem; prototype op volle grootte; kortere hover; CountUp | Akkoord, grijs wordt `#dce2e3`. Meer ruimte tussen de middelste secties. Laptop-preview bij "Next case" past niet: later een gewoon schermvullend beeld |
+
+- **Toetsing:** in de browser op 1440px en 375px (geen horizontale scroll, geen consolefouten), typecheck. In de mobiele emulatie van de ingebouwde browser liepen geen animatieframes, dus CountUp is alleen op desktop gezien. `npm run build`, `audit` en `keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 23 – Collaborative Strength: inhoud doorgenomen en eerste versie van de casepagina (17 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Inhoud | Zes onderzoeksdocumenten, de live site en Figma doorgenomen; acht vragen gesteld (resultaat, tijdlijn, invalshoek, "oud" design, namen, beeld, de 4,2, AI) | Resultaat mag eerlijk: snel genoeg klanten, bewust niet verder gepromoot naast fulltime werk, betere matches. Geen jaartal of tijdlijn. Niets over "oud" of wat ik anders zou doen: tekst over video is bewust (gevoel), knoppen en kerntekst zijn duidelijk. Stijn Schoonhof en Lorenzo Haarlo mogen genoemd worden, beelden mogen. Testers niet als bekenden neerzetten |
+| Invalshoek | "Ik was mijn eigen klant": strategie vóór pixels, uitleggen in plaats van verkopen | Akkoord |
+| 4,2 | Voorstel: de letterlijke testvraag noemen ("use this site or book coaching") in plaats van "hielp hun overweging", omdat dat iets anders zegt dan gevraagd | [ ] |
+| AI | Uit het ontwikkelverslag: AI als mentor; logo-voorstellen van AI te generiek | Aangevuld: homepage bewust niet blindelings met AI (eigen ontwikkeling), daarna de andere pagina's en globale verbeteringen (media queries) sneller met AI |
+| Pagina | `/work/collaborative-strength` in de vorm van case 01: intro + korte versie, live site in browser- en telefoonframe, feiten, Problem, Process (twee gesprekken + funnel), Decision 1 (uitleggen: vier stappen + tijdlijn), Decision 2 (Figma vóór/na feedback + drie wijzigingen), Building it (navbar en knop vóór/na uit de live site, AI-blok met logoschetsen), The test (4,2 en 6 van 6, twee vertaalde citaten), Result in de nacht. Hergebruikt `case.module.css` en `Phone` van case 01, plus `cs.module.css` | [nog te beoordelen] |
+
+- **Beelden:** `public/images/cases/collaborative-strength/` (11 WebP's, ca. 520 KB): live screenshots met Playwright, Figma-exports via de Figma-koppeling. Het logobeeld is uitgesneden zonder de woordmerken, omdat daar "STRENTH" staat.
+- **Gekoppeld:** de homepagekaart (`content/cases.ts`, `[Year]` weg) en "Next case" op case 01 linken naar de nieuwe pagina.
+- **Toetsing:** typecheck; in Playwright op 1440px en 390px (geen horizontale scroll), geen consolefouten. `npm run build`, `audit` en `keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
