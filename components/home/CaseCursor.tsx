@@ -3,7 +3,8 @@
 import { useEffect, useRef } from "react";
 
 /**
- * "View case" next to the pointer while it is over a case card ([data-case]). It trails the pointer
+ * "View case" next to the pointer while it is over a case card ([data-case]; the text comes
+ * from data-cursor when it has one). It trails the pointer
  * a little so it feels attached rather than glued. Only with a mouse or trackpad; with reduced motion
  * it follows without the trail. Decorative: the card's own link already says where it goes.
  */
@@ -32,11 +33,15 @@ export function CaseCursor({ className }: { className?: string }) {
       raf = x === tx && y === ty ? 0 : requestAnimationFrame(frame);
     };
 
-    // The card under the pointer, also after a scroll that moved a card under a pointer standing still
+    // The card under the pointer, also after a scroll that moved a card under a pointer standing still.
+    // data-cursor on the card replaces the label, such as "View website" on a case page.
+    const label = e.querySelector("span");
     const check = () => {
-      const over = !!document.elementFromPoint(tx, ty)?.closest("[data-case]");
+      const card = document.elementFromPoint(tx, ty)?.closest("[data-case]");
+      const over = !!card;
       if (over === on) return;
       on = over;
+      if (on && label) label.textContent = card?.getAttribute("data-cursor") || "View case";
       if (on) {
         x = tx; // appear at the pointer, not slide in from where it was last
         y = ty;

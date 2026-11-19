@@ -1,18 +1,83 @@
 /* Case 02 – only what this case needs on top of case.module.css (case 01) and about.module.css.
    The same quiet grey, #dce2e3, sits behind every image. */
 
-/* ---------- Hero: the live site in a browser, the phone in front ---------- */
+/* ---------- Hero: the live homepage full width, as a loop that links to the site ---------- */
 
-.hero {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  justify-items: center;
+.heroTour {
   margin-top: clamp(48px, 6vw, 96px);
-  padding: clamp(32px, 6vw, 96px) clamp(16px, 4vw, 64px);
-  background: #dce2e3;
 }
 
+.clipLink {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+/* Half the height of the recording, cut from the top, so the menu of the site stays in view */
+.heroTour .clipLink {
+  aspect-ratio: 32 / 10;
+}
+
+.heroTour video {
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 0;
+  transform-origin: top center;
+  transition: scale 700ms var(--ease-out);
+}
+
+/* Hover: dims and leans in a little, as the cases on the homepage; CaseCursor says "View website" */
+.clipLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(18 19 24 / 0.28);
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .clipLink:hover::after {
+    opacity: 1;
+  }
+
+  .clipLink:hover video {
+    scale: 1.03;
+  }
+}
+
+.clipLink:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+/* Touch screens have no pointer to follow, so the link says it in the corner */
+@media not ((hover: hover) and (pointer: fine)) {
+  .clipLink::before {
+    content: "View website ↗";
+    position: absolute;
+    z-index: 1;
+    top: 12px;
+    left: 12px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--fg);
+    font-size: 0.875rem;
+    font-weight: 520;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clipLink:hover video {
+    scale: none;
+  }
+}
+
+/* A plain browser window, around the services page in Decision 1 */
 .browser {
   width: min(100%, 860px);
   overflow: hidden;
@@ -43,12 +108,86 @@
   height: auto;
 }
 
-/* The phone overlaps the bottom right corner of the browser */
-.heroPhone {
-  position: absolute;
-  right: clamp(16px, 7vw, 120px);
-  bottom: clamp(16px, 3vw, 48px);
-  width: clamp(96px, 17vw, 220px);
+/* ---------- Problem: two sides, two cards ---------- */
+
+/* The athlete's side is shorter, so it gets the narrower column */
+.sides {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 12px;
+  margin: clamp(32px, 4vw, 48px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sides > li {
+  display: grid;
+  align-content: start;
+  padding: clamp(24px, 3vw, 40px);
+  background: #dce2e3;
+}
+
+.sides h3 {
+  margin-top: 8px;
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.sides h3 ~ p {
+  max-width: 34em;
+  margin-top: 12px;
+  color: var(--fg-2);
+}
+
+/* Most plans against mine: a label column and the text, ruled like the facts */
+.versus {
+  margin: 20px 0 4px;
+}
+
+.versus div {
+  display: grid;
+  grid-template-columns: 7.5em minmax(0, 1fr);
+  gap: 4px 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+
+.versus div:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.versus dt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-weight: 560;
+}
+
+/* An unlit dot for most plans, a lit one for mine */
+.versus dt::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.versus [data-on] dt {
+  color: var(--fg);
+}
+
+.versus [data-on] dt::before {
+  background: var(--glow);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--glow) 18%, transparent);
+}
+
+.versus dd {
+  margin: 0;
+  color: var(--fg-2);
 }
 
 /* ---------- Process ---------- */
@@ -56,77 +195,170 @@
 .talks {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 32px clamp(24px, 4vw, 64px);
-  margin: clamp(40px, 5vw, 64px) 0 0;
+  gap: 56px clamp(48px, 7vw, 128px);
+  margin: clamp(64px, 8vw, 112px) 0 0;
   padding: 0;
   list-style: none;
 }
 
-.talks li {
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
+.quote {
+  display: grid;
+  align-content: start;
+  margin: 0;
+}
+
+/* A large opening quote in the accent: text from 24px may use it */
+.quoteMark {
+  height: 0.5em;
+  color: var(--accent);
+  font-size: clamp(4rem, 6vw, 5.5rem);
+  font-weight: 560;
+  line-height: 0.9;
 }
 
 .talks blockquote {
-  margin: 0;
-  font-size: clamp(1.25rem, 2vw, 1.75rem);
-  font-weight: 520;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  margin: 20px 0 0;
+  font-size: clamp(1.375rem, 2.2vw, 2rem);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.025em;
   text-wrap: balance;
 }
 
+/* Who said it: a round photo, then name and role */
 .who {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: clamp(24px, 3vw, 32px);
+}
+
+.who > span:last-child {
   display: grid;
   gap: 2px;
-  margin-top: 16px;
 }
 
 .who strong {
   font-weight: 560;
 }
 
-.who span {
+.who > span:last-child span {
   color: var(--fg-2);
+}
+
+.portrait {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #dce2e3;
 }
 
 .after {
   margin-top: clamp(40px, 5vw, 64px);
 }
 
+/* A round arrow: a light circle on a thin line with a drawn arrow, the same in the funnel and above it */
+.shaped span,
+.funnel li + li::before {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--bg, #eeefeb);
+}
+
+.shaped span::before,
+.funnel li + li::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  translate: -50% -50%;
+  background: var(--fg);
+  -webkit-mask: var(--arrow) center / contain no-repeat;
+  mask: var(--arrow) center / contain no-repeat;
+}
+
+.shaped,
+.funnel {
+  --arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 12h15M13.5 6l6 6-6 6'/%3E%3C/svg%3E");
+}
+
+/* From the talks down into the funnel */
+.shaped {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: clamp(72px, 9vw, 120px);
+  color: var(--fg);
+  font-weight: 520;
+}
+
+.shaped span {
+  position: relative;
+  flex: none;
+}
+
+.shaped span::before {
+  rotate: 90deg;
+}
+
 /* Three steps from a post to a call, joined by arrows on desktop */
 .funnel {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin: clamp(24px, 3vw, 40px) 0 0;
+  gap: 16px;
+  margin: clamp(32px, 4vw, 48px) 0 0;
   padding: 0;
   list-style: none;
 }
 
 .funnel li {
   position: relative;
-  padding: clamp(20px, 2.5vw, 32px);
+  padding: clamp(28px, 3.5vw, 48px);
   background: #dce2e3;
 }
 
-/* A round arrow on the seam between two steps */
+/* The arrow sits on the seam: half the gap to the left of the card */
 .funnel li + li::before {
-  content: "→";
+  content: "";
   position: absolute;
-  top: 50%;
-  left: -6px;
-  translate: -50% -50%;
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--fg);
-  color: var(--bg, #fff);
-  font-size: 1rem;
-  line-height: 1;
   z-index: 1;
+  top: 50%;
+  left: -8px;
+  translate: -50% -50%;
+}
+
+.funnel li + li::after {
+  z-index: 2;
+  left: -8px;
+}
+
+/* The website, the step this case is about: lit, with a lit dot before its stage */
+.funnel li[data-lit] {
+  background: #f8f8f5;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.funnel li[data-lit] > p:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg);
+}
+
+.funnel li[data-lit] > p:first-child::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--glow);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--glow) 18%, transparent);
 }
 
 .funnel h3 {
@@ -142,86 +374,281 @@
   color: var(--fg-2);
 }
 
-/* ---------- Decision 1 ---------- */
-
-.tall {
-  margin: 0;
-}
-
-/* The tall services page: only the top half, faded out at the bottom */
-.tallWindow {
-  overflow: hidden;
-  aspect-ratio: 4 / 5;
-  padding: clamp(16px, 2vw, 24px) clamp(16px, 2vw, 24px) 0;
-  background: #dce2e3;
-  mask-image: linear-gradient(to bottom, #000 80%, transparent);
-}
-
-.tallWindow img,
-.compareWindow img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.tall figcaption,
-.wide figcaption,
-.logo figcaption {
+.scrollyFigure figcaption {
   margin-top: 10px;
 }
 
-.wide {
-  margin: clamp(32px, 4vw, 56px) 0 0;
+/* ---------- Decisions: a whole page scrolling in a window beside the text (ScrollStage) ---------- */
+
+/* Still (phone, reduced motion, no JS): the whole page as an image, the text sticking beside it */
+.scrollyStick {
+  display: grid;
+  grid-template-columns: minmax(0, 720px) minmax(0, 1fr);
+  gap: 40px clamp(32px, 5vw, 80px);
+  align-items: start;
+  margin-top: clamp(32px, 4vw, 48px);
 }
 
-.wide img {
+.scrollyText {
+  grid-column: 2;
+  grid-row: 1;
+  position: sticky;
+  top: 112px;
+}
+
+.scrollyText > :first-child {
+  margin-top: 0;
+}
+
+.scrollyFigure {
+  grid-column: 1;
+  grid-row: 1;
+  margin: 0;
+  padding: clamp(12px, 2vw, 24px);
+  background: #dce2e3;
+}
+
+/* Decision 2 mirrors Decision 1: the text on the left, the window on the right */
+.scrolly[data-side="right"] .scrollyStick {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 720px);
+}
+
+.scrolly[data-side="right"] .scrollyText {
+  grid-column: 1;
+}
+
+.scrolly[data-side="right"] .scrollyFigure {
+  grid-column: 2;
+}
+
+.scrollyFigure .browser {
+  width: 100%;
+}
+
+.scrollyView {
+  overflow: hidden;
+}
+
+.scrollyPage img {
   display: block;
   width: 100%;
   height: auto;
 }
 
-/* ---------- Decision 2 ---------- */
-
-.compare {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: clamp(32px, 4vw, 48px);
-  padding: 12px;
-  background: #dce2e3;
+/* Moving: the section gets room to scroll through (its height comes from ScrollStage), the window and
+   the text stay in view */
+.scrolly[data-on] .scrollyStick {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  align-content: center;
+  align-items: center;
+  margin-top: 0;
 }
 
-.compare figure {
-  display: grid;
-  gap: 8px;
-  margin: 0;
+.scrolly[data-on] .scrollyText {
+  position: static;
 }
 
-/* The top of each page: hero, first section and the four steps */
-.compareWindow {
+/* Taller than the window it came from, but never taller than the screen allows */
+.scrolly[data-on] .scrollyView,
+.compareBox {
+  aspect-ratio: 4 / 3.4;
+  max-height: calc(100vh - 180px);
+}
+
+.scrolly[data-on] [data-scroll-page] {
+  will-change: transform;
+}
+
+/* ---------- Decision 2: the comparison slider ---------- */
+
+/* Two examples of what changed, ruled like the other lists */
+.examples {
+  margin: 20px 0 0;
+  padding: 0;
+  border-bottom: 1px solid var(--line);
+  list-style: none;
+}
+
+.examples li {
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.examples h3 {
+  font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
+  font-weight: 540;
+  letter-spacing: -0.015em;
+}
+
+.examples p {
+  margin-top: 4px;
+  color: var(--fg-2);
+}
+
+/* Horizontal drags move the line, vertical swipes still scroll the page */
+.compareBox {
+  position: relative;
   overflow: hidden;
-  aspect-ratio: 4 / 5;
   border-radius: 4px;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.compareBox img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+/* Both designs from the top; in a moving ScrollStage they slide up inside the box */
+.comparePage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.compareTop {
+  position: absolute;
+  inset: 0;
+}
+
+/* Which side is which, in the bottom corners */
+.compareTag {
+  position: absolute;
+  bottom: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgb(18 19 24 / 0.78);
+  color: #eeefeb;
+  pointer-events: none;
+}
+
+.compareTag[data-side="before"] {
+  left: 12px;
+}
+
+.compareTag[data-side="after"] {
+  right: 12px;
+}
+
+/* The line between the two, with a round grip in the middle */
+.compareHandle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  translate: -50% 0;
   background: #fff;
+  box-shadow: 0 0 0 1px rgb(18 19 24 / 0.18);
+  pointer-events: none;
+}
+
+.compareHandle span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--fg);
+  box-shadow:
+    0 1px 2px rgb(18 19 24 / 0.2),
+    0 6px 16px -6px rgb(18 19 24 / 0.35);
+  transition: scale 160ms var(--ease-out);
+}
+
+.compareHandle svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Pressing anywhere on the image presses the grip */
+.compareBox:active .compareHandle span {
+  scale: 0.94;
+}
+
+.compareBox:has(.compareInput:focus-visible) .compareHandle span {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* The plain slider for keyboard and screen readers, out of sight */
+.compareInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compareBox:active .compareHandle span {
+    scale: 1;
+  }
 }
 
 /* ---------- Building it ---------- */
 
-.details {
+/* Three steps on one line: the number sits on the line, as on a timeline */
+.steps {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 40px clamp(24px, 3vw, 48px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px clamp(24px, 3vw, 48px);
   margin: clamp(40px, 5vw, 64px) 0 0;
   padding: 0;
   list-style: none;
 }
 
-/* The text-only detail spans both columns under a line */
-.details li:last-child {
-  grid-column: 1 / -1;
-  max-width: 40em;
-  padding-top: 24px;
+.steps li {
+  position: relative;
+  padding-top: 32px;
   border-top: 1px solid var(--line);
+}
+
+.steps li > span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  translate: 0 -50%;
+  background: var(--bg);
+}
+
+.steps h3 {
+  font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
+  font-weight: 560;
+  letter-spacing: -0.015em;
+}
+
+.steps h3 + p {
+  max-width: 24em;
+  margin-top: 6px;
+  color: var(--fg-2);
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px clamp(16px, 2vw, 32px);
+  margin: clamp(40px, 5vw, 64px) 0 0;
+  padding: 0;
+  list-style: none;
 }
 
 .details h3 {
@@ -235,43 +662,84 @@
   color: var(--fg-2);
 }
 
+/* Same shape for all three, so the titles below line up; the shots sit in the middle */
 .shots {
   display: grid;
+  align-content: center;
+  aspect-ratio: 16 / 9; /* every recording is 2:1, centred on the grey */
   gap: 12px;
   margin-bottom: 16px;
   padding: 12px;
   background: #dce2e3;
 }
 
-/* The two button states side by side */
-.shotsSide {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+/* A recording of the live site, with play and pause in its corner */
+.clip {
+  position: relative;
+  min-width: 0;
 }
 
-.shot {
-  display: grid;
-  gap: 6px;
-  margin: 0;
-}
-
-.shot img {
+.clip video {
   display: block;
   width: 100%;
   height: auto;
   border-radius: 4px;
+  background: #2a2b2e;
 }
 
-.logo {
-  margin: 0;
+/* Round, as controls are; 44px to touch */
+.clipButton {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(18 19 24 / 0.72);
+  box-shadow: inset 0 0 0 1px rgb(238 239 235 / 0.22); /* so it stays visible on the dark video too */
+  color: #eeefeb;
+  cursor: pointer;
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 200ms ease;
 }
 
-.logo img {
-  display: block;
-  width: 100%;
-  height: auto;
-  padding: clamp(16px, 2vw, 24px);
-  background: #fff;
+.clipButton svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
+
+.clipButton:active {
+  transform: scale(0.94);
+}
+
+.clipButton:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .clipButton:hover {
+    background: rgb(18 19 24 / 0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clipButton:active {
+    transform: none;
+  }
+}
+
+
 
 /* ---------- The test ---------- */
 
@@ -281,6 +749,34 @@
   grid-template-columns: repeat(2, minmax(0, 3fr)) minmax(0, 4fr);
   gap: 12px;
   margin-top: clamp(32px, 4vw, 48px);
+}
+
+/* 4.2 of 5 as five blocks, filled from the left in the accent */
+.meter {
+  display: flex;
+  gap: 5px;
+  margin-top: auto;
+}
+
+.meter i {
+  position: relative;
+  width: 28px;
+  height: 12px;
+  overflow: hidden;
+  border: 1.5px solid var(--dim);
+  border-radius: 6px;
+}
+
+.meter i[data-full] {
+  border-color: var(--accent);
+}
+
+.meter i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: var(--fill);
+  background: var(--accent);
 }
 
 .quotes {
@@ -300,19 +796,61 @@
   letter-spacing: -0.015em;
 }
 
+/* ---------- Result: two cards under the lamp ---------- */
+
+/* The lamp hangs above, so the light falls on the top edge of each card */
+.wins {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: clamp(32px, 4vw, 48px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wins li {
+  padding: clamp(24px, 3vw, 40px);
+  border: 1px solid var(--line);
+  border-top-color: rgb(255 158 94 / 0.35);
+  background: linear-gradient(to bottom, rgb(255 158 94 / 0.07), transparent 55%);
+}
+
+.wins h3 {
+  margin-top: 8px;
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.wins h3 + p {
+  max-width: 34em;
+  margin-top: 12px;
+  color: var(--fg-2);
+}
+
 /* ---------- Phone ---------- */
 
 @media (max-width: 47.99em) {
-  .hero {
-    padding: 24px 12px 64px;
+  /* Stacked: the text first, then the image; nothing sticks */
+  .scrolly[data-side] .scrollyStick {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .heroPhone {
-    right: 16px;
-    bottom: 16px;
-    width: 28%;
+  .scrolly[data-side] .scrollyText,
+  .scrolly[data-side] .scrollyFigure {
+    grid-column: auto;
+    grid-row: auto;
+    position: static;
   }
 
+  .scrollyFigure {
+    padding: 8px;
+  }
+
+  .sides,
+  .wins,
+  .steps,
   .talks,
   .funnel,
   .details,
@@ -320,17 +858,24 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  /* Stacked, the arrows point down */
-  .funnel li + li::before {
-    content: "↓";
-    top: -6px;
-    left: 50%;
-    translate: -50% -50%;
+  /* The label above its text, so the text keeps the full width */
+  .versus div {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .compare {
-    padding: 8px;
-    gap: 8px;
+  /* Stacked, the arrows point down */
+  .funnel li + li::before,
+  .funnel li + li::after {
+    top: -8px;
+    left: 50%;
+  }
+
+  .funnel li + li::after {
+    rotate: 90deg;
+  }
+
+  .compareTag {
+    bottom: 8px;
   }
 
   .quotes {

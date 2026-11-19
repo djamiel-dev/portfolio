@@ -375,3 +375,40 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Gekoppeld:** de homepagekaart (`content/cases.ts`, `[Year]` weg) en "Next case" op case 01 linken naar de nieuwe pagina.
 - **Toetsing:** typecheck; in Playwright op 1440px en 390px (geen horizontale scroll), geen consolefouten. `npm run build`, `audit` en `keyboard` niet gedraaid. Niet gecommit.
 - **Tijd:** [invullen]
+
+### Stap 24 – Collaborative Strength: Emil-kritiek, Problem in twee kaarten, opnames van de live site (19 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Kritiek | Emil-ronde over de hele pagina, de live site en Figma: te veel tekstblokken en alles staat stil terwijl de case over interactie gaat. Voorstellen per sectie: Problem in twee kanten, funnel gekoppeld aan de gesprekken, meescrollend browserframe bij Decision 1, vergelijkingsslider bij Decision 2, Building it als drie stappen, echte opnames in plaats van foto's, StatTile bij de test, Result in twee kaarten | Eerst Problem, daarna de opnames |
+| Problem | Twee kaarten (The athlete / My coaching) met een vergelijking "Most plans" tegenover "Mine", lampje aan bij mijn manier; idee uit de Geen/Wel-kaartjes in Figma | [nog te beoordelen] |
+| Opnames | Ik vroeg om agent-browser van Vercel (`record`). Drie opnames van de live site op 1440×900, 60 fps: menu (bijgesneden tot de navigatie), knop-hover (met cursor), A–D-stappen (opnieuw opgenomen, eerst te snel gescrold). Als mp4 met stilstaand beeld in `Clip.tsx`: speelt zonder geluid in een lus zolang hij in beeld is, pauzeknop van 44px, met reduced motion stil tot je op play drukt | Akkoord om ze op de pagina te zetten |
+
+- **Beelden:** `clip-menu`, `clip-button`, `clip-steps` (.mp4 + .jpg, samen ca. 2,5 MB). De oude stills `nav-top`, `nav-scrolled`, `button-rest`, `button-hover` en `approach` worden niet meer gebruikt.
+- **Toetsing:** typecheck; ingebouwde browser op 1440px (spelen, pauzeren, buiten beeld pauzeren, titels op één lijn) en agent-browser met reduced motion en op 375px (geen horizontale scroll). `npm run build`, `audit` en `keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 25 – Collaborative Strength: de rest van de Emil-kritiek verwerkt (19 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Decision 2 | Vergelijkingsslider (`Compare.tsx`) op de bovenkant van het eerste en het laatste homepage-ontwerp, rechtstreeks uit Figma geëxporteerd (`slider-before/after.webp`, 1440×1200). Twee pins op het ontwerp na feedback, met dezelfde genummerde callouts als case 01. Slepen of pijltjestoetsen; bij de eerste keer in beeld schuift de lijn één keer kort heen en weer (niet met reduced motion) | [nog te beoordelen] |
+| Decision 1 | `ServicesScroll.tsx`: het browserframe blijft staan terwijl de dienstenpagina erin meescrolt; de vijf diensten (posities gemeten in Figma) lichten ernaast één voor één op. Op mobiel, met reduced motion en zonder JS de hele pagina als beeld en alle diensten aan | [nog te beoordelen] |
+| Building it | Drie genummerde stappen op een lijn: met de hand → verbeterd met AI → terug naar mijn AI-workflow | [nog te beoordelen] |
+| Process | De losse zin wordt de overgang naar de funnel, met een rond pijltje omlaag; "The website" licht op als de stap waar de case over gaat. Bewust niet gedaan: elk citaat aan een funnelstap koppelen, omdat dat iets beweert wat niet bevestigd is | [nog te beoordelen] |
+| The test | `StatTile` van case 01 voor 6 van 6; 4,2 als vijf blokjes waarvan het laatste voor een vijfde gevuld | [nog te beoordelen] |
+| Result | Twee kaarten (Enough clients / The right ones), met het licht van de lamp op de bovenrand | [nog te beoordelen] |
+
+- **Niet meer gebruikt:** `figma-before.webp`, `figma-after.webp` en de vijf oude stills uit stap 24.
+- **Toetsing:** typecheck en `npm run build` (compileert; de build meldt een bekende kwetsbaarheid in de geïnstalleerde Next.js-versie). Op 1440px in de ingebouwde browser en agent-browser; met agent-browser ook reduced motion en 375px (geen horizontale scroll). `audit` en `keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 26 – Collaborative Strength: hero als schermvullende rondgang over de live site (19 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Hero | Ik wilde geen browser- of telefoonmockup (die past bij case 01, die alleen voor telefoon is), maar het scherm zelf. Opname met agent-browser op 1440×900, 60 fps: hover op de hero-knop, vloeiend scrollen (requestAnimationFrame) langs de vraag, A–D, Diensten, de foto's, Over mij en de footer, en terug naar boven zodat de lus aansluit. 30 s, 47–60 unieke frames per seconde tijdens het scrollen, 5,7 MB | Akkoord |
+| Link | "Visit the live site" weg; de video zelf is de link. Bij hover dimt hij en komt "View website" naast de pointer, met `CaseCursor` van de homepage (label nu via `data-cursor`). Op touch staat "View website ↗" in de hoek. Pauzeknop staat buiten de link | Akkoord |
+
+- **Niet meer gebruikt:** `hero-desktop.webp`, `hero-mobile.webp`.
+- **Toetsing:** typecheck; agent-browser op 1440px (speelt, hover-label "View website", homepage nog "View case") en 375px met reduced motion (staat stil, geen horizontale scroll). Echte touch niet getest. Niet gecommit.
+- **Tijd:** [invullen]
+- **Bijgesteld (19 nov):** de hero is half zo hoog en bovenaan uitgelijnd (menu in beeld). Ik vond dat de opname stopte en weer verder ging; opnieuw opgenomen als één doorlopende, langzame scroll van 24 s (sinus-easing, alleen stil bij de hero), met de pointer stil zodat Diensten en Over mij oplichten als ze eronder door schuiven. Alleen de bovenste helft bewaard (1440×450), laatste 0,8 s vloeit over in het begin: 26 s, bijna overal 60 unieke frames per seconde, 3,3 MB.
+- **Bijgesteld (19 nov), Decision 1 en 2:** bij Decision 1 staan de kop en de tekst rechts, het venster is hoger, de dienstenlijst met oplichten is weg ("dat zien mensen zelf") en het bijschrift noemt Figma niet meer. Decision 2 volgt dezelfde opzet gespiegeld: tekst links, rechts de slider, die nu beide hele homepage-ontwerpen laat meescrollen (`design-first/after.webp`, uit Figma). Pins en nummers weg; de twee wijzigingen heten nu "Two examples of what changed". Beide gebruiken `ScrollStage.tsx` (vervangt `ServicesScroll.tsx`). `slider-before/after.webp` worden niet meer gebruikt.

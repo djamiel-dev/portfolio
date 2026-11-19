@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { links } from "@/content/site";
 import home from "@/components/home/home.module.css";
+import { CaseCursor } from "@/components/home/CaseCursor";
 import { Menu } from "@/components/home/Menu";
 import { Scramble } from "@/components/home/Skills";
 import { Sky } from "@/components/home/Sky";
 import about from "../../about/about.module.css";
 import ai from "../../ai/ai.module.css";
 import styles from "../incentive-portal/case.module.css";
-import { Phone } from "../incentive-portal/visuals";
+import { StatTile } from "../incentive-portal/StatTile";
+import { Clip } from "./Clip";
+import { Compare } from "./Compare";
+import { ScrollStage } from "./ScrollStage";
 import cs from "./cs.module.css";
 
 // Case 02. Same build-up as case 01: the short version and the site on top, then one section per thing I did.
@@ -25,7 +30,7 @@ export const metadata: Metadata = {
 const short = [
   {
     title: "Problem",
-    text: "I coach powerlifting next to a full-time job. From the outside, nobody could see what coaching with me involves.",
+    text: "People looking for a coach don’t know what to expect, and every coach offers something different. So reaching out is a big step.",
   },
   {
     title: "What I did",
@@ -36,7 +41,7 @@ const short = [
 
 const facts = [
   { label: "Role", value: "Owner, designer and developer. I was my own client" },
-  { label: "Context", value: "My own powerlifting coaching, next to a full-time job in ICT" },
+  { label: "Context", value: "My own powerlifting coaching business" },
   { label: "Research", value: "Two expert talks, five feedback sessions and a final review, a test with six powerlifters" },
   { label: "Built with", value: "Figma, Next.js, Tailwind CSS, Framer Motion" },
 ];
@@ -46,34 +51,43 @@ const talks = [
   {
     who: "Stijn Schoonhof",
     role: "Founder of Deliberate Strength",
+    photo: "/images/cases/collaborative-strength/stijn-schoonhof.webp",
+    // where the face is in the square photo
+    focus: "50% 45%",
     text: "Give people value before you ask for anything. And don’t niche down too early.",
   },
   {
     who: "Lorenzo Haarlo",
     role: "Gym owner, coach and national champion",
+    photo: "/images/cases/collaborative-strength/lorenzo-haarlo-face.webp",
+    focus: "50% 50%",
     text: "Clients pay for more than a plan: guidance, reflection, and attention to life outside the gym.",
   },
 ];
 
 const funnel = [
   { stage: "Awareness", where: "Instagram", text: "Technique tips and thoughts on coaching, free to use." },
-  { stage: "Consideration", where: "The website", text: "How I work, a free training plan and a blog." },
+  // The step this case is about, lit as "on"
+  { stage: "Consideration", where: "The website", text: "How I work, a free training plan and a blog.", lit: true },
   { stage: "Decision", where: "A free intake call", text: "Booked from the menu, on every page." },
 ];
 
-// What the feedback rounds changed, from the first Figma design to the final one
-const feedback = [
+// Two examples of what changed after feedback (not the only two)
+const changes = [
+  { title: "Booking in the menu", text: "Book a call now sits in the menu, on every page." },
   {
-    title: "Booking moved into the menu",
-    text: "Two reviewers found the button in the hero confusing. Book a call now sits top right, on every page.",
+    title: "A question first",
+    text: "The page opens with a question to the visitor, instead of an introduction of me.",
   },
+];
+
+// Building it, in order
+const buildSteps = [
+  { title: "By hand", text: "I typed most of the homepage myself, to really understand how everything fits together." },
+  { title: "Improved with AI", text: "Then I improved it with AI, to learn from that as well." },
   {
-    title: "Written from the visitor’s side",
-    text: "The page opens by asking what powerlifting means to you, instead of telling who I am.",
-  },
-  {
-    title: "A free intake",
-    text: "A final review made the call free and put what to expect below the form, so booking is one easy step.",
+    title: "Back to my AI workflow",
+    text: "With that, I built the other pages. All in Next.js, Tailwind and Framer Motion.",
   },
 ];
 
@@ -139,25 +153,19 @@ export default function CollaborativeStrength() {
             </ol>
           </section>
 
-          {/* The live homepage on desktop, with the phone version in front of it */}
-          <div className={cs.hero}>
-            <Browser
-              src="/images/cases/collaborative-strength/hero-desktop.webp"
-              alt="The live homepage: a video of a deadlift at a meet behind the headline Powerlifting coaching op individuele basis, with a Book a call button."
-              width={1600}
-              height={1000}
-              sizes="(max-width: 768px) 90vw, 860px"
-            />
-            <div className={cs.heroPhone}>
-              <Phone
-                src="/images/cases/collaborative-strength/hero-mobile.webp"
-                alt="The same homepage on a phone."
-                height={2077}
-                screen="#2a2b2e"
-                sizes="(max-width: 768px) 30vw, 220px"
-              />
-            </div>
-          </div>
+          {/* The live homepage full width, no device around it: a loop of scrolling through it and hovering
+              its buttons, the top half only. The recording is the link to the live site, with "View website" at the pointer. */}
+          <Clip
+            className={cs.heroTour}
+            src="/images/cases/collaborative-strength/hero-tour.mp4?v=2"
+            poster="/images/cases/collaborative-strength/hero-tour.jpg?v=2"
+            label="Scrolling through the live homepage: the deadlift video, the question to the visitor, the four steps, the photos and Focus zonder chaos, with each button lighting up on hover."
+            width={1440}
+            height={450}
+            href="https://colaborative-strength-website.vercel.app/"
+            linkText="View the live website"
+          />
+          <CaseCursor className={home.caseCursor} />
 
           <dl className={`${about.facts} ${styles.facts}`}>
             {facts.map((f) => (
@@ -171,17 +179,38 @@ export default function CollaborativeStrength() {
           <section className={about.section} aria-labelledby="case-problem">
             <p className={about.eyebrow}>The problem</p>
             <h2 id="case-problem" className={`${about.heading} ${styles.heading}`}>
-              <Scramble text="Nobody could see what coaching with me is" />
+              <Scramble text="Not knowing what to expect, from either side" />
             </h2>
-            <p className={about.lead}>
-              From the outside, online coaching often looks the same: a training plan and feedback on technique, for €100
-              or more a month. I was coached that way myself, and after a few months it started to feel repetitive. My coaching is built on
-              working together, but nobody could see that until they asked me.
-            </p>
-            <p className={about.body}>
-              So I wanted a site that explains it, for the people who might want coaching. It was also the chance to
-              bring my two passions together: coaching, and designing and building for the web.
-            </p>
+            {/* The two sides of the heading as two cards: the athlete's uncertainty, then what my coaching asks */}
+            <ul className={cs.sides}>
+              <li>
+                <p className={styles.label}>The athlete</p>
+                <h3>Doesn’t know what to expect</h3>
+                <p>
+                  Most people looking for a coach don’t really know what they’re looking for, or what to expect. And
+                  every coach offers something a little different. That makes reaching out a big step.
+                </p>
+              </li>
+              <li>
+                <p className={styles.label}>My coaching</p>
+                <h3>Made together, so it asks for input</h3>
+                {/* The difference in two rows; the lit dot marks mine, as light means "on" on the homepage */}
+                <dl className={cs.versus}>
+                  <div>
+                    <dt>Most plans</dt>
+                    <dd>General, thought out only from the coach’s side.</dd>
+                  </div>
+                  <div data-on="">
+                    <dt>Mine</dt>
+                    <dd>Worked out with the athlete: what will work for them.</dd>
+                  </div>
+                </dl>
+                <p>
+                  That asks something of the athlete: they have to be willing to give that input. I’ve had athletes who
+                  didn’t want that, and then it simply isn’t a good fit.
+                </p>
+              </li>
+            </ul>
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-process">
@@ -190,29 +219,48 @@ export default function CollaborativeStrength() {
               <Scramble text="Strategy first, the website second" />
             </h2>
             <p className={about.lead}>
-              Before I designed anything, I asked whether growing my coaching was worth it, and how. Two experienced
-              coaches helped me answer that.
+              Before I designed anything, I wanted to know how to grow my coaching the right way: who it’s for, and
+              how they find me. I brainstormed it with two experienced coaches.
             </p>
+            {/* The two talks as quotes: a large quote mark, the advice, then who said it with their photo */}
             <ul className={cs.talks}>
               {talks.map((t) => (
                 <li key={t.who}>
-                  <blockquote>
-                    <p>{t.text}</p>
-                  </blockquote>
-                  <p className={cs.who}>
-                    <strong>{t.who}</strong>
-                    <span>{t.role}</span>
-                  </p>
+                  <figure className={cs.quote}>
+                    <span className={cs.quoteMark} aria-hidden="true">
+                      “
+                    </span>
+                    <blockquote>
+                      <p>{t.text}</p>
+                    </blockquote>
+                    <figcaption className={cs.who}>
+                      {/* Decorative: the name is right next to it */}
+                      <Image
+                        className={cs.portrait}
+                        src={t.photo}
+                        alt=""
+                        width={128}
+                        height={128}
+                        sizes="56px"
+                        style={{ objectPosition: t.focus }}
+                      />
+                      <span>
+                        <strong>{t.who}</strong>
+                        <span>{t.role}</span>
+                      </span>
+                    </figcaption>
+                  </figure>
                 </li>
               ))}
             </ul>
-            <p className={`${about.body} ${cs.after}`}>
-              That gave me my position: a coach who sets goals together with the athlete, keeps reflecting and adjusts
-              along the way. And a funnel, where the website is the step between a post and a call.
+            {/* The bridge from the talks to the funnel, with an arrow down into it */}
+            <p className={cs.shaped}>
+              <span aria-hidden="true" />
+              That shaped the funnel: the website is the step between a post and a call.
             </p>
             <ol className={cs.funnel} aria-label="The funnel">
               {funnel.map((f) => (
-                <li key={f.stage}>
+                <li key={f.stage} data-lit={f.lit || undefined}>
                   <p className={styles.label}>{f.stage}</p>
                   <h3>{f.where}</h3>
                   <p>{f.text}</p>
@@ -222,108 +270,128 @@ export default function CollaborativeStrength() {
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-explain">
-            <p className={about.eyebrow}>Decision 1</p>
-            <h2 id="case-explain" className={`${about.heading} ${styles.heading}`}>
-              <Scramble text="Explain, don’t sell, so people can choose for themselves" />
-            </h2>
-            <div className={styles.decision}>
-              <div>
-                <p className={about.lead}>
-                  The site’s job isn’t to convince everyone. It shows how coaching with me works, so the right people
-                  book a call and the rest can see it isn’t for them.
-                </p>
-                <p className={about.body}>
-                  The homepage sums up the approach in four steps: ambition, approach, SBD (squat, bench, deadlift) and
-                  reflect. The services page is a timeline, because that’s how an athlete goes through the coaching: from
-                  a free intake to a weekly plan, feedback within 24 hours, video calls and meet day.
-                </p>
-              </div>
-              {/* The services page is tall: the pane shows its top half */}
-              <figure className={cs.tall}>
-                <div className={cs.tallWindow}>
-                  <Image
-                    src="/images/cases/collaborative-strength/services.webp"
-                    alt="Services page design: a vertical timeline with Gratis intake, Wekelijks schema, Reactie binnen 24 uur, Videocalls and Wedstrijdcoaching, each with a photo, such as a WhatsApp chat with technique feedback."
-                    width={1000}
-                    height={1843}
-                    sizes="(max-width: 768px) 90vw, 460px"
-                  />
+            {/* The heading and text on the right; on desktop the services page scrolls in a window beside it */}
+            <ScrollStage
+              caption="The services page as a timeline."
+              visual={
+                <div className={cs.browser}>
+                  <div className={cs.browserBar} aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                  <div className={cs.scrollyView} data-scroll-view>
+                    <div className={cs.scrollyPage} data-scroll-page>
+                      <Image
+                        src="/images/cases/collaborative-strength/services.webp"
+                        alt="Services page design: a vertical timeline with Gratis intake, Wekelijks schema, Reactie binnen 24 uur, Videocalls and Wedstrijdcoaching, each with a photo, such as a WhatsApp chat with technique feedback."
+                        width={1000}
+                        height={1843}
+                        sizes="(max-width: 768px) 90vw, 720px"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <figcaption className={styles.small}>The services page as a timeline.</figcaption>
-              </figure>
-            </div>
-            <figure className={cs.wide}>
-              <Image
-                src="/images/cases/collaborative-strength/approach.webp"
-                alt="The four steps on the live homepage: A Ambitie, B Aanpak, C SBD, D Reflect, each between thin vertical lines."
-                width={1440}
-                height={520}
-                sizes="(max-width: 768px) 100vw, 1100px"
-              />
-              <figcaption className={styles.small}>The approach in four steps, on the live homepage.</figcaption>
-            </figure>
+              }
+            >
+              <p className={about.eyebrow}>Decision 1</p>
+              <h2 id="case-explain" className={`${about.heading} ${styles.heading}`}>
+                <Scramble text="Explain, don’t sell, so people can choose for themselves" />
+              </h2>
+              <p className={about.lead}>
+                The site’s job isn’t to convince everyone. It shows how coaching with me works, so the right people
+                book a call and the rest can see it isn’t for them.
+              </p>
+              <p className={about.body}>
+                It also says up front what I expect: your input, on anything from training to how I coach. If that
+                doesn’t appeal to you, you know before we’ve even talked.
+              </p>
+            </ScrollStage>
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-feedback">
-            <p className={about.eyebrow}>Decision 2</p>
-            <h2 id="case-feedback" className={`${about.heading} ${styles.heading}`}>
-              <Scramble text="Five rounds of feedback, one clearer first impression" />
-            </h2>
-            <p className={about.lead}>
-              I asked five people with an eye for design and UX to pick the Figma design apart, then went over it once
-              more in a final review. Most of what changed was about the first screen and the step to a call.
-            </p>
-            <div className={cs.compare}>
-              <figure>
-                <figcaption className={styles.label}>First design</figcaption>
-                <div className={cs.compareWindow}>
-                  <Image
-                    src="/images/cases/collaborative-strength/figma-before.webp"
-                    alt="First homepage design: a dark video hero with the button in the middle, then a large heading over a photo collage, the four steps further down."
-                    width={800}
-                    height={2334}
-                    sizes="(max-width: 768px) 45vw, 520px"
-                  />
-                </div>
-              </figure>
-              <figure>
-                <figcaption className={styles.label}>After feedback</figcaption>
-                <div className={cs.compareWindow}>
-                  <Image
-                    src="/images/cases/collaborative-strength/figma-after.webp"
-                    alt="Final homepage design: Book a call in the menu, then a question to the visitor and the four steps right after the hero, on a light wall texture."
-                    width={800}
-                    height={2447}
-                    sizes="(max-width: 768px) 45vw, 520px"
-                  />
-                </div>
-              </figure>
-            </div>
-            <ul className={styles.points}>
-              {feedback.map((f) => (
-                <li key={f.title}>
-                  <h3>{f.title}</h3>
-                  <p>{f.text}</p>
-                </li>
-              ))}
-            </ul>
+            {/* As Decision 1, mirrored: the text on the left, both whole homepage designs scrolling on the right,
+                with a line to drag between them */}
+            <ScrollStage
+              side="right"
+              length={320}
+              caption="The homepage before and after feedback. Drag the line, or use the arrow keys."
+              visual={
+                <Compare
+                  before={{
+                    src: "/images/cases/collaborative-strength/design-first.webp",
+                    alt: "First homepage design: a dark video hero without booking in the menu, then a large heading over a photo collage, the four steps further down and Focus zonder chaos.",
+                    width: 1200,
+                    height: 3499,
+                  }}
+                  after={{
+                    src: "/images/cases/collaborative-strength/design-after.webp",
+                    alt: "Homepage design after feedback: Book a call in the menu, right after the hero a question to the visitor and the four steps, then the photos and Focus zonder chaos.",
+                    width: 1200,
+                    height: 3670,
+                  }}
+                />
+              }
+            >
+              <p className={about.eyebrow}>Decision 2</p>
+              <h2 id="case-feedback" className={`${about.heading} ${styles.heading}`}>
+                <Scramble text="Five rounds of feedback, one clearer first impression" />
+              </h2>
+              <p className={about.lead}>
+                I asked five people with an eye for design and UX to pick the Figma design apart, then went over it
+                once more in a final review.
+              </p>
+              <p className={about.body}>Two examples of what changed:</p>
+              <ul className={cs.examples}>
+                {changes.map((c) => (
+                  <li key={c.title}>
+                    <h3>{c.title}</h3>
+                    <p>{c.text}</p>
+                  </li>
+                ))}
+              </ul>
+            </ScrollStage>
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-build">
             <p className={about.eyebrow}>Building it</p>
             <h2 id="case-build" className={`${about.heading} ${styles.heading}`}>
-              <Scramble text="Some design decisions only showed up in the browser" />
+              <Scramble text="By hand first, then back to AI" />
             </h2>
             <p className={about.lead}>
-              I built the homepage first and properly, in Next.js with Tailwind and Framer Motion, before the other
-              pages. The site had to convey a feeling, like a meet day: the video and the headline blend on purpose, while
-              buttons and the key text stay clear.
+              This was my own project, with no hard deadline, and coaching and building for the web in one. So besides
+              using AI, I saw the chance to sharpen my raw coding skills again.
             </p>
+            {/* The order I built it in, as three steps on one line */}
+            <ol className={cs.steps} aria-label="How I built it">
+              {buildSteps.map((s, i) => (
+                <li key={s.title}>
+                  <span className={styles.pinNum} aria-hidden="true">
+                    {i + 1}
+                  </span>
+                  <h3>{s.title}</h3>
+                  <p>{s.text}</p>
+                </li>
+              ))}
+            </ol>
+            <p className={`${about.body} ${cs.after}`}>
+              I also played a lot with animation and interaction myself first. Once they felt right on the homepage, I
+              refined them and carried them over to the other pages.{" "}
+              <a href={links.ai} className={styles.textLink}>
+                <span>How I use AI</span>
+              </a>
+            </p>
+            {/* Screen recordings of the live site, 1440 wide at 60 fps */}
             <ul className={cs.details}>
               <li>
                 <div className={cs.shots}>
-                  <Shot src="nav-top" tag="Over the video" alt="The menu over the dark hero video: white links and a Book a call button." width={1640} height={180} />
-                  <Shot src="nav-scrolled" tag="Over the page" alt="The menu over the light sections: frosted glass with dark links." width={1640} height={180} />
+                  <Clip
+                    src="/images/cases/collaborative-strength/clip-menu.mp4?v=2"
+                    poster="/images/cases/collaborative-strength/clip-menu.jpg?v=2"
+                    label="Scrolling the live site: over the dark video the menu is see-through, over the light section below it turns into frosted glass, and back."
+                    width={800}
+                    height={400}
+                  />
                 </div>
                 <h3>A menu that adapts</h3>
                 <p>
@@ -332,9 +400,14 @@ export default function CollaborativeStrength() {
                 </p>
               </li>
               <li>
-                <div className={`${cs.shots} ${cs.shotsSide}`}>
-                  <Shot src="button-rest" tag="At rest" alt="The Book a call button: a dark glass field with turquoise text and an arrow in a turquoise square." width={800} height={268} />
-                  <Shot src="button-hover" tag="On hover" alt="The same button on hover: filled turquoise, white text, the corners closed in and the arrow turned flat." width={800} height={268} />
+                <div className={cs.shots}>
+                  <Clip
+                    src="/images/cases/collaborative-strength/clip-button.mp4?v=2"
+                    poster="/images/cases/collaborative-strength/clip-button.jpg?v=2"
+                    label="The pointer moves onto the Book a call button: it fills turquoise, the corners close in and the arrow turns flat, then it returns to rest."
+                    width={720}
+                    height={360}
+                  />
                 </div>
                 <h3>A button you can feel</h3>
                 <p>
@@ -343,46 +416,22 @@ export default function CollaborativeStrength() {
                 </p>
               </li>
               <li>
-                <h3>Depth while you scroll</h3>
+                <div className={cs.shots}>
+                  <Clip
+                    src="/images/cases/collaborative-strength/clip-steps.mp4?v=2"
+                    poster="/images/cases/collaborative-strength/clip-steps.jpg?v=2"
+                    label="Scrolling to the four steps on the live homepage: the vertical lines draw in, then A Ambitie, B Aanpak, C SBD and D Reflect fade and slide in."
+                    width={1200}
+                    height={600}
+                  />
+                </div>
+                <h3>Four steps that unfold</h3>
                 <p>
-                  Photos move slower than the text, the lines between the four steps draw in, and the letters slide in
-                  from the side. The parallax runs on Framer Motion’s scroll hooks, so it stays smooth.
+                  As you reach ambition, approach, SBD and reflect, the lines draw in, the text fades in and the letters
+                  slide in from the side.
                 </p>
               </li>
             </ul>
-
-            {/* How AI was used: the story on the left, the logo sketches on the right */}
-            <div className={styles.aiBlock}>
-              <div>
-                <h3 className={styles.subheading}>AI as a mentor first, then for speed</h3>
-                <p className={about.body}>
-                  On the homepage I deliberately didn’t let AI write code I didn’t understand, because I wanted to learn
-                  it myself. I asked it to explain instead, like why scroll hooks run smoother than moving elements on
-                  every scroll event.
-                </p>
-                <p className={about.body}>
-                  Once the homepage was done and I knew how it worked, AI helped me build the other pages much faster and
-                  make site-wide improvements, like the layouts for phones.
-                </p>
-                <p className={about.body}>
-                  The logo went the other way. AI drafts all felt generic, so I sketched my own: two slanted planes for
-                  progress and direction.{" "}
-                  <a href={links.ai} className={styles.textLink}>
-                    <span>How I use AI</span>
-                  </a>
-                </p>
-              </div>
-              <figure className={cs.logo}>
-                <Image
-                  src="/images/cases/collaborative-strength/logo-sketches.webp"
-                  alt="Logo sketches: CS in brackets and frames, a C and S split by a cross, and the final mark of two slanted planes next to CS."
-                  width={1160}
-                  height={505}
-                  sizes="(max-width: 768px) 90vw, 560px"
-                />
-                <figcaption className={styles.small}>From CS in a frame to the final mark, top right.</figcaption>
-              </figure>
-            </div>
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-test">
@@ -400,13 +449,18 @@ export default function CollaborativeStrength() {
                   4.2<span className={styles.statOf}> of 5</span>
                 </p>
                 <p className={styles.statLabel}>Average answer to: how likely are you to use this site or book coaching?</p>
+                {/* The average as five blocks, the last one a fifth full; the same place as the dots beside it */}
+                <span className={cs.meter} aria-hidden="true">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <i
+                      key={n}
+                      data-full={n <= 4 || undefined}
+                      style={{ "--fill": `${Math.round(Math.min(1, Math.max(0, 4.2 - (n - 1))) * 100)}%` } as CSSProperties}
+                    />
+                  ))}
+                </span>
               </div>
-              <div className={styles.stat}>
-                <p className={styles.statNum}>
-                  6<span className={styles.statOf}> of 6</span>
-                </p>
-                <p className={styles.statLabel}>could say what the site was for and who it was for</p>
-              </div>
+              <StatTile of={6} lit={6} label="could say what the site was for and who it was for" />
               <ul className={cs.quotes}>
                 {quotes.map((q) => (
                   <li key={q}>
@@ -434,16 +488,26 @@ export default function CollaborativeStrength() {
             <h2 id="case-result" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="Enough clients, and the right ones" />
             </h2>
-            <p className={about.lead}>
-              I shared the site with people who were curious about coaching with me. New clients came quickly, so
-              quickly that I never needed to promote it further. I coach next to a full-time job, and I want to keep it
-              fun, not turn it into a second job.
-            </p>
-            <p className={about.body}>
-              The bigger win was the fit. Some people read how I work and saw it wasn’t what they were looking for. The
-              others took the step to an intake because of it, and knew what they were signing up for. I never wanted to
-              charge more; I wanted a fair fee and athletes I can really help.
-            </p>
+            {/* The two halves of the heading as two cards, in the light of the lamp */}
+            <ul className={cs.wins}>
+              <li>
+                <p className={styles.label}>Enough clients</p>
+                <h3>New clients came quickly</h3>
+                <p>
+                  I shared the site with people who were curious about coaching with me. Clients came so quickly that I
+                  never needed to promote it further. I coach next to a full-time job, and I want to keep it fun, not
+                  turn it into a second job.
+                </p>
+              </li>
+              <li>
+                <p className={styles.label}>The right ones</p>
+                <h3>The bigger win was the fit</h3>
+                <p>
+                  Some people read how I work and saw it wasn’t what they were looking for. The others took the step to
+                  an intake because of it, and knew what they were signing up for.
+                </p>
+              </li>
+            </ul>
           </section>
 
           <a href="/#work" className={styles.next}>
@@ -481,35 +545,5 @@ export default function CollaborativeStrength() {
         </nav>
       </footer>
     </div>
-  );
-}
-
-/* A plain browser window: a bar with three dots, then the page */
-function Browser({ src, alt, width, height, sizes }: { src: string; alt: string; width: number; height: number; sizes: string }) {
-  return (
-    <div className={cs.browser}>
-      <div className={cs.browserBar} aria-hidden="true">
-        <i />
-        <i />
-        <i />
-      </div>
-      <Image src={src} alt={alt} width={width} height={height} sizes={sizes} priority />
-    </div>
-  );
-}
-
-/* One state of a detail from the live site, with its label above */
-function Shot({ src, tag, alt, width, height }: { src: string; tag: string; alt: string; width: number; height: number }) {
-  return (
-    <figure className={cs.shot}>
-      <figcaption className={styles.label}>{tag}</figcaption>
-      <Image
-        src={`/images/cases/collaborative-strength/${src}.webp`}
-        alt={alt}
-        width={width}
-        height={height}
-        sizes="(max-width: 768px) 90vw, 560px"
-      />
-    </figure>
   );
 }
