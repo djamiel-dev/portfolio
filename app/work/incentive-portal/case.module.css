@@ -809,6 +809,11 @@
   transition: transform 250ms var(--ease-out);
 }
 
+/* A flat screenshot instead of a device: the same small rounding as the other screens */
+.nextFlat {
+  border-radius: 4px;
+}
+
 .nextTitle {
   font-size: clamp(2rem, 3.8vw, 3.5rem);
   font-weight: 560;

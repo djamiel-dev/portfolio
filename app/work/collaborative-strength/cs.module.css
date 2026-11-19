@@ -255,10 +255,6 @@
   background: #dce2e3;
 }
 
-.after {
-  margin-top: clamp(40px, 5vw, 64px);
-}
-
 /* A round arrow: a light circle on a thin line with a drawn arrow, the same in the funnel and above it */
 .shaped span,
 .funnel li + li::before {
@@ -642,11 +638,12 @@
   color: var(--fg-2);
 }
 
+/* Well apart from the three steps above, so the recordings don't read as belonging to them */
 .details {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 40px clamp(16px, 2vw, 32px);
-  margin: clamp(40px, 5vw, 64px) 0 0;
+  margin: clamp(88px, 10vw, 152px) 0 0;
   padding: 0;
   list-style: none;
 }

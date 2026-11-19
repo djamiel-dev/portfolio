@@ -88,6 +88,7 @@ const buildSteps = [
   {
     title: "Back to my AI workflow",
     text: "With that, I built the other pages. All in Next.js, Tailwind and Framer Motion.",
+    ai: true,
   },
 ];
 
@@ -157,8 +158,8 @@ export default function CollaborativeStrength() {
               its buttons, the top half only. The recording is the link to the live site, with "View website" at the pointer. */}
           <Clip
             className={cs.heroTour}
-            src="/images/cases/collaborative-strength/hero-tour.mp4?v=2"
-            poster="/images/cases/collaborative-strength/hero-tour.jpg?v=2"
+            src="/images/cases/collaborative-strength/hero-tour.mp4?v=3"
+            poster="/images/cases/collaborative-strength/hero-tour.jpg?v=3"
             label="Scrolling through the live homepage: the deadlift video, the question to the visitor, the four steps, the photos and Focus zonder chaos, with each button lighting up on hover."
             width={1440}
             height={450}
@@ -283,7 +284,7 @@ export default function CollaborativeStrength() {
                   <div className={cs.scrollyView} data-scroll-view>
                     <div className={cs.scrollyPage} data-scroll-page>
                       <Image
-                        src="/images/cases/collaborative-strength/services.webp"
+                        src="/images/cases/collaborative-strength/services-page.webp"
                         alt="Services page design: a vertical timeline with Gratis intake, Wekelijks schema, Reactie binnen 24 uur, Videocalls and Wedstrijdcoaching, each with a photo, such as a WhatsApp chat with technique feedback."
                         width={1000}
                         height={1843}
@@ -319,13 +320,13 @@ export default function CollaborativeStrength() {
               visual={
                 <Compare
                   before={{
-                    src: "/images/cases/collaborative-strength/design-first.webp",
+                    src: "/images/cases/collaborative-strength/homepage-first.webp",
                     alt: "First homepage design: a dark video hero without booking in the menu, then a large heading over a photo collage, the four steps further down and Focus zonder chaos.",
                     width: 1200,
                     height: 3499,
                   }}
                   after={{
-                    src: "/images/cases/collaborative-strength/design-after.webp",
+                    src: "/images/cases/collaborative-strength/homepage-after.webp",
                     alt: "Homepage design after feedback: Book a call in the menu, right after the hero a question to the visitor and the four steps, then the photos and Focus zonder chaos.",
                     width: 1200,
                     height: 3670,
@@ -370,24 +371,27 @@ export default function CollaborativeStrength() {
                     {i + 1}
                   </span>
                   <h3>{s.title}</h3>
-                  <p>{s.text}</p>
+                  <p>
+                    {s.text}
+                    {s.ai && (
+                      <>
+                        {" "}
+                        <a href={links.ai} className={styles.textLink}>
+                          <span>How I use AI</span>
+                        </a>
+                      </>
+                    )}
+                  </p>
                 </li>
               ))}
             </ol>
-            <p className={`${about.body} ${cs.after}`}>
-              I also played a lot with animation and interaction myself first. Once they felt right on the homepage, I
-              refined them and carried them over to the other pages.{" "}
-              <a href={links.ai} className={styles.textLink}>
-                <span>How I use AI</span>
-              </a>
-            </p>
             {/* Screen recordings of the live site, 1440 wide at 60 fps */}
             <ul className={cs.details}>
               <li>
                 <div className={cs.shots}>
                   <Clip
-                    src="/images/cases/collaborative-strength/clip-menu.mp4?v=2"
-                    poster="/images/cases/collaborative-strength/clip-menu.jpg?v=2"
+                    src="/images/cases/collaborative-strength/clip-menu.mp4?v=3"
+                    poster="/images/cases/collaborative-strength/clip-menu.jpg?v=3"
                     label="Scrolling the live site: over the dark video the menu is see-through, over the light section below it turns into frosted glass, and back."
                     width={800}
                     height={400}
@@ -402,8 +406,8 @@ export default function CollaborativeStrength() {
               <li>
                 <div className={cs.shots}>
                   <Clip
-                    src="/images/cases/collaborative-strength/clip-button.mp4?v=2"
-                    poster="/images/cases/collaborative-strength/clip-button.jpg?v=2"
+                    src="/images/cases/collaborative-strength/clip-button.mp4?v=3"
+                    poster="/images/cases/collaborative-strength/clip-button.jpg?v=3"
                     label="The pointer moves onto the Book a call button: it fills turquoise, the corners close in and the arrow turns flat, then it returns to rest."
                     width={720}
                     height={360}
@@ -418,8 +422,8 @@ export default function CollaborativeStrength() {
               <li>
                 <div className={cs.shots}>
                   <Clip
-                    src="/images/cases/collaborative-strength/clip-steps.mp4?v=2"
-                    poster="/images/cases/collaborative-strength/clip-steps.jpg?v=2"
+                    src="/images/cases/collaborative-strength/clip-steps.mp4?v=4"
+                    poster="/images/cases/collaborative-strength/clip-steps.jpg?v=4"
                     label="Scrolling to the four steps on the live homepage: the vertical lines draw in, then A Ambitie, B Aanpak, C SBD and D Reflect fade and slide in."
                     width={1200}
                     height={600}

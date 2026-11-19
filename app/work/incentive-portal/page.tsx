@@ -373,13 +373,13 @@ export default function IncentivePortal() {
                 <span>02 Collaborative Strength</span>
               </span>
             </span>
-            {/* The same preview as case 02 on the homepage; the link text already says where it goes */}
+            {/* The homepage of case 02, flat, without a device; the link text already says where it goes */}
             <Image
-              className={styles.nextImage}
-              src="/images/cases/powerlifting-laptop.png"
+              className={`${styles.nextImage} ${styles.nextFlat}`}
+              src="/images/cases/collaborative-strength/home-preview.webp"
               alt=""
-              width={1818}
-              height={1824}
+              width={1440}
+              height={900}
               sizes="(max-width: 768px) 60vw, 320px"
             />
           </a>
