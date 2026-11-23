@@ -1,5 +1,7 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import about from "@/app/about/about.module.css";
+import { Compare } from "@/components/case/Compare";
 import styles from "./case.module.css";
 
 // An iPhone-like frame: side buttons, a camera island over a status bar in the app's own background,
@@ -10,7 +12,8 @@ export function Phone({
   alt,
   sizes,
   height = 1892,
-  screen = "#f8f8f8",
+  screen = "#f8f8f8", // the app's own ground in the exports (not --ground-light): the status bar must match it
+  scroll,
   children,
 }: {
   src: string;
@@ -18,13 +21,22 @@ export function Phone({
   sizes: string;
   height?: number;
   screen?: string;
+  scroll?: string; // a screen taller than the phone scrolls inside it; this names that area for screen readers
   children?: ReactNode;
 }) {
+  const image = <Image src={src} alt={alt} width={960} height={height} sizes={sizes} />;
   return (
     <div className={styles.device}>
       <div className={styles.frame}>
         <div className={styles.screen} style={{ backgroundColor: screen }}>
-          <Image src={src} alt={alt} width={960} height={height} sizes={sizes} />
+          {scroll ? (
+            // focusable, so the screen also scrolls with the keyboard
+            <div className={styles.screenScroll} tabIndex={0} role="region" aria-label={scroll}>
+              {image}
+            </div>
+          ) : (
+            image
+          )}
         </div>
         {children && <div className={styles.pins}>{children}</div>}
       </div>
@@ -44,7 +56,8 @@ function Pane({ wide, children }: { wide?: boolean; children: ReactNode }) {
   );
 }
 
-/* Design rounds before the test, each labelled with what shaped it */
+/* Design rounds before the test, each labelled with what shaped it. A route runs over the three, as the route on
+   case 03 and the flow on case 04: it draws in while you scroll, and each round's dot lights up as it is reached */
 export function Rounds() {
   const rounds = [
     // Iteration 1, made after the rough AI prototypes
@@ -79,8 +92,9 @@ export function Rounds() {
   ];
   return (
     <ol className={styles.rounds}>
-      {rounds.map((r) => (
-        <li key={r.num}>
+      {rounds.map((r, i) => (
+        <li key={r.num} style={{ "--i": i } as CSSProperties}>
+          <span className={styles.stop} aria-hidden="true" />
           <Pane wide={r.wide}>
             {r.wide ? (
               <Image
@@ -95,7 +109,7 @@ export function Rounds() {
               <Phone src={r.src} alt={r.alt} height={r.height} sizes="(max-width: 768px) 60vw, 240px" />
             )}
           </Pane>
-          <p className={styles.label}>{r.num}</p>
+          <p className={about.label}>{r.num}</p>
           <h3>{r.by}</h3>
           <p>{r.text}</p>
         </li>
@@ -104,27 +118,9 @@ export function Rounds() {
   );
 }
 
-/* Only the part of a screen that changed, without a phone around it. x, y and w are pixels in the
-   960-wide export; every crop is 4:5, so the height is w × 1.25. Margins in % follow the box's width. */
-function Crop({ src, alt, x, y, w, height, tag }: { src: string; alt: string; x: number; y: number; w: number; height: number; tag: string }) {
-  return (
-    <figure className={styles.crop}>
-      <figcaption className={styles.label}>{tag}</figcaption>
-      <div className={styles.window}>
-        <Image
-          src={src}
-          alt={alt}
-          width={960}
-          height={height}
-          sizes={`(max-width: 768px) ${Math.round((960 / w) * 45)}vw, ${Math.round((960 / w) * 220)}px`}
-          style={{ width: `${(960 / w) * 100}%`, marginLeft: `${(-x / w) * 100}%`, marginTop: `${(-y / w) * 100}%` }}
-        />
-      </div>
-    </figure>
-  );
-}
-
-/* What the test changed besides the flow: one detail per screen, tested on the left, after the test on the right */
+/* What the test changed besides the flow: one detail per screen, the tested version and the one after the test on
+   top of each other, with the line of the Compare slider (as on case 02) between them. x, y and w are pixels in the
+   960-wide export; every crop is 4:5. */
 export function Changes() {
   const changes = [
     {
@@ -157,8 +153,13 @@ export function Changes() {
       {changes.map((c) => (
         <li key={c.title}>
           <div className={styles.pair}>
-            <Crop {...c.before} x={c.crop.x} y={c.crop.before} w={c.crop.w} tag="Tested" />
-            <Crop {...c.after} x={c.crop.x} y={c.crop.after} w={c.crop.w} tag="After the test" />
+            <Compare
+              before={{ ...c.before, width: 960 }}
+              after={{ ...c.after, width: 960 }}
+              labels={{ before: "Tested", after: "After the test" }}
+              name={`${c.title}: compare the tested screen with the screen after the test`}
+              crop={{ x: c.crop.x, w: c.crop.w, yBefore: c.crop.before, yAfter: c.crop.after, ratio: 1.25 }}
+            />
           </div>
           <h4>{c.title}</h4>
           <p>{c.found}</p>

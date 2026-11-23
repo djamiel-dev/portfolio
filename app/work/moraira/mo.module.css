@@ -29,8 +29,7 @@
   flex-direction: column;
   justify-content: center;
   padding: clamp(24px, 3vw, 40px) clamp(20px, 2.6vw, 36px);
-  border-radius: 4px;
-  background: #dce2e3;
+  background: var(--ground);
 }
 
 .goals .goalLabel {
@@ -40,7 +39,7 @@
 .goals h3 {
   max-width: 14em;
   margin-top: 8px;
-  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-size: var(--t-title);
   font-weight: 540;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -84,7 +83,6 @@
 
 .week {
   flex: 1;
-  border-radius: 1px;
   background: var(--off);
 }
 
@@ -113,7 +111,7 @@
   padding: 0;
   list-style: none;
   color: var(--fg-2);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.3;
 }
 
@@ -127,7 +125,6 @@
   content: "";
   width: 10px;
   height: 10px;
-  border-radius: 1px;
   background: var(--off);
 }
 
@@ -169,7 +166,6 @@
   position: relative;
   overflow: hidden;
   height: clamp(56px, 6vw, 80px);
-  border-radius: 2px;
   background: color-mix(in srgb, var(--fg) 14%, transparent);
 }
 
@@ -212,7 +208,7 @@
 }
 
 .report h3 {
-  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  font-size: var(--t-subtitle);
   font-weight: 540;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -287,8 +283,7 @@
   gap: 6px;
   min-height: 9rem;
   padding: clamp(16px, 2vw, 24px);
-  border-radius: 4px;
-  background: #dce2e3;
+  background: var(--ground);
 }
 
 .scope > li:first-of-type {
@@ -301,15 +296,15 @@
 }
 
 .scope h3 {
-  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
-  font-weight: 560;
+  font-size: var(--t-subtitle);
+  font-weight: 540;
   line-height: 1.2;
   letter-spacing: -0.015em;
 }
 
 .scope p {
   color: var(--fg-2);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   line-height: 1.4;
 }
 
@@ -333,12 +328,12 @@
   from {
     opacity: 0;
     translate: -24px 0;
-    clip-path: inset(0 100% 0 0 round 4px);
+    clip-path: inset(0 100% 0 0);
   }
   to {
     opacity: 1;
     translate: 0 0;
-    clip-path: inset(0 0 0 0 round 4px);
+    clip-path: inset(0 0 0 0);
   }
 }
 
@@ -446,14 +441,13 @@
   display: block;
   position: relative;
   aspect-ratio: 3 / 4;
-  border-radius: 4px;
   box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
 }
 
 .palette p {
   margin-top: 10px;
   color: var(--fg);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   font-weight: 540;
   line-height: 1.3;
 }
@@ -591,8 +585,7 @@
 
 .outings {
   overflow: hidden;
-  border-radius: 4px;
-  background: #dce2e3;
+  background: var(--ground);
 }
 
 .outings img {
@@ -618,7 +611,7 @@
 }
 
 .reasons :is(h3, p) {
-  transition: color 320ms var(--ease-out, ease-out);
+  transition: color 320ms var(--ease-out);
 }
 
 .reasons li::before {
@@ -628,12 +621,12 @@
   height: 3px;
   background: var(--glow);
   transform-origin: left center;
-  transition: transform 420ms var(--ease-out, ease-out);
+  transition: transform var(--dur-line) var(--ease-out);
 }
 
 .reasons h3 {
   margin-top: 6px;
-  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  font-size: var(--t-subtitle);
   font-weight: 540;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -688,10 +681,8 @@
 .table img {
   position: absolute;
   height: auto;
-  border-radius: 3px;
-  box-shadow:
-    0 1px 2px rgb(18 19 24 / 0.16),
-    0 18px 36px -14px rgb(18 19 24 / 0.32);
+  border-radius: 3px; /* the printed sign and cards keep their own small corner, as a device keeps its own */
+  box-shadow: var(--shadow-device);
 }
 
 .sign {
@@ -741,7 +732,7 @@
   left: 74%;
   max-width: 11em;
   translate: 0 -50%;
-  font-size: clamp(1.0625rem, 1.5vw, 1.375rem);
+  font-size: var(--t-subtitle);
   font-weight: 540;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -931,12 +922,12 @@
 .flow > li[data-mine] .stop {
   border-color: var(--glow);
   background: var(--glow);
-  box-shadow: 0 0 0 5px color-mix(in srgb, var(--glow) 18%, transparent);
+  box-shadow: var(--halo);
 }
 
 .flow h3 {
-  font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
-  font-weight: 560;
+  font-size: var(--t-subtitle);
+  font-weight: 540;
   line-height: 1.2;
   letter-spacing: -0.015em;
 }
@@ -944,7 +935,7 @@
 .flow p {
   margin-top: 6px;
   color: var(--fg-2);
-  font-size: 0.9375rem;
+  font-size: var(--t-small);
   line-height: 1.4;
 }
 
@@ -981,7 +972,7 @@
   }
   30% {
     background: var(--glow);
-    box-shadow: 0 0 0 5px color-mix(in srgb, var(--glow) 18%, transparent);
+    box-shadow: var(--halo);
   }
   45% {
     background: var(--bg);
@@ -989,7 +980,7 @@
   }
   100% {
     background: var(--glow);
-    box-shadow: 0 0 0 5px color-mix(in srgb, var(--glow) 18%, transparent);
+    box-shadow: var(--halo);
   }
 }
 
@@ -1060,9 +1051,8 @@
   gap: 8px;
   min-height: 6.5rem;
   padding: 18px 20px;
-  border-radius: 4px;
-  background: #dce2e3;
-  font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
+  background: var(--ground);
+  font-size: var(--t-subtitle);
   font-weight: 540;
   line-height: 1.2;
   letter-spacing: -0.015em;
@@ -1073,7 +1063,6 @@
   position: absolute;
   inset: 0 0 auto;
   height: 3px;
-  border-radius: 4px 4px 0 0;
   background: var(--glow);
   transform-origin: left center;
 }
@@ -1112,7 +1101,7 @@
 
 .layoutShot {
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: var(--r-screen);
   background: #fff;
   box-shadow: inset 0 0 0 1px var(--line);
 }
@@ -1280,225 +1269,4 @@
   .met {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-
-/* ---------- The hero as the way into the design: "View designs" at the pointer, then the pages full screen ---------- */
-
-/* The whole hero is the button. Hover exactly as the hero of case 02: the frame stays put and clips, the video
-   and the design layer inside it lean in from the top, and a dark layer comes over it; "View designs" at the pointer */
-.heroOpen {
-  position: relative;
-  display: block;
-  width: 100%;
-  overflow: hidden;
-  padding: 0;
-  border: 0;
-  border-radius: 4px;
-  background: none;
-  cursor: pointer;
-}
-
-.heroOpen::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgb(18 19 24 / 0.28);
-  opacity: 0;
-  transition: opacity 400ms ease;
-  pointer-events: none;
-}
-
-.heroOpen > div {
-  transform-origin: top center;
-  transition: scale 700ms var(--ease-out);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .heroOpen:hover::after {
-    opacity: 1;
-  }
-
-  .heroOpen:hover > div {
-    scale: 1.03;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .heroOpen:hover > div {
-    scale: none;
-  }
-}
-
-.heroOpen:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 4px;
-}
-
-/* Touch screens have no pointer to follow, so the button says it in the corner, as on case 02 */
-@media not ((hover: hover) and (pointer: fine)) {
-  .heroOpen::before {
-    content: "View designs";
-    position: absolute;
-    z-index: 1;
-    top: 12px;
-    left: 12px;
-    padding: 8px 14px;
-    border-radius: 999px;
-    background: #fff;
-    color: var(--fg);
-    font-size: 0.875rem;
-    font-weight: 520;
-  }
-}
-
-/* The viewer: full screen, night colours, the page itself is the only light */
-.viewer {
-  width: 100vw;
-  max-width: none;
-  height: 100dvh;
-  max-height: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: #151412;
-  color: #eeefeb;
-  overscroll-behavior: contain;
-}
-
-.viewer::backdrop {
-  background: #151412;
-}
-
-.viewer[open] {
-  display: flex;
-  flex-direction: column;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .viewer[open] {
-    animation: viewerIn 320ms var(--ease-out) both;
-  }
-}
-
-@keyframes viewerIn {
-  from {
-    opacity: 0;
-    scale: 0.985;
-  }
-  to {
-    opacity: 1;
-    scale: 1;
-  }
-}
-
-.viewerBar {
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px var(--gutter, 24px);
-  border-bottom: 1px solid #2e2d2a;
-}
-
-.viewerTitle {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  font-size: 1.125rem;
-  font-weight: 540;
-  letter-spacing: -0.015em;
-}
-
-.viewerCount {
-  color: #b9bab3;
-  font-size: 0.875rem;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-
-.viewerControls {
-  display: flex;
-  gap: 8px;
-}
-
-.viewerControls button {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border: 1px solid #2e2d2a;
-  border-radius: 999px;
-  background: #1c1814;
-  color: #eeefeb;
-  cursor: pointer;
-  transition:
-    border-color 200ms ease,
-    opacity 200ms ease;
-}
-
-.viewerControls button:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .viewerControls button:not(:disabled):hover {
-    border-color: #ff9e5e;
-  }
-}
-
-.viewerControls button:active:not(:disabled) {
-  scale: 0.96;
-}
-
-.viewerControls button:focus-visible,
-.viewerSlide:focus-visible {
-  outline: 2px solid #ff9e5e;
-  outline-offset: -2px;
-}
-
-.viewerControls svg {
-  width: 22px;
-  height: 22px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* The pages side by side, one per screen width; each snaps into place and scrolls down on its own */
-.viewerTrack {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
-}
-
-.viewerTrack::-webkit-scrollbar {
-  display: none;
-}
-
-.viewerSlide {
-  flex: 0 0 100%;
-  overflow-y: auto;
-  padding: clamp(16px, 3vw, 40px) var(--gutter, 24px) clamp(40px, 6vw, 80px);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  overscroll-behavior-y: contain;
-}
-
-.viewerSlide img {
-  display: block;
-  width: 100%;
-  max-width: 1200px;
-  height: auto;
-  margin-inline: auto;
-  border-radius: 4px;
-  box-shadow: 0 24px 64px -24px rgb(0 0 0 / 0.6);
 }

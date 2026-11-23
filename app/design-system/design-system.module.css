@@ -109,13 +109,76 @@
   gap: 16px;
 }
 
-/* On the homepage the button lights up once the lamp comes on */
-.mailLit {
+/* The mail button as it is at the end of the homepage, lit */
+.mailSample {
   align-self: flex-start;
   margin-top: 0;
-  border-color: var(--lamp);
-  background: var(--lamp);
-  color: #14110b;
+}
+
+/* The type tokens on their own, as the cases use them */
+.title {
+  font-size: var(--t-title);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: var(--t-subtitle);
+  font-weight: 540;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.small {
+  color: var(--muted);
+  font-size: var(--t-small);
+}
+
+/* Shape: a grey ground (square) with a screen on it (--r-screen), a browser frame with the device shadow, a lit dot */
+.shapes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 32px;
+}
+
+.groundSample {
+  display: grid;
+  place-items: center;
+  width: 220px;
+  aspect-ratio: 4 / 3;
+  background: var(--ground);
+}
+
+.screenSample {
+  width: 60%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--r-screen);
+  background: var(--ground-light);
+}
+
+.browserSample {
+  overflow: hidden;
+  width: 220px;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--r-browser);
+  background: #fff;
+  box-shadow: var(--shadow-device);
+}
+
+.browserSample span {
+  display: block;
+  height: 28px;
+  background: #f1f2f0;
+}
+
+.haloSample {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--glow);
+  box-shadow: var(--halo);
 }
 
 .motion {

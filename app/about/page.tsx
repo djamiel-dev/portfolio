@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { links } from "@/content/site";
 import home from "@/components/home/home.module.css";
-import { Menu } from "@/components/home/Menu";
 import { Scramble } from "@/components/home/Skills";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteNav } from "@/components/site/SiteNav";
 import styles from "./about.module.css";
 
 // Grey panes stand in for photos until they arrive; text in [brackets] is a placeholder.
@@ -121,46 +122,13 @@ const facts = [
 export default function About() {
   return (
     <div className={home.root} data-sky="day">
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
-      <header className={home.top}>
-        <a href="/" className={home.home} data-shown="">
-          Djamiel Saou
-        </a>
-        <nav aria-label="Main" className={home.nav}>
-          <a href="/#work">
-            <span>Projects</span>
-          </a>
-          <a href={links.ai}>
-            <span>How I use AI</span>
-          </a>
-          <a href={links.about} aria-current="page">
-            <span>About</span>
-          </a>
-          <a href={links.resume}>
-            <span>Resume</span>
-          </a>
-          <a href={links.email}>
-            <span>Contact me</span>
-          </a>
-        </nav>
-        <Menu className={home.menu} summaryClassName={home.menuButton} panelClassName={home.menuPanel}>
-          <a href="/#work">Projects</a>
-          <a href={links.ai}>How I use AI</a>
-          <a href={links.about} aria-current="page">
-            About
-          </a>
-          <a href={links.resume}>Resume</a>
-          <a href={links.email}>Contact me</a>
-        </Menu>
-      </header>
+      <SiteNav page="about" />
 
       <main id="main">
         <div className={styles.page}>
           <section className={styles.intro} aria-labelledby="about-title">
             <div className={styles.introText}>
-              <p className={styles.eyebrow}>About me</p>
+              <p className={styles.label}>About me</p>
               <h1 id="about-title" className={styles.title}>
                 I don’t wait to be handed a task.
               </h1>
@@ -287,20 +255,7 @@ export default function About() {
         </div>
       </main>
 
-      <footer className={home.footer}>
-        <div className={home.footerName}>
-          <span className={home.footerMark}>Djamiel Saou</span>
-          <small>© 2026 Djamiel Saou · Tilburg, NL</small>
-        </div>
-        <nav aria-label="Contact" className={home.footerNav}>
-          <a href={links.email}>
-            <span>djamielsaou@gmail.com</span>
-          </a>
-          <a href={links.phone}>
-            <span>06 83890250</span>
-          </a>
-        </nav>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

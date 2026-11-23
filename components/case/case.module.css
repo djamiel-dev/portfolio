@@ -1,0 +1,965 @@
+/* The case base: what every case page shares. Daylight for the story, night for the result, like the homepage.
+   Builds on about.module.css (page, sections, type) and the tokens in home.module.css (.root) and globals.css.
+   Each case adds its own stylesheet next to its page. */
+
+/* The middle sections each end in a large visual, so they need more air above them than on About */
+.roomy {
+  padding-top: calc(var(--block) * 1.4);
+}
+
+/* Long headings get a little more width than on About */
+.heading {
+  max-width: 18em;
+  margin-top: 16px;
+}
+
+.small {
+  color: var(--muted);
+  font-size: var(--t-small);
+}
+
+/* ---------- Intro ---------- */
+
+.intro {
+  align-items: end;
+}
+
+.facts {
+  margin-top: clamp(40px, 5vw, 72px);
+}
+
+.pin,
+.pinNum {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.pin {
+  position: absolute;
+  left: -14px;
+  translate: 0 -50%;
+  background: var(--accent);
+  color: #fff;
+}
+
+.pinNum {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+/* ---------- Stat tile (StatTile) ---------- */
+
+.stat {
+  margin: 0;
+  padding: clamp(24px, 3vw, 40px);
+  background: var(--ground);
+}
+
+/* The count is the headline of the tile */
+.stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.statNum {
+  font-size: clamp(3rem, 5.5vw, 5rem);
+  font-weight: 560;
+  font-stretch: 104%;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+}
+
+.statOf {
+  color: var(--muted);
+  font-size: 0.4em;
+  letter-spacing: -0.02em;
+}
+
+.stat[data-tone="accent"] .statNum {
+  color: var(--accent);
+}
+
+.statLabel {
+  color: var(--fg-2);
+}
+
+.dots {
+  display: flex;
+  gap: 5px;
+  margin-top: auto;
+}
+
+.dots i {
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--dim);
+  border-radius: 50%;
+}
+
+.dots i {
+  transition:
+    background-color 160ms ease-out,
+    border-color 160ms ease-out;
+}
+
+.dots i[data-on] {
+  border-color: var(--fg);
+  background: var(--fg);
+}
+
+.stat[data-tone="accent"] .dots i[data-on] {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.outcome {
+  margin-top: clamp(32px, 4vw, 48px);
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+}
+
+.outcome strong {
+  color: var(--fg);
+  font-weight: 560;
+}
+
+.subheading {
+  max-width: 20em;
+  margin-top: 12px;
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  font-weight: 560;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* AI and the spec: one block under a line, text left and the spec right */
+.aiBlock {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: 32px clamp(32px, 4vw, 64px);
+  align-items: start;
+  margin-top: clamp(64px, 8vw, 112px);
+  padding-top: clamp(32px, 4vw, 48px);
+  border-top: 1px solid var(--line);
+}
+
+.aiBlock .subheading + p {
+  margin-top: 20px;
+}
+
+/* ---------- Result, at night ---------- */
+
+/* Without JS the zone paints its own night ([data-zone="night"] in home.module.css); with JS the root does (Sky) */
+.night {
+  --block: clamp(144px, 15vw, 252px);
+  margin-top: var(--block);
+  padding: var(--block) var(--gutter) 0;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The lamp is on: the result is the moment the light comes on */
+.lamp {
+  width: 14px;
+  height: 14px;
+  margin-bottom: clamp(32px, 4vw, 56px);
+  border-radius: 50%;
+  background: var(--lamp-core);
+  box-shadow:
+    0 0 0 6px rgb(255 158 94 / 0.22),
+    0 0 40px 12px rgb(255 158 94 / 0.45);
+  transition:
+    background-color 500ms ease,
+    box-shadow 900ms var(--ease-out);
+}
+
+/* With JS (Lamp): off until it comes into view, a thin ring as the unlit bulb on the homepage */
+.lamp[data-live]:not([data-lit]) {
+  background: var(--bg);
+  box-shadow:
+    0 0 0 1px var(--dim),
+    0 0 0 0 transparent;
+}
+
+/* Switching on: the flicker of a filament catching, as the lamp at the end of the homepage (ignite) */
+@media (prefers-reduced-motion: no-preference) {
+  .lamp[data-lit] {
+    animation: ignite 420ms steps(1, end);
+  }
+}
+
+@keyframes ignite {
+  0% {
+    opacity: 0.35;
+  }
+  25% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.5;
+  }
+  70% {
+    opacity: 1;
+  }
+}
+
+/* Next case: one large link, so nobody hits a dead end */
+.next {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 320px);
+  gap: 32px clamp(32px, 4vw, 64px);
+  align-items: center;
+  margin-top: var(--block);
+  padding: clamp(32px, 4vw, 48px) 0 clamp(96px, 10vw, 160px);
+  border-top: 1px solid var(--line);
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.nextText {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Hover as a case card on the homepage: the preview dims and leans in a little, "View case" at the pointer
+   (CaseCursor). The previews are cut-out devices as well as flat screens, so the dimming is on the image itself
+   (a dark layer would show as a box around a device) */
+.nextImage {
+  width: 100%;
+  height: auto;
+  transition:
+    scale var(--dur-media) var(--ease-out),
+    filter 400ms ease;
+}
+
+/* A flat screenshot instead of a device: the same small rounding as the other screens */
+.nextFlat {
+  border-radius: var(--r-screen);
+}
+
+.nextTitle {
+  font-size: clamp(2rem, 3.8vw, 3.5rem);
+  font-weight: 560;
+  font-stretch: 104%;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.nextTitle span {
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0% 2px;
+  transition: background-size var(--dur-line) var(--ease-out);
+}
+
+.nextTitle::after {
+  content: " →";
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .next:hover .nextTitle span {
+    background-size: 100% 2px;
+  }
+
+  .next:hover .nextImage {
+    scale: var(--zoom);
+    filter: brightness(0.72);
+  }
+}
+
+.next:focus-visible .nextTitle span {
+  background-size: 100% 2px;
+}
+
+@media (max-width: 47.99em) {
+  .aiBlock {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .next {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .nextImage {
+    width: min(260px, 70%);
+  }
+}
+
+/* ---------- A recording with play and pause (Clip, the heroes of 02 to 04) ---------- */
+
+.clipLink {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--r-screen);
+}
+
+/* Hover: dims and leans in a little, as the cases on the homepage; CaseCursor says "View website" */
+.clipLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(18 19 24 / 0.28);
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .clipLink:hover::after {
+    opacity: 1;
+  }
+
+  .clipLink:hover video {
+    scale: var(--zoom);
+  }
+}
+
+.clipLink:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+/* Touch screens have no pointer to follow, so the link says it in the corner */
+@media not ((hover: hover) and (pointer: fine)) {
+  .clipLink::before {
+    content: "View website ↗";
+    position: absolute;
+    z-index: 1;
+    top: 12px;
+    left: 12px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--fg);
+    font-size: 0.875rem;
+    font-weight: 520;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clipLink:hover video {
+    scale: none;
+  }
+}
+
+/* A recording of the live site, with play and pause in its corner */
+.clip {
+  position: relative;
+  min-width: 0;
+}
+
+.clip video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-screen);
+  background: #2a2b2e;
+}
+
+/* Round, as controls are; 44px to touch */
+.clipButton {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(18 19 24 / 0.72);
+  box-shadow: inset 0 0 0 1px rgb(238 239 235 / 0.22); /* so it stays visible on the dark video too */
+  color: #eeefeb;
+  cursor: pointer;
+  transition:
+    transform var(--dur-press) var(--ease-out),
+    background-color 200ms ease;
+}
+
+.clipButton svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.clipButton:active {
+  transform: scale(var(--press));
+}
+
+.clipButton:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .clipButton:hover {
+    background: rgb(18 19 24 / 0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clipButton:active {
+    transform: none;
+  }
+}
+
+
+
+/* A plain browser window, around the services page in Decision 1 */
+.browser {
+  width: min(100%, 860px);
+  overflow: hidden;
+  border-radius: var(--r-browser);
+  background: #fff;
+  box-shadow: var(--shadow-device);
+}
+
+.browserBar {
+  display: flex;
+  gap: 6px;
+  padding: 10px 14px;
+  background: #f1f2f0;
+}
+
+.browserBar i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #c9cbc7;
+}
+
+.browser img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---------- Decisions: a whole page scrolling in a window beside the text (ScrollStage) ---------- */
+
+/* Still (phone, reduced motion, no JS): the whole page as an image, the text sticking beside it */
+.scrollyStick {
+  display: grid;
+  grid-template-columns: minmax(0, 720px) minmax(0, 1fr);
+  gap: 40px clamp(32px, 5vw, 80px);
+  align-items: start;
+  margin-top: clamp(32px, 4vw, 48px);
+}
+
+.scrollyText {
+  grid-column: 2;
+  grid-row: 1;
+  position: sticky;
+  top: 112px;
+}
+
+.scrollyText > :first-child {
+  margin-top: 0;
+}
+
+.scrollyFigure {
+  grid-column: 1;
+  grid-row: 1;
+  margin: 0;
+  padding: clamp(12px, 2vw, 24px);
+  background: var(--ground);
+}
+
+/* Decision 2 mirrors Decision 1: the text on the left, the window on the right */
+.scrolly[data-side="right"] .scrollyStick {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 720px);
+}
+
+.scrolly[data-side="right"] .scrollyText {
+  grid-column: 1;
+}
+
+.scrolly[data-side="right"] .scrollyFigure {
+  grid-column: 2;
+}
+
+.scrollyFigure figcaption {
+  margin-top: 10px;
+}
+
+.scrollyFigure .browser {
+  width: 100%;
+}
+
+.scrollyView {
+  overflow: hidden;
+}
+
+.scrollyPage img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Moving: the section gets room to scroll through (its height comes from ScrollStage), the window and
+   the text stay in view */
+.scrolly[data-on] .scrollyStick {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  align-content: center;
+  align-items: center;
+  margin-top: 0;
+}
+
+.scrolly[data-on] .scrollyText {
+  position: static;
+}
+
+/* Taller than the window it came from, but never taller than the screen allows */
+.scrolly[data-on] .scrollyView,
+.compareBox {
+  aspect-ratio: 4 / 3.4;
+  max-height: calc(100vh - 180px);
+}
+
+.scrolly[data-on] [data-scroll-page] {
+  will-change: transform;
+}
+
+/* ---------- Compare: two designs, a line to drag between them ---------- */
+
+/* Horizontal drags move the line, vertical swipes still scroll the page */
+.compareBox {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-screen);
+  cursor: ew-resize;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.compareBox img {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+/* Both designs from the top; in a moving ScrollStage they slide up inside the box */
+.comparePage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.compareTop {
+  position: absolute;
+  inset: 0;
+}
+
+/* Which side is which, in the bottom corners */
+.compareTag {
+  position: absolute;
+  bottom: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgb(18 19 24 / 0.78);
+  color: #eeefeb;
+  pointer-events: none;
+}
+
+.compareTag[data-side="before"] {
+  left: 12px;
+}
+
+.compareTag[data-side="after"] {
+  right: 12px;
+}
+
+/* The line between the two, with a round grip in the middle */
+.compareHandle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  translate: -50% 0;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgb(18 19 24 / 0.18);
+  pointer-events: none;
+}
+
+.compareHandle span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--fg);
+  /* A control, not a device: its own small shadow lifts the grip off the two designs (an exception in DESIGN.md) */
+  box-shadow:
+    0 1px 2px rgb(18 19 24 / 0.2),
+    0 6px 16px -6px rgb(18 19 24 / 0.35);
+  transition: scale var(--dur-press) var(--ease-out);
+}
+
+.compareHandle svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Pressing anywhere on the image presses the grip */
+.compareBox:active .compareHandle span {
+  scale: var(--press);
+}
+
+.compareBox:has(.compareInput:focus-visible) .compareHandle span {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* The plain slider for keyboard and screen readers, out of sight */
+.compareInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compareBox:active .compareHandle span {
+    scale: 1;
+  }
+}
+
+@media (max-width: 47.99em) {
+  /* Stacked: the text first, then the image; nothing sticks */
+  .scrolly[data-side] .scrollyStick {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .scrolly[data-side] .scrollyText,
+  .scrolly[data-side] .scrollyFigure {
+    grid-column: auto;
+    grid-row: auto;
+    position: static;
+  }
+
+  .scrollyFigure {
+    padding: 8px;
+  }
+
+  .compareTag {
+    bottom: 8px;
+  }
+}
+
+/* ---------- A hero as the way into the design: "View designs" or "View screens" at the pointer (data-cursor),
+   then the screens full screen in the DesignViewer (heroes of 01 and 04) ---------- */
+
+/* The whole hero is the button. Hover exactly as the hero of case 02: the frame stays put and clips, the video
+   and the design layer inside it lean in from the top, and a dark layer comes over it; "View designs" at the pointer */
+.heroOpen {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-screen);
+  background: none;
+  cursor: pointer;
+}
+
+.heroOpen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(18 19 24 / 0.28);
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+
+.heroOpen > div {
+  transform-origin: top center;
+  transition: scale var(--dur-media) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .heroOpen:hover::after {
+    opacity: 1;
+  }
+
+  .heroOpen:hover > div {
+    scale: var(--zoom);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroOpen:hover > div {
+    scale: none;
+  }
+}
+
+.heroOpen:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+/* Touch screens have no pointer to follow, so the button says it in the corner (its data-cursor), as on case 02 */
+@media not ((hover: hover) and (pointer: fine)) {
+  .heroOpen::before {
+    content: attr(data-cursor);
+    position: absolute;
+    z-index: 1;
+    top: 12px;
+    left: 12px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--fg);
+    font-size: 0.875rem;
+    font-weight: 520;
+  }
+}
+
+/* ---------- DesignViewer: the screens of a design, full screen (heroes of 01 and 04) ---------- */
+
+/* The viewer: full screen, night colours, the page itself is the only light */
+.viewer {
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #151412;
+  color: #eeefeb;
+  overscroll-behavior: contain;
+}
+
+.viewer::backdrop {
+  background: #151412;
+}
+
+.viewer[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .viewer[open] {
+    animation: viewerIn 320ms var(--ease-out) both;
+  }
+}
+
+@keyframes viewerIn {
+  from {
+    opacity: 0;
+    scale: 0.985;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.viewerBar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px var(--gutter, 24px);
+  border-bottom: 1px solid #2e2d2a;
+}
+
+.viewerTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 1.125rem;
+  font-weight: 540;
+  letter-spacing: -0.015em;
+}
+
+.viewerCount {
+  color: #b9bab3;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.viewerControls {
+  display: flex;
+  gap: 8px;
+}
+
+.viewerControls button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #2e2d2a;
+  border-radius: 999px;
+  background: #1c1814;
+  color: #eeefeb;
+  cursor: pointer;
+  transition:
+    border-color 200ms ease,
+    opacity 200ms ease,
+    scale var(--dur-press) var(--ease-out);
+}
+
+.viewerControls button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .viewerControls button:not(:disabled):hover {
+    border-color: #ff9e5e;
+  }
+}
+
+.viewerControls button:active:not(:disabled) {
+  scale: var(--press);
+}
+
+.viewerControls button:focus-visible,
+.viewerSlide:focus-visible {
+  outline: 2px solid #ff9e5e;
+  outline-offset: -2px;
+}
+
+.viewerControls svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The pages side by side, one per screen width; each snaps into place and scrolls down on its own */
+.viewerTrack {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.viewerTrack::-webkit-scrollbar {
+  display: none;
+}
+
+.viewerSlide {
+  flex: 0 0 100%;
+  overflow-y: auto;
+  padding: clamp(16px, 3vw, 40px) var(--gutter, 24px) clamp(40px, 6vw, 80px);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overscroll-behavior-y: contain;
+}
+
+/* A slide the case draws itself (a screen in a phone on 01): in the middle of the view, with as much room above as
+   below */
+.viewerSlide[data-fit] {
+  display: grid;
+  place-items: safe center;
+  padding-block: 24px;
+}
+
+.viewerSlide img {
+  display: block;
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  margin-inline: auto;
+  border-radius: var(--r-screen);
+  /* The viewer is an overlay in the dark: its own deeper shadow lifts the page off it (an exception in DESIGN.md) */
+  box-shadow: 0 24px 64px -24px rgb(0 0 0 / 0.6);
+}
+
+/* ---------- Findings: three side by side (03 research, 04 the guests) ---------- */
+
+.findings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px clamp(24px, 3vw, 48px);
+  margin: clamp(48px, 6vw, 88px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each finding spans two rows of the list (heading, text), shared across the columns, so the three
+   texts start on one line however long the heading above is */
+.findings li {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  align-content: start;
+  padding-top: 20px;
+  border-top: 1px solid var(--fg);
+}
+
+.findings h3 {
+  max-width: 12em;
+  font-size: var(--t-title);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.findings p {
+  margin-top: 12px;
+  color: var(--fg-2);
+}
+
+@media (max-width: 47.99em) {
+  .findings {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Reduced motion: the preview stays still */
+@media (prefers-reduced-motion: reduce) {
+  .next:hover .nextImage {
+    scale: none;
+  }
+}

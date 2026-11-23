@@ -528,3 +528,163 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Let op:** op de Villa-pagina staat "Available from 1 July 2025" en een kalender van juni 2025. Dat is een jaartal in het ontwerp; niet aangepast in Figma (alleen tikfouten mocht ik zelf oplossen). Het brandbook staat niet in de viewer.
 - **Toetsing:** typecheck; ingebouwde browser op desktop (hover, klik, pijltje, scrollen, knoppen, Escape, focus terug) en 375px. Niet gecommit.
 - **Bijgewerkt (23 nov), hover:** de eerste hover schaalde het hele frame buiten de knop uit, waardoor de donkere laag en de rand niet meer klopten. Nu precies als de hero van case 02: de knop knipt af (`overflow: hidden`), alleen de inhoud leunt vanaf de bovenkant 3% naar voren en de donkere laag ligt er strak overheen. Op touchscreens staat "View designs" als label linksboven, zoals "View website" bij case 02. Met reduced motion geen zoom.
+
+### Stap 38 – Review: consistentie van het design over de hele site (23 nov)
+| Onderdeel | Wat AI voorstelde | Wat ik besliste |
+|---|---|---|
+| Grijzen | Eén `--ground` in plaats van zes grijzen en vier bijna-witten | Eens |
+| Hoeken | 0 voor de site, 4px alleen voor schermen van een product, apparaten eigen rondingen | Eens |
+| Schermtaal | Casepagina's één taal (telefoon of browser), next-case links allemaal het homepagebeeld | Afgekeurd: hero's en next-case blijven zoals ze zijn. Wel schaduwen en hoeken gelijktrekken |
+| Schaduwen | Eén `--shadow-device`, platte screenshots zonder schaduw | Eens |
+| Typografie | Twee titelmaten, één kleine tekstmaat, één label-klasse | Eens, versimpelen |
+| Globals | Heron uit `globals.css`, tokens naar `:root`, eigen 404 | Eens, mits goed voor/na getest; 404 heel simpel in E-stijl |
+| Beweging | Motion-tokens voor indrukken, lijn, zoom en halo | Eens |
+| Gemiste kansen | Case 01 interactiever (Compare, route, pins, viewer), lamp ontsteekt op de cases, next-case hover als de homepagekaart, `aria-current` op Projects, contact-blok op de cases | Eens, behalve het contact-blok: niet nodig op de cases |
+| Structuur | Gedeelde nav, footer en case-componenten | Eens |
+
+- **Werkwijze:** de review, beslissingen, regels, testprotocol en een prompt per werkpakket staan in `docs/review-consistentie.md`; ik voer de pakketten zelf uit in aparte chats.
+- **Toetsing van de review:** alle stylesheets geïnventariseerd (kleuren, hoeken, schaduwen, transities, lettermaten) en alle live pagina's op 1440px doorgescrold. Niet bekeken: mobiel, Safari, Firefox.
+- **Tijd:** [invullen]
+
+### Stap 39 – Consistentie, pakket 1a: tokens naar globals, Heron eruit, 404 (23 nov)
+| Onderdeel | Wat AI deed | Beslissing (review) |
+|---|---|---|
+| Tokens | Alle afgesproken tokens (`--ground`, `--ground-light` `#f8f8f6`, `--r-screen`, `--r-browser`, `--shadow-device`, `--t-*`, `--dur-*`, `--zoom`, `--press`, `--halo`) in `:root` in `globals.css`, plus de vaste E-tokens uit `.root` (`--accent`, `--lamp`, `--lamp-core`, `--ease-*`, `--gutter`). De wisselende kleurtokens blijven in `home.module.css` | Regels uit de review; nog nergens gebruikt |
+| `--halo` | Een `var(--glow)` in een custom property wordt uitgerekend waar hij staat; in `:root` zou de halo dus altijd oranje-overdag zijn. Daarom staat `--halo` ook in `.root` en in het nachtblok, waar `--glow` de lamp is | Keuze van AI, technisch nodig |
+| Heron | `a:hover` en `:focus-visible` in `--brand`, de body-achtergrond en -dikte en `.mono` weg. De Heron-variabelen blijven: de verkenningen en de oude J (lokaal) gebruiken ze, live nog de body-tekstkleur en de skip-link (mono, `--ink`/`--paper`) | Doen; skip-link niet aangeraakt (stond niet in de opdracht) |
+| Nachttokens | Het dubbele nachtblok in `case.module.css` weg; `home.module.css` kleurt nu ook `[data-zone="night"]` zonder JS | Zonder JS is de nacht van de cases gelijk, op één ding na: het getal 70% op Moraira is nu de lampkleur in plaats van het oranje van overdag, zoals met JS |
+| 404 | `app/not-found.tsx`: dag, nav en footer van About, "Page not found" met Scramble in het midden zoals de afsluiter op About, één zin en een tekstlink naar de homepage | Heel simpel in E-stijl |
+
+- **Toetsing:** voor/na-screenshots van alle routes op 1440×900 en 375×812 (Playwright met reduced motion, de hele pagina, pixelvergelijking) en zonder JS: geen verschil behalve de 404 en het getal op Moraira zonder JS. Geen horizontale scroll, geen consolefouten (de 404 logt alleen zijn eigen 404). `tsc` ok. Build ok; axe 0 op alle routes (desktop en 375); Lighthouse desktop 100/100/100, mobiel Performance 91 (LCP 3,5 s; niets aan de homepage veranderd, dus meetruis), Accessibility 100, Best Practices 100, SEO 63 (`noindex`). Keyboard: 14 tabstops, focus overal zichtbaar.
+- **Tijd:** [invullen]
+
+### Stap 40 – Consistentie, pakket 1b: gedeelde componenten en case-basis (23 nov)
+| Onderdeel | Wat AI deed | Beslissing (review) |
+|---|---|---|
+| Nav en footer | `components/site/SiteNav.tsx` (met skip-link, `page`-prop: op de homepage NavName en `#work`, elders de naam als link) en `SiteFooter.tsx`; de zeven kopieën (/, /about, /ai, vier cases, 404) zijn vervangen | 9 |
+| `aria-current` | Op elke casepagina krijgt "Projects" `aria-current="page"` en dus zijn lijn, ook in het mobiele menu | 8.5 |
+| Case-componenten | `components/case/`: `Lamp`, `NextCase` (beelden en teksten zoals ze waren, `flat` voor de platte screenshots), `Browser`, en verhuisd omdat twee cases ze delen: `ScrollStage`, `Compare`, `Clip`, `StatTile` | 9 |
+| Case-basis | `components/case/case.module.css`: de gedeelde regels uit case 01 (labels, koppen, intro, feiten, pins, stat-tegel, resultaat in de nacht, lamp, next-case), uit case 02 (clip, browser, ScrollStage, Compare) en uit case 03 (findings, ook gebruikt door 04). Case 01 houdt alleen zijn eigen regels | 9 |
+| Cross-imports | Elke case importeert nu de case-basis, `about.module.css` (de paginabasis van About, AI, cases en 404) en zijn eigen stylesheet; Moraira ging van 7 naar 4 stylesheets. Keuzes van AI: `.short` (de 30-secondenversie) van `ai.module.css` naar `about.module.css`, zodat cases de AI-pagina niet meer importeren; `.textLink` naar `about.module.css`, omdat ook de 404 hem gebruikt | 9 |
+| Opgeruimd onderweg | `.heroTour video` in case 02 had een hoogte en rondingen die door `.clip video` al werden overschreven; weggehaald, zodat de volgorde van de stylesheets niets meer uitmaakt. `.pins .pin` en `.scrollyFigure figcaption` wezen na de splitsing naar een andere module en zijn meeverhuisd | technisch nodig |
+
+- **Toetsing:** pixelvergelijking (reduced motion, hele pagina, 1440 en 375) van alle routes: identiek, behalve de lijn onder "Projects" op de vier cases (desktop). Met beweging (scrollend in stappen) op de cases en de homepage: alleen de lijn en andere videoframes. `tsc` ok, build ok, axe 0 op alle routes (desktop en 375). Lighthouse desktop 100/100/100, mobiel Performance 92 (LCP 3,3 s), Accessibility 100, Best Practices 100, SEO 63. Keyboard: 14 tabstops, focus overal zichtbaar.
+- **Tijd:** [invullen]
+
+### Stap 41 – Consistentie, pakket 2: één grijs (23 nov)
+| Onderdeel | Wat AI deed | Beslissing (review) |
+|---|---|---|
+| Grijs | Elk `#dce2e3` achter beelden en panelen (22× in de cases) is `var(--ground)`; ook de homepagekaarten (de vier grijzen in `caseGrounds` zijn weg, `.media` heeft nu zelf `var(--ground)`), About (`#dfe1e0`) en de foto in de hero (`#d6dad9`) | 1 |
+| Bijna-wit | De lichte funnelkaart in case 02 (`#f8f8f5`) is `var(--ground-light)` (`#f8f8f6`) | 1 |
+| Bewust gebleven | `#f8f8f8` achter de schermen van case 01 (de grond van de app in de exports, ook de statusbalk) en `#f9f9f9` achter de hero van Stuurmen (de grond van de export): laadkleuren die exact bij een export horen, met een opmerking. De browserbalk `#f1f2f0` (apparaatdetail) en het wit achter de layouts in Moraira | 1 |
+| /design-system | Toont geen vier case-grijzen meer, maar `--ground` en `--ground-light` bij de vaste tokens | 1 |
+
+- **Toetsing:** pixelvergelijking op drempel 2 (de grijzen verschillen maar 1–3 punten per kanaal): alleen de homepagekaarten 02–04 en de hobbykaarten op About (375, waar het grijs zichtbaar is) zijn veranderd, en /design-system. Verder identiek op 1440 en 375; geen horizontale scroll, geen consolefouten. `tsc` ok.
+- **Tijd:** [invullen]
+
+### Stap 42 – Consistentie, pakket 3: hoeken en schaduwen (23 nov)
+| Onderdeel | Wat AI deed | Beslissing (review) |
+|---|---|---|
+| Vlakken recht | 0 voor de grijze vlakken in Moraira (`.plate`, `.scope > li`, `.outings`, `.aiRow li` en zijn lichtlijn) en Stuurmen (`.crop`, `.toolScreen`), de foto van de onderzoeksruimte (`.photo img`) en de datamarkeringen (`.week`, `.bar`, legenda). Ook de afrondingen in de clip-path-animaties (`grow`, `reveal`) | 2 |
+| Schermen | `var(--r-screen)` voor alle schermen van een product: `.desktop` en `.window` (was 6px) in 01, de clip en Compare, de hero van 03 en 04, `.layoutShot`, de viewer en de platte next-case beelden | 2 |
+| Browser en telefoon | `var(--r-browser)` en `var(--shadow-device)` voor het browserframe; `--shadow-device` ook voor de telefoon (zelfde waarden) en het bord en de kaartjes in Moraira (nu dezelfde schaduw als de telefoon) | 2, 4 |
+| Platte screenshots | Geen schaduw meer: `.desktop` (ronde 1 in 01) en `.toolScreen` (Stuurmen) | 4 |
+| Uitzonderingen met opmerking | De viewer van Moraira (overlay in het donker) en de sleepknop van Compare (bediening) houden hun eigen schaduw | 4 |
+| Zelf gekozen | `.meter i` (de 4,2 van 5 in case 02) is een datamarkering → 0 (was een pil van 6px). `.sieveTile` op de AI-pagina hoort bij de site → 0 (was 3px). De paletstalen in Moraira zijn een element van de site → 0 (was 4px). Bord en kaartjes houden hun 3px: een fysiek object houdt zijn eigen hoek, zoals een apparaat | 2 |
+| Hero's en next-case | Niet veranderd, alleen de 4px als token geschreven (zelfde waarde) | 3 |
+
+- **Toetsing:** pixelvergelijking op 1440 en 375: alleen verschillen op de genoemde plekken (hoeken van een paar pixels, de twee weggehaalde schaduwen). Geen horizontale scroll, geen consolefouten. `tsc` ok.
+- **Tijd:** [invullen]
+
+### Stap 43 – Consistentie, pakket 4: typeschaal (23 nov)
+| Onderdeel | Wat AI deed | Beslissing (review) |
+|---|---|---|
+| Titels | Alle titels van kaarten, rondes en momenten op `var(--t-title)`, gewicht 540 (rondes, Problem-kaarten, funnel, resultaatkaarten, findings, doelen, principes en hobby's op About, tabs, panelen en momenten op de AI-pagina, de activiteiten in de workshop van Stuurmen) | 5 |
+| Kleinere titels | Alle titels in lijsten en callouts op `var(--t-subtitle)`, gewicht 540. De afwijkers: route (03) en flow (04) `clamp(1.0625rem, 1.3vw, 1.25rem)`/560, report, reasons en QR-label (04) `clamp(1.125rem, 1.5vw, 1.375rem)`, scope (04), AI-tegels (04), de grafiektitel (01, 1.125rem/560), de overdracht in 03 (1rem), en de 560 van changes, points, steps, details, de kolomkoppen in 03 en de korte versie bovenaan elke case | 5 |
+| Kleine tekst | `var(--t-small)` voor bijschriften, de grafieklegenda en de spec (01, waren 0.8125rem), labels onder balken, scope- en paletteksten, en de tekst onder de flow in 04 (was 0.9375rem) | 5 |
+| Eén label | `.eyebrow` (About) en `.label` (case 01) waren gelijk; nu één `.label` in `about.module.css`, met tabulaire cijfers, op alle pagina's | 5 |
+| Bewuste uitzonderingen (niet aangepast) | De grote quotes in Collaborative Strength, de getallen (stat-tegels, 70%, "Much fuller"), de stappen van de zeef op de AI-pagina (grootte van een subkop), de labels in de grafiek (SVG), het cijfer in de pins, de titel en teller in de viewer, en nav, knoppen en tool-tegels | 5 |
+| Zelf opgelost | De overdracht in Stuurmen liet op 375 één woord alleen op een regel ("it"): `text-wrap: balance` | – |
+
+- **Toetsing:** pixelvergelijking op 1440 en 375: verschillen alleen in de genoemde titels (iets groter of iets lichter) en de verschuiving eronder; regelafbreking op 375 nagelopen in de route en overdracht (03), de flow, het bord en de redenen (04). Geen horizontale scroll, geen consolefouten. `tsc` ok.
+- **Tijd:** [invullen]
+
+### Stap 44 – Consistentie, pakket 5: motion-tokens (23 nov)
+| Gebaar | Wat AI deed | Beslissing (review) |
+|---|---|---|
+| Indrukken | `scale(var(--press))` en `var(--dur-press)` voor de menuknop, de mailknop, de play-knop van de clips, de grip van Compare (was 0.94) en de knoppen in de viewer van Moraira (was 0.96, kreeg ook een transitie op `scale`) | 7 |
+| Ingetekende lijn | `var(--dur-line)` voor de lijnen onder nav-, footer- en case-links en de next-case titel, en voor de lichtlijn boven de redenen in Moraira (was 420ms) | 7 |
+| Beeld-zoom | `var(--zoom)` en `var(--dur-media)` voor de homepagekaart (was 1.05), de hero's van 02 en 04 en het flowchart in 03. De next-case volgt in pakket 7 | 7; **gekozen: 1.03 ook op de homepagekaart** (voor/na bekeken: samen met het donkerder worden is 1.03 duidelijk genoeg) |
+| Halo | `var(--halo)` (5px, 18%) voor alle aan-stippen: de stippen in 02 (waren 4px), de route, workshop en kolomkoppen in 03 (waren 20%), de flow in 04, ook in de flikker-keyframes | 7 |
+| AI-pagina | De transities in de bento-visuals hadden geen easing (de `.bVis *`-regel werd door de shorthands overschreven). Beweging (opacity, translate, transform, scale, stroke-dashoffset) is nu `var(--ease-out)`; kleurwissels (border, achtergrond, tekst, stroke, gloed) bewust `ease`. De uitgaande transities die al `ease` hadden (panelen, cellen, zeefstappen) zijn zo gelaten | 7 |
+| Scroll-timelines (03, 04) | Niet herschreven. Firefox kent `animation-timeline` niet, dus `@supports` is daar onwaar en alles staat meteen in de eindstand: route getekend en aan, scope volledig, gasten en AI-tegels aan, palet compleet met zeeblauw doorgestreept, bord en kaartjes op tafel met lijnen, flow aan, winnende layout met ring. Er zou niets kapot gaan, het beweegt alleen niet | 7 |
+
+- **Toetsing:** pixelvergelijking (reduced motion) op 1440 en 375: alleen de halo's veranderen (02, 03); verder identiek. De halo in de flikker-keyframes in de browser gecontroleerd (route 03, flow 04). Reduced motion: de Playwright-screenshots draaien met reduced motion, alles staat stil en leesbaar. `tsc` ok. Firefox zelf niet getest (geen Firefox in Playwright geïnstalleerd).
+- **Tijd:** [invullen]
+
+### Stap 45 – Consistentie, pakket 6: case 01 krijgt de interacties van de andere cases (23 nov)
+| Onderdeel | Wat AI deed | Beslissing (review) |
+|---|---|---|
+| What the test changed | De statische voor/na-crops zijn vervangen door de Compare-slider van case 02 (zelfde component, zelfde gedrag: slepen, pijltjestoetsen, één duwtje als hij in beeld komt). Compare kreeg daarvoor twee optionele props: eigen labels ("Tested" / "After the test") en een uitsnede (x, breedte en per scherm een y, 4:5), zodat dezelfde details te zien zijn. Case 02 is ongewijzigd | 8.1 |
+| Zelf gekozen | Over de volle breedte van de kaart werden de schermdetails groter dan de titels eronder; de slider is nu maximaal 300px breed op het grijs, ongeveer de maat van de oude crops | – |
+| Process | Een route over de drie rondes, als de flow in Moraira: per ronde een stip, een lichtlijn naar de volgende, intekenend tijdens het scrollen (scroll-timeline), de stip flikkert aan met `var(--halo)`. Op een telefoon langs de linkerkant. Standaard (Firefox, reduced motion, geen JS) getekend en aan | 8.1 |
+| Decision 1 | `StepLights.tsx`: de pins en hun callouts gaan één voor één aan zodra het blok in beeld is (650ms na elkaar); wachtend is de pin grijs en de callout gedimd naar `--muted` (4,5:1), aangaan met de flikkering van de lampjes. Zonder JS en met reduced motion staat alles meteen aan | 8.1 |
+| Hero | `HeroScreens.tsx`: de hero is één knop met "View screens" bij de cursor (CaseCursor) en de hover van de andere hero's (iets donkerder, de telefoons leunen 3% naar voren); een klik opent de drie MVP-schermen in de viewer. De viewer van Moraira is daarvoor gedeeld gemaakt (`components/case/DesignViewer.tsx`, met `pages`, `label`, `unit` en `maxWidth`); de knopstijl (`.heroOpen`) ook, met het label op touchscreens uit `data-cursor` | 8.2, 3 |
+| Onbedoeld verschil opgelost | De knop knipte eerst (zoals bij 02 en 04) en sneed op 375 de schaduw van de telefoons af, die net onder het grijs uitvalt. Nu knipt de knop bij case 01 niet en zoomen alleen de telefoons; de hero in rust is pixel voor pixel gelijk aan ervoor | 3 |
+| Gedeelde CSS | De prompt vroeg om gedeelde CSS niet aan te raken zonder te vragen (andere chats); dat speelde hier niet, alles liep na elkaar. Alleen de viewer- en hero-knopstijl zijn van `mo.module.css` naar de case-basis verhuisd; Moraira ziet er hetzelfde uit (pixelvergelijking) | toestemming in de opdracht |
+
+- **Toetsing:** pixelvergelijking (reduced motion): alleen case 01 verandert, vanaf Process; Moraira identiek. Met beweging: route halverwege en compleet, pins op drie momenten, Compare op 1440 en 375, hover van de hero, viewer met pijltje en Escape (focus terug op de hero) op 01 (1440 en 375) en 04. Keyboard op case 01: 16 tabstops, focus overal zichtbaar, Enter op de hero opent de viewer. Build ok, axe 0 op alle routes (1440 en 375), geen consolefouten. Niet getest: echte touch (de "View screens"-pil op een touchscreen).
+- **Tijd:** [invullen]
+
+### Stap 46 – Consistentie, pakket 7: lamp en next-case hover (23 nov)
+| Onderdeel | Wat AI deed | Beslissing (review) |
+|---|---|---|
+| Lamp | `components/case/Lamp.tsx` is een client-component: met JS staat de lamp eerst uit (een dun ringetje, zoals de lamp op de homepage voordat de draad hem bereikt) en ontsteekt hij zodra hij een derde van het scherm in is, met dezelfde `ignite`-flikkering (420ms, `steps`) en daarna de gloed (900ms). Zonder JS en met reduced motion staat hij meteen aan | 8.3 |
+| Next-case | Dezelfde hover als de homepagekaart: het beeld wordt iets donkerder en zoomt met `var(--zoom)` en `var(--dur-media)` (was `scale(1.03)` in 250ms), en "View case" staat bij de cursor (`data-case`, CaseCursor). De lijn onder de titel blijft. Het beeld zelf is niet veranderd | 8.4, 3 |
+| Zelf gekozen | Het donkerder worden is een `filter: brightness(0.72)` op het beeld zelf in plaats van de donkere laag van de homepage: twee van de vier previews zijn uitgesneden apparaten, en een laag zou als donker vlak om het apparaat heen staan | – |
+| Onbedoeld verschil opgelost | Het "View case"-label had de kleur `--fg`, die 's nachts licht is: wit op wit boven de next-case. Nu vast het donker van overdag (`#121318`), zoals het op de homepage al was | – |
+
+- **Toetsing:** op alle vier de cases: lamp uit vlak onder de lijn, aan erboven; hover op de next-case met het label bij de cursor; geen consolefouten. Pixelvergelijking met reduced motion: geen verschil met pakket 6. Zonder JS: lamp aan. Niet getest: hoe de flikkering voelt op een trage telefoon.
+- **Tijd:** [invullen]
+
+### Stap 47 – Consistentie, pakket 8: documentatie en eindmeting (23 nov)
+| Onderdeel | Wat AI deed | Beslissing (review) |
+|---|---|---|
+| DESIGN.md | Tokens (ground, hoeken, schaduw, type, motion) en waar ze staan; de vormregel en de schaduwregel met de twee uitzonderingen; de schermtaal (hero's en next-case blijven per case zoals ze zijn); de gedeelde onderdelen in `components/site` en `components/case`. Uit "Nog niet beslist" weg: één beeldtaal voor hero en case-vlakken (het raamlicht bestaat niet meer, de schermtaal is beslist). "De rol van oranje naast amber" en "echte case-beelden" blijven open; de flowchart van Stuurmen erbij | 8 |
+| /design-system | Toont `--ground` en `--ground-light` bij de vaste kleuren, de type-tokens (titel, kleinere titel, klein, label), een nieuwe sectie "Shape and depth" (grijs vlak met scherm, browserframe met `--shadow-device`, stip met halo) en alle motion-tokens. De mail-knop staat er nu zoals aan het eind van de homepage: de warme donkere pil met het licht op de rand | 8, 10 |
+| CLAUDE.md | "Waar alles staat" (globals, `components/site`, `components/case`, 404, de nieuwe bestanden van case 01), "Stand van zaken" en de open punten die hiermee opgelost zijn (case-vlakken, /design-system, de leenregels van 03 en 04). Nieuw open punt: de skip-link heeft nog de Heron-stijl | 8 |
+| WindowLight | `components/home/WindowLight.tsx` werd nergens gebruikt en is verwijderd (toestemming in de opdracht) | 8 |
+
+- **Eindmeting (productiebuild, 23 nov):** `tsc` ok; build ok. axe 0 op alle routes (/, /about, /ai, vier cases, 404), desktop 1440 en mobiel 375. Lighthouse homepage desktop 100/100/100, SEO 63 (`noindex`); mobiel Performance 91, 92, 92 (drie runs; LCP 3,3–3,5 s, TBT 0 ms), Accessibility 100, Best Practices 100. Ter vergelijking: 1 nov mobiel 96; na pakket 1a (zonder zichtbare verandering aan de homepage) al 91, dus het verschil zit niet in deze ronde. Keyboard homepage: 14 tabstops, focus overal zichtbaar; case 01: 16 tabstops, Enter op de hero opent de viewer. Screenshots van alle routes op 1440 en 375 (reduced motion, hele pagina): geen horizontale scroll, geen consolefouten.
+- **Niet getest:** Safari, Firefox (geen Firefox in Playwright; de scroll-timelines staan daar volgens de code in de eindstand), een echte telefoon en echte touch, een trage telefoon.
+- **Tijd:** [invullen]
+
+### Stap 48 – Consistentie, pakket 9: voorbeeld van de flowchart van Stuurmen (23 nov)
+| Onderdeel | Wat AI deed | Beslissing |
+|---|---|---|
+| Voorbeeld | `docs/cases/flowchart-voorbeeld.html`: het origineel (zoals op de pagina, op het grijs) naast een hertekende SVG in het palet van de site. Acties als inktruiten, schermen als lichte kaarten met een letter (zelfde letter = zelfde scherm, in plaats van zelfde kleur), uitkomsten als gestippelde cirkels, alles op `--ground` | Alleen het voorbeeld; de casepagina is niet aangepast |
+| Zelf gekozen | Oranje alleen voor de wensroute (zoeken zonder resultaat → lege galerij met wens → wenslijst → bedankt), omdat die bij Decision 2 hoort. Het kan ook de weg naar binnen worden (start tot main page) | Te beslissen |
+
+- **Tijd:** [invullen]
+
+### Stap 49 – Case 01: hover van de hero, alle MVP-schermen in de viewer en Result (23 nov)
+| Onderdeel | Wat AI deed | Beslissing |
+|---|---|---|
+| Hover | Mijn indruk: de hover liep niet lekker. Oorzaak: het grijze vlak bleef staan en elke telefoon groeide los vanaf zijn eigen bovenkant, dus de drie schoven naar elkaar toe in plaats van samen naar voren te leunen. Nu zoals de andere hero's: het hele beeld (grijs en telefoons) leunt 3% naar voren binnen de knop, met de donkere laag er strak overheen. Het grijs blijft vierkant. Alleen op touch knipt de knop niet af, zodat de schaduwen op een telefoon over het grijs mogen vallen | Ik vroeg om het te checken |
+| Viewer | De klik toonde alleen de drie schermen van de hero. Nu alle tien van de Figma-pagina "development MVP" (`461:11`), elk in het telefoonframe: eerst de beloningsflow, dan menu, medewerkersoverzicht, één medewerker, belonen vanuit de lijst, statistieken, logboek en een logboekregel. Zeven nieuwe 2x-exports als webp (`mvp-*.webp`). Statistieken is langer dan de telefoon en scrollt binnen het scherm. `DesignViewer` kreeg `render` (de case tekent de dia zelf), `Phone` kreeg `scroll` | Ik vroeg om alle MVP-schermen in mockups, klikbaar |
+| Zelf gevonden | Snel twee of drie keer op het pijltje drukken ging maar één scherm verder (ook bij Moraira): de viewer onthoudt nu waar hij naartoe scrollt | – |
+| Result | Ik vond Result niet zo vormgegeven als bij de andere cases. Het waren twee alinea's; nu dezelfde opbouw als case 02: een korte lead ("ready for the first client’s launch, and more clients followed") en twee kaarten in het licht van de lamp: "Fast, easy and intuitive" (wat elke klant zegt, zonder training) en "New clients, new needs" (afdelingsfilter, langere teamlijsten, limiet op handmatige beloningen). Zelfde tekst, anders verdeeld; stijl `.outcome` gelijk aan `.wins` van case 02 | Ik vroeg om het recht te trekken |
+
+- **Toetsing:** typecheck; ingebouwde browser op desktop (hover, klik, alle tien de schermen, pijltjes snel achter elkaar, knoppen, scrollen in statistieken, Escape met focus terug op de hero; Result naast case 02) en 375 (label in de hoek, niet afgesneden, geen horizontale scroll, telefoon vult de viewer). Geen nieuwe consolefouten. Niet gedraaid: build, `npm run audit`, `npm run keyboard`. Niet getest: echte touch, Safari (`scrollend` bestaat daar pas sinds kort; zonder valt hij terug op de scrollpositie).
+- **Tijd:** [invullen]
+
+### Stap 50 – Resume als pdf (23 nov)
+| Onderdeel | Wat AI deed | Beslissing |
+|---|---|---|
+| Ontwerp | Nieuw A4-frame "Resume 2026" in Figma (pagina "resume", naast de oude versie) in de dagstijl van de site: Mona Sans, `--bg`, scherpe hoeken, de hero-zin met "product designer" in oranje, ervaring langs een gloeidraad (lopend werk met een brandend stipje), rechts Education, Skills, Tools en Languages | Ik vroeg om hem in Figma zelf te bouwen in plaats van eerst vragen te stellen |
+| Inhoud | Boxplosive in twee blokken (fulltime in algemene termen vanwege de geheimhouding; stage/leerwerktraject met de JobRewards-portal), Stuurmen feb – jun 2024, Collaborative Strength, Activate Works en Student aan huis in één regel "Earlier" | Aangepast: LinkedIn als "LinkedIn: Djamiel Saou", domein djamielsaou.com, geen GitHub-link, geen "Brabant", contactregel over de volle breedte, freelance 2023 – 2026 met Moraira als voorbeeld, minor Digital Marketing erbij |
+| Zelf gevonden | De gloed rond de stipjes werd afgeknipt door de kaders eromheen; de beschikbaarheid in klein oranje haalde het contrast niet en is nu donker met een oranje stipje | – |
+| Site | Pdf geëxporteerd uit Figma naar `public/resume.pdf` (1,2 MB, links klikbaar); `links.resume` wijst ernaar en Resume in de nav en het mobiele menu opent in een nieuw tabblad | – |
+
+- **Toetsing:** typecheck; in de ingebouwde browser wijzen beide Resume-links naar `/resume.pdf` met `target="_blank"`, het bestand geeft 200 en `application/pdf`. Niet bekeken in een echte browser-pdf-viewer.
+- **Tijd:** [invullen]

@@ -4,12 +4,14 @@ import Image from "next/image";
 import { links } from "@/content/site";
 import { CaseCursor } from "@/components/home/CaseCursor";
 import home from "@/components/home/home.module.css";
-import { Menu } from "@/components/home/Menu";
 import { Scramble } from "@/components/home/Skills";
 import { Sky } from "@/components/home/Sky";
-import about from "../../about/about.module.css";
-import ai from "../../ai/ai.module.css";
-import styles from "../incentive-portal/case.module.css";
+import about from "@/app/about/about.module.css";
+import styles from "@/components/case/case.module.css";
+import { Lamp } from "@/components/case/Lamp";
+import { NextCase } from "@/components/case/NextCase";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteNav } from "@/components/site/SiteNav";
 import { GalleryLoop } from "./GalleryLoop";
 import st from "./st.module.css";
 
@@ -152,49 +154,18 @@ export default function Stuurmen() {
   return (
     <div className={home.root} data-e-root>
       <Sky />
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
-      <header className={home.top}>
-        <a href="/" className={home.home} data-shown="">
-          Djamiel Saou
-        </a>
-        <nav aria-label="Main" className={home.nav}>
-          <a href="/#work">
-            <span>Projects</span>
-          </a>
-          <a href={links.ai}>
-            <span>How I use AI</span>
-          </a>
-          <a href={links.about}>
-            <span>About</span>
-          </a>
-          <a href={links.resume}>
-            <span>Resume</span>
-          </a>
-          <a href={links.email}>
-            <span>Contact me</span>
-          </a>
-        </nav>
-        <Menu className={home.menu} summaryClassName={home.menuButton} panelClassName={home.menuPanel}>
-          <a href="/#work">Projects</a>
-          <a href={links.ai}>How I use AI</a>
-          <a href={links.about}>About</a>
-          <a href={links.resume}>Resume</a>
-          <a href={links.email}>Contact me</a>
-        </Menu>
-      </header>
+      <SiteNav page="projects" />
 
       <main id="main">
         <div className={about.page} data-zone="day">
           <section className={`${about.intro} ${styles.intro}`} aria-labelledby="case-title">
             <div>
-              <p className={about.eyebrow}>Case 03 · Stuurmen</p>
+              <p className={about.label}>Case 03 · Stuurmen</p>
               <h1 id="case-title" className={about.title}>
                 Clients choose before the workshop, not during it.
               </h1>
             </div>
-            <ol className={ai.short} aria-label="The short version">
+            <ol className={about.short} aria-label="The short version">
               {short.map((s) => (
                 <li key={s.title}>
                   <h2>{s.title}</h2>
@@ -222,7 +193,7 @@ export default function Stuurmen() {
           </dl>
 
           <section className={about.section} aria-labelledby="case-problem">
-            <p className={about.eyebrow}>The problem</p>
+            <p className={about.label}>The problem</p>
             <h2 id="case-problem" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="A workshop for deciding that turned into a presentation" />
             </h2>
@@ -234,7 +205,7 @@ export default function Stuurmen() {
             {/* The workshop in two rows: what it was meant for (lit, as light means "on" on the homepage),
                 and where the time went instead */}
             <div className={st.workshop}>
-              <p className={styles.label}>The brand experience workshop</p>
+              <p className={about.label}>The brand experience workshop</p>
               <dl className={st.split}>
                 <div data-on="">
                   <dt>Meant for</dt>
@@ -258,7 +229,7 @@ export default function Stuurmen() {
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-research">
-            <p className={about.eyebrow}>The research</p>
+            <p className={about.label}>The research</p>
             <h2 id="case-research" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="Not a lack of inspiration, but no place to see it" />
             </h2>
@@ -286,7 +257,7 @@ export default function Stuurmen() {
               </figure>
             </div>
             {/* Three findings side by side. What each changed in the tool comes later, in the decisions */}
-            <ul className={st.findings}>
+            <ul className={styles.findings}>
               {findings.map((f) => (
                 <li key={f.title}>
                   <h3>{f.title}</h3>
@@ -297,7 +268,7 @@ export default function Stuurmen() {
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-moment">
-            <p className={about.eyebrow}>The concept</p>
+            <p className={about.label}>The concept</p>
             <h2 id="case-moment" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="A tool for one moment: right before the workshop" />
             </h2>
@@ -316,7 +287,7 @@ export default function Stuurmen() {
                   style={{ "--i": i } as CSSProperties}
                 >
                   <span className={st.stop} aria-hidden="true" />
-                  {j.tool && <p className={`${styles.label} ${st.toolLabel}`}>The tool</p>}
+                  {j.tool && <p className={`${about.label} ${st.toolLabel}`}>The tool</p>}
                   <h3>{j.title}</h3>
                   {j.text && <p>{j.text}</p>}
                   {/* The tool itself, in the route: the top of the gallery, revealed as its lamp comes on */}
@@ -364,7 +335,7 @@ export default function Stuurmen() {
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-list">
-            <p className={about.eyebrow}>Decision 1</p>
+            <p className={about.label}>Decision 1</p>
             <h2 id="case-list" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="The client saves what they like, and Stuurmen sees it" />
             </h2>
@@ -390,7 +361,7 @@ export default function Stuurmen() {
                   />
                 </div>
                 <figcaption>
-                  <span className={styles.label}>Save</span>
+                  <span className={about.label}>Save</span>
                   From the detail view, or with one click on hover.
                 </figcaption>
               </figure>
@@ -405,7 +376,7 @@ export default function Stuurmen() {
                   />
                 </div>
                 <figcaption>
-                  <span className={styles.label}>The list</span>
+                  <span className={about.label}>The list</span>
                   Theirs, ready for the workshop, and Stuurmen sees the same list.
                 </figcaption>
               </figure>
@@ -413,7 +384,7 @@ export default function Stuurmen() {
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-wish">
-            <p className={about.eyebrow}>Decision 2</p>
+            <p className={about.label}>Decision 2</p>
             <h2 id="case-wish" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="No result isn’t a dead end, it’s a wish" />
             </h2>
@@ -434,7 +405,7 @@ export default function Stuurmen() {
                   <div className={`${st.crop} ${st.wide}`}>
                     <Image src={w.src} alt={w.alt} width={w.width} height={w.height} sizes="(max-width: 768px) 100vw, 440px" />
                   </div>
-                  <p className={`${styles.label} ${st.stepLabel}`}>{w.label}</p>
+                  <p className={`${about.label} ${st.stepLabel}`}>{w.label}</p>
                   <p>{w.text}</p>
                 </li>
               ))}
@@ -442,7 +413,7 @@ export default function Stuurmen() {
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-work">
-            <p className={about.eyebrow}>Decision 3</p>
+            <p className={about.label}>Decision 3</p>
             <h2 id="case-work" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="Show the work, not a price list" />
             </h2>
@@ -474,7 +445,7 @@ export default function Stuurmen() {
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-build">
-            <p className={about.eyebrow}>Building it</p>
+            <p className={about.label}>Building it</p>
             <h2 id="case-build" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="A front-end their developers could pick up" />
             </h2>
@@ -517,8 +488,8 @@ export default function Stuurmen() {
         {/* Result: the page turns to night and the lamp is on, as at the end of the homepage */}
         <div className={styles.night} data-zone="night">
           <section className={styles.result} aria-labelledby="case-result">
-            <span className={styles.lamp} aria-hidden="true" />
-            <p className={about.eyebrow}>Result</p>
+            <Lamp />
+            <p className={about.label}>Result</p>
             <h2 id="case-result" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="Handed over as the solution they were looking for" />
             </h2>
@@ -537,40 +508,16 @@ export default function Stuurmen() {
             </ul>
           </section>
 
-          <a href="/work/moraira" className={styles.next}>
-            <span className={styles.nextText}>
-              <span className={about.eyebrow}>Next case</span>
-              <span className={styles.nextTitle}>
-                <span>04 Moraira Dream Villas</span>
-              </span>
-            </span>
-            {/* The same preview as case 04 on the homepage; the link text already says where it goes */}
-            <Image
-              className={styles.nextImage}
-              src="/images/cases/moraira-laptop.png"
-              alt=""
-              width={1600}
-              height={1680}
-              sizes="(max-width: 768px) 60vw, 320px"
-            />
-          </a>
+          {/* The same preview as case 04 on the homepage; the link text already says where it goes */}
+          <NextCase
+            href="/work/moraira"
+            title="04 Moraira Dream Villas"
+            image={{ src: "/images/cases/moraira-laptop.png", width: 1600, height: 1680 }}
+          />
         </div>
       </main>
 
-      <footer className={home.footer}>
-        <div className={home.footerName}>
-          <span className={home.footerMark}>Djamiel Saou</span>
-          <small>© 2026 Djamiel Saou · Tilburg, NL</small>
-        </div>
-        <nav aria-label="Contact" className={home.footerNav}>
-          <a href={links.email}>
-            <span>djamielsaou@gmail.com</span>
-          </a>
-          <a href={links.phone}>
-            <span>06 83890250</span>
-          </a>
-        </nav>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

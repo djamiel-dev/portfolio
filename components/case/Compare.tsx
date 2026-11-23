@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import styles from "../incentive-portal/case.module.css";
-import cs from "./cs.module.css";
+import about from "@/app/about/about.module.css";
+import styles from "./case.module.css";
 
 // Before and after on top of each other: drag the line, or use the arrow keys, to see one or the other.
 // The first design lies underneath; the design after feedback is clipped from the left. The box is a
@@ -12,16 +12,38 @@ import cs from "./cs.module.css";
 // Position updates go straight to the two elements that move, without a React render per frame.
 // Without JS the line simply stays in the middle. The first time it comes into view, the line nudges
 // once to show that it moves (not with reduced motion).
+// With a crop, the box shows only one part of both screens (a window of w pixels wide from x, at its own y on
+// each export, in the given ratio), as the detail crops on case 01.
 
-const valueText = (p: number) => `${Math.round(p)}% first design, ${100 - Math.round(p)}% after feedback`;
+type Shot = { src: string; alt: string; width: number; height: number };
+type Crop = { x: number; w: number; yBefore: number; yAfter: number; ratio: number }; // ratio: height / width
 
 export function Compare({
   before,
   after,
+  labels = { before: "First design", after: "After feedback" },
+  name = "Compare the first design with the design after feedback",
+  crop,
 }: {
-  before: { src: string; alt: string; width: number; height: number };
-  after: { src: string; alt: string; width: number; height: number };
+  before: Shot;
+  after: Shot;
+  labels?: { before: string; after: string };
+  name?: string; // the slider's accessible name
+  crop?: Crop;
 }) {
+  const valueText = (p: number) =>
+    `${Math.round(p)}% ${labels.before.toLowerCase()}, ${100 - Math.round(p)}% ${labels.after.toLowerCase()}`;
+  // In % of the box's width, so the crop holds at every size
+  const place = (y: number) =>
+    crop && {
+      width: `${(before.width / crop.w) * 100}%`,
+      maxWidth: "none",
+      marginLeft: `${(-crop.x / crop.w) * 100}%`,
+      marginTop: `${(-y / crop.w) * 100}%`,
+    };
+  const sizes = crop
+    ? `(max-width: 768px) ${Math.round((before.width / crop.w) * 92)}vw, ${Math.round((before.width / crop.w) * 420)}px`
+    : "(max-width: 768px) 92vw, 720px";
   const box = useRef<HTMLDivElement>(null);
   const top = useRef<HTMLDivElement>(null);
   const handle = useRef<HTMLDivElement>(null);
@@ -73,7 +95,8 @@ export function Compare({
   return (
     <div
       ref={box}
-      className={cs.compareBox}
+      className={styles.compareBox}
+      style={crop && { aspectRatio: `1 / ${crop.ratio}`, maxHeight: "none" }}
       data-scroll-view
       onPointerDown={(e) => {
         if (e.pointerType === "mouse" && e.button !== 0) return;
@@ -84,21 +107,21 @@ export function Compare({
         if (e.currentTarget.hasPointerCapture(e.pointerId)) fromPointer(e);
       }}
     >
-      <div className={cs.comparePage} data-scroll-page>
-        <Image {...before} sizes="(max-width: 768px) 92vw, 720px" draggable={false} />
+      <div className={styles.comparePage} data-scroll-page>
+        <Image {...before} sizes={sizes} style={place(crop?.yBefore ?? 0) || undefined} draggable={false} />
       </div>
-      <div ref={top} className={cs.compareTop} style={{ clipPath: "inset(0 0 0 50%)" }}>
-        <div className={cs.comparePage} data-scroll-page>
-          <Image {...after} sizes="(max-width: 768px) 92vw, 720px" draggable={false} />
+      <div ref={top} className={styles.compareTop} style={{ clipPath: "inset(0 0 0 50%)" }}>
+        <div className={styles.comparePage} data-scroll-page>
+          <Image {...after} sizes={sizes} style={place(crop?.yAfter ?? 0) || undefined} draggable={false} />
         </div>
       </div>
-      <span className={`${cs.compareTag} ${styles.label}`} data-side="before" aria-hidden="true">
-        First design
+      <span className={`${styles.compareTag} ${about.label}`} data-side="before" aria-hidden="true">
+        {labels.before}
       </span>
-      <span className={`${cs.compareTag} ${styles.label}`} data-side="after" aria-hidden="true">
-        After feedback
+      <span className={`${styles.compareTag} ${about.label}`} data-side="after" aria-hidden="true">
+        {labels.after}
       </span>
-      <div ref={handle} className={cs.compareHandle} style={{ left: "50%" }} aria-hidden="true">
+      <div ref={handle} className={styles.compareHandle} style={{ left: "50%" }} aria-hidden="true">
         <span>
           <svg viewBox="0 0 24 24">
             <path d="M9 7l-5 5 5 5M15 7l5 5-5 5" />
@@ -108,12 +131,12 @@ export function Compare({
       {/* The keyboard and screen readers get a plain slider */}
       <input
         ref={input}
-        className={cs.compareInput}
+        className={styles.compareInput}
         type="range"
         min={0}
         max={100}
         defaultValue={50}
-        aria-label="Compare the first design with the design after feedback"
+        aria-label={name}
         aria-valuetext={valueText(50)}
         onChange={(e) => set(Number(e.currentTarget.value))}
       />

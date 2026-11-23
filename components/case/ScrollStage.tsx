@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import styles from "../incentive-portal/case.module.css";
-import cs from "./cs.module.css";
+import styles from "./case.module.css";
 
 // A section that holds still while you scroll through it: the text on one side, a window on the other in
 // which a whole page scrolls past. The visual marks its window with [data-scroll-view] and what scrolls
@@ -96,14 +95,14 @@ export function ScrollStage({
   return (
     <div
       ref={wrap}
-      className={cs.scrolly}
+      className={styles.scrolly}
       data-on={on || undefined}
       data-side={side}
       style={on ? { height: `${length}vh` } : undefined}
     >
-      <div className={cs.scrollyStick}>
-        <div className={cs.scrollyText}>{children}</div>
-        <figure className={cs.scrollyFigure}>
+      <div className={styles.scrollyStick}>
+        <div className={styles.scrollyText}>{children}</div>
+        <figure className={styles.scrollyFigure}>
           {visual}
           <figcaption className={styles.small}>{caption}</figcaption>
         </figure>

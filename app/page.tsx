@@ -4,47 +4,19 @@ import { links } from "@/content/site";
 import { CaseCursor } from "@/components/home/CaseCursor";
 import { GlyphSwell } from "@/components/home/glyph-swell";
 import styles from "@/components/home/home.module.css";
-import { Menu } from "@/components/home/Menu";
-import { HeroGreeting, NavName } from "@/components/home/NameHandoff";
+import { HeroGreeting } from "@/components/home/NameHandoff";
 import { Scramble, Skills } from "@/components/home/Skills";
 import { Sky } from "@/components/home/Sky";
 import { Story } from "@/components/home/Story";
-import { caseGrounds, heroGlyphs } from "@/components/home/content";
+import { heroGlyphs } from "@/components/home/content";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteNav } from "@/components/site/SiteNav";
 
 export default function Home() {
   return (
     <div className={styles.root} data-e-root>
       <Sky />
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
-      <header className={styles.top} data-bar>
-        <NavName className={styles.home} />
-        <nav aria-label="Main" className={styles.nav}>
-          <a href="#work">
-            <span>Projects</span>
-          </a>
-          <a href={links.ai}>
-            <span>How I use AI</span>
-          </a>
-          <a href={links.about}>
-            <span>About</span>
-          </a>
-          <a href={links.resume}>
-            <span>Resume</span>
-          </a>
-          <a href={links.email}>
-            <span>Contact me</span>
-          </a>
-        </nav>
-        <Menu className={styles.menu} summaryClassName={styles.menuButton} panelClassName={styles.menuPanel}>
-          <a href="#work">Projects</a>
-          <a href={links.ai}>How I use AI</a>
-          <a href={links.about}>About</a>
-          <a href={links.resume}>Resume</a>
-          <a href={links.email}>Contact me</a>
-        </Menu>
-      </header>
+      <SiteNav page="home" />
 
       <main id="main">
         <section className={styles.hero} aria-labelledby="e-title" data-zone="day" data-hero>
@@ -81,7 +53,7 @@ export default function Home() {
 
           {cases.map((c) => (
             <article key={c.num} className={styles.case} data-case>
-              <div className={styles.media} style={{ background: caseGrounds[c.num] }} data-fit={c.media.fit}>
+              <div className={styles.media} data-fit={c.media.fit}>
                 {c.media.image && (
                   <Image src={c.media.image} alt="" fill sizes="(max-width: 48em) 100vw, 50vw" />
                 )}
@@ -101,20 +73,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className={styles.footer}>
-        <div className={styles.footerName}>
-          <span className={styles.footerMark}>Djamiel Saou</span>
-          <small>© 2026 Djamiel Saou · Tilburg, NL</small>
-        </div>
-        <nav aria-label="Contact" className={styles.footerNav}>
-          <a href={links.email}>
-            <span>djamielsaou@gmail.com</span>
-          </a>
-          <a href={links.phone}>
-            <span>06 83890250</span>
-          </a>
-        </nav>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

@@ -1,39 +1,5 @@
-/* One grey, #dce2e3, sits behind every image and panel on this page.
-   Case page – daylight for the story, night for the result, like the homepage.
-   Builds on about.module.css (page, sections, type) and the tokens in home.module.css (.root). */
-
-.label {
-  color: var(--muted);
-  font-size: 0.75rem;
-  font-weight: 600;
-  font-stretch: 125%;
-  line-height: 1.35;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  font-variant-numeric: tabular-nums;
-}
-
-/* The middle sections each end in a large visual, so they need more air above them than on About */
-.roomy {
-  padding-top: calc(var(--block) * 1.4);
-}
-
-/* Long headings get a little more width than on About */
-.heading {
-  max-width: 18em;
-  margin-top: 16px;
-}
-
-.small {
-  color: var(--muted);
-  font-size: 0.875rem;
-}
-
-/* ---------- Intro ---------- */
-
-.intro {
-  align-items: end;
-}
+/* Case 01 – Incentive portal: only what this case needs on top of the case base
+   (components/case/case.module.css) and about.module.css. One grey, var(--ground), sits behind every image. */
 
 /* Three phones on the same quiet ground as case 01 on the homepage */
 .hero {
@@ -42,9 +8,26 @@
   justify-content: center;
   align-items: center;
   gap: clamp(12px, 3vw, 48px);
-  margin-top: clamp(48px, 6vw, 96px);
   padding: clamp(32px, 6vw, 96px) clamp(16px, 4vw, 64px);
-  background: #dce2e3;
+  background: var(--ground);
+}
+
+/* The hero is a button (HeroScreens) with the shared hover of the heroes: the whole picture (grey ground and the
+   three phones together) leans in from the top, clipped by the button, with the dark layer exactly over it.
+   The grey ground stays square, as the other grey panes on this page. On a touch screen nothing moves, so nothing
+   is clipped there: on a phone the phones' shadows fall a little past the grey */
+.heroWrap {
+  margin-top: clamp(48px, 6vw, 96px);
+}
+
+.heroWrap > button {
+  border-radius: 0;
+}
+
+@media not ((hover: hover) and (pointer: fine)) {
+  .heroWrap > button {
+    overflow: visible;
+  }
 }
 
 /*
@@ -64,9 +47,7 @@
   padding: 0.9cqw;
   border-radius: 17.6cqw;
   background: linear-gradient(135deg, #6a6c72, #34363b 45%, #55575d);
-  box-shadow:
-    0 1px 2px rgb(18 19 24 / 0.14),
-    0 24px 48px -16px rgb(18 19 24 / 0.32);
+  box-shadow: var(--shadow-device);
 }
 
 /* Side buttons: action button and two volume buttons on the left, the side button on the right */
@@ -138,6 +119,26 @@
   height: auto;
 }
 
+/* A screen taller than the phone: the phone keeps its height (that of a 960 × 1892 export) and the screen scrolls
+   inside it, under the status bar */
+.screenScroll {
+  aspect-ratio: 960 / 1892;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin; /* a thin bar, so you can see there is more below */
+}
+
+.screenScroll:focus-visible {
+  outline: 2px solid #ff9e5e;
+  outline-offset: -2px;
+}
+
+/* In the viewer each phone is as large as the view allows: the whole phone is about 2.1 times as tall as it is
+   wide; minus the bar on top (69px) and the room around it */
+.viewerPhone {
+  width: min(380px, 100%, calc((100dvh - 69px - 48px) / 2.1));
+}
+
 /* A layer exactly over the export (band + border + status bar / home area), outside the clipped screen,
    so pins are placed in % of the export and can sit on the edge of the phone */
 .pins {
@@ -145,17 +146,14 @@
   inset: 16.4cqw 3.7cqw 9.7cqw;
 }
 
-.pins .pin {
+/* The pins themselves (.pin) are in the case base */
+.pins > span {
   left: calc(-3.7cqw - 14px);
 }
 
 /* The middle step sits a little higher, so the three read as a sequence */
 .hero .device:nth-child(2) {
   translate: 0 calc(-1 * clamp(12px, 2vw, 32px));
-}
-
-.facts {
-  margin-top: clamp(40px, 5vw, 72px);
 }
 
 /* ---------- Problem ---------- */
@@ -185,17 +183,130 @@
 /* ---------- Design rounds ---------- */
 
 .rounds {
+  --dot: 11px;
+  --col-gap: clamp(16px, 2vw, 32px);
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px clamp(16px, 2vw, 32px);
+  gap: 32px var(--col-gap);
+  view-timeline-name: --rounds;
   margin: clamp(56px, 7vw, 104px) 0 0;
   padding: 0;
   list-style: none;
 }
 
+/*
+ * The route over the rounds: a dot per round and a lit line from each dot to the next, as the flow on case 04.
+ * The default is the end state (drawn and lit); only with scroll-driven animation and motion allowed does it start
+ * undrawn and follow the scroll. A phone: the same, down the left side.
+ */
+.rounds > li {
+  position: relative;
+  padding-top: 32px;
+}
+
+.rounds > li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: calc(4px + var(--dot) / 2);
+  left: var(--dot);
+  width: calc(100% - var(--dot) + var(--col-gap));
+  height: 2px;
+  margin-top: -1px;
+  background: var(--glow);
+  transform-origin: left center;
+}
+
+.stop {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: var(--dot);
+  height: var(--dot);
+  border: 1px solid var(--glow);
+  border-radius: 50%;
+  background: var(--glow);
+  box-shadow: var(--halo);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rounds > li:not(:last-child)::after {
+      animation: draw linear both;
+      animation-timeline: --rounds;
+      animation-range: cover calc(18% + var(--i) * 8%) cover calc(26% + var(--i) * 8%);
+    }
+
+    .stop {
+      animation: stopOn linear both;
+      animation-timeline: --rounds;
+      animation-range: cover calc(14% + var(--i) * 8%) cover calc(18% + var(--i) * 8%);
+    }
+  }
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes drawDown {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* A short flicker before it holds, as the lamps on the homepage timeline */
+@keyframes stopOn {
+  0% {
+    background: var(--bg);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  30% {
+    background: var(--glow);
+    box-shadow: var(--halo);
+  }
+  45% {
+    background: var(--bg);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  100% {
+    background: var(--glow);
+    box-shadow: var(--halo);
+  }
+}
+
+@media (max-width: 47.99em) {
+  .rounds > li {
+    padding: 0 0 8px 28px;
+  }
+
+  .rounds > li:not(:last-child)::after {
+    left: calc(var(--dot) / 2);
+    width: 2px;
+    height: calc(100% + 32px);
+    margin: 0 0 0 -1px;
+    transform-origin: center top;
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .rounds > li:not(:last-child)::after {
+        animation-name: drawDown;
+      }
+    }
+  }
+}
+
 .rounds h3 {
   margin-top: 4px;
-  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-size: var(--t-title);
   font-weight: 540;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -214,7 +325,7 @@
   aspect-ratio: 4 / 3;
   margin-bottom: 16px;
   padding-top: 9%;
-  background: #dce2e3;
+  background: var(--ground);
 }
 
 .pane .device {
@@ -228,13 +339,11 @@
   padding: 0 7%;
 }
 
+/* A flat screenshot: the rounding of a screen, no shadow */
 .desktop {
   width: 100%;
   height: auto;
-  border-radius: 4px;
-  box-shadow:
-    0 1px 2px rgb(18 19 24 / 0.12),
-    0 16px 32px -12px rgb(18 19 24 / 0.28);
+  border-radius: var(--r-screen);
 }
 
 /* ---------- What the test changed ---------- */
@@ -249,38 +358,22 @@
   list-style: none;
 }
 
+/* The grey ground around each comparison; the screens keep about the size they had as two crops side by side,
+   so the detail reads as a detail and not as a second heading */
 .pair {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
   margin-bottom: 16px;
-  padding: 12px;
-  background: #dce2e3;
+  padding: clamp(16px, 2vw, 28px) 12px;
+  background: var(--ground);
 }
 
-.crop {
-  display: grid;
-  gap: 6px;
-  margin: 0;
-}
-
-/* A 4:5 window on the export; the image is scaled and moved inline */
-.window {
-  overflow: hidden;
-  aspect-ratio: 4 / 5;
-  border-radius: 6px;
-  background: #f8f8f8;
-}
-
-.window img {
-  display: block;
-  max-width: none;
-  height: auto;
+.pair > * {
+  width: min(100%, 300px);
+  margin-inline: auto;
 }
 
 .changes h4 {
-  font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
-  font-weight: 560;
+  font-size: var(--t-subtitle);
+  font-weight: 540;
   line-height: 1.2;
   letter-spacing: -0.015em;
 }
@@ -316,36 +409,68 @@
   display: grid;
   place-items: center;
   padding: clamp(32px, 4vw, 64px) clamp(32px, 4vw, 56px);
-  background: #dce2e3;
+  background: var(--ground);
 }
 
 .anatomy .device {
   width: min(280px, 100%);
 }
 
-.pin,
-.pinNum {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
+/* The pins and their callouts switch on one by one (StepLights): waiting, a pin is unlit and its callout steps
+   back in colour (muted still reads at 4.5:1); switching on, it catches with the flicker of the homepage lamps.
+   The pin classes live in the case base, so they are reached here through the steps themselves */
+.decision[data-live] .anatomy [data-step]:not([data-on]) {
+  background: var(--line);
+  color: var(--fg-2);
 }
 
-.pin {
-  position: absolute;
-  left: -14px;
-  translate: 0 -50%;
-  background: var(--accent);
-  color: #fff;
+.decision[data-live] .callouts li:not([data-on]) > span:first-child {
+  border-color: var(--line);
+  color: var(--muted);
 }
 
-.pinNum {
-  border: 1px solid var(--accent);
-  color: var(--accent);
+.decision[data-live] .callouts li :is(h3, p) {
+  transition: color var(--dur-line) var(--ease-out);
+}
+
+.decision[data-live] .callouts li:not([data-on]) :is(h3, p) {
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .decision[data-live] .anatomy [data-on] {
+    animation: pinOn 420ms steps(1, end) both;
+  }
+
+  .decision[data-live] .callouts li[data-on] > span:first-child {
+    animation: pinNumOn 420ms steps(1, end) both;
+  }
+}
+
+@keyframes pinOn {
+  0%,
+  45% {
+    background: var(--line);
+  }
+  25%,
+  70%,
+  100% {
+    background: var(--accent);
+  }
+}
+
+@keyframes pinNumOn {
+  0%,
+  45% {
+    border-color: var(--line);
+    color: var(--muted);
+  }
+  25%,
+  70%,
+  100% {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
 }
 
 .callouts {
@@ -364,7 +489,7 @@
 }
 
 .callouts h3 {
-  font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
+  font-size: var(--t-subtitle);
   font-weight: 540;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -415,11 +540,10 @@
   margin-top: clamp(32px, 4vw, 48px);
 }
 
-.chart,
-.stat {
+.chart {
   margin: 0;
   padding: clamp(24px, 3vw, 40px);
-  background: #dce2e3;
+  background: var(--ground);
 }
 
 .votes {
@@ -439,14 +563,14 @@
 }
 
 .chartTitle {
-  font-size: 1.125rem;
-  font-weight: 560;
+  font-size: var(--t-subtitle);
+  font-weight: 540;
   letter-spacing: -0.01em;
 }
 
 .chartSub {
   color: var(--muted);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
 }
 
 .chart svg {
@@ -514,7 +638,7 @@
   padding: 0;
   list-style: none;
   color: var(--fg-2);
-  font-size: 0.8125rem;
+  font-size: var(--t-small);
 }
 
 .legend li::before {
@@ -534,91 +658,11 @@
   border-top: 3px solid var(--accent);
 }
 
-/* The count is the headline of the tile */
-.stat {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.statNum {
-  font-size: clamp(3rem, 5.5vw, 5rem);
-  font-weight: 560;
-  font-stretch: 104%;
-  line-height: 0.9;
-  letter-spacing: -0.045em;
-  font-variant-numeric: tabular-nums;
-}
-
-.statOf {
-  color: var(--muted);
-  font-size: 0.4em;
-  letter-spacing: -0.02em;
-}
-
-.stat[data-tone="accent"] .statNum {
-  color: var(--accent);
-}
-
-.statLabel {
-  color: var(--fg-2);
-}
-
-.dots {
-  display: flex;
-  gap: 5px;
-  margin-top: auto;
-}
-
-.dots i {
-  width: 12px;
-  height: 12px;
-  border: 1.5px solid var(--dim);
-  border-radius: 50%;
-}
-
-.dots i {
-  transition:
-    background-color 160ms ease-out,
-    border-color 160ms ease-out;
-}
-
-.dots i[data-on] {
-  border-color: var(--fg);
-  background: var(--fg);
-}
-
-.stat[data-tone="accent"] .dots i[data-on] {
-  border-color: var(--accent);
-  background: var(--accent);
-}
-
-.outcome {
-  margin-top: clamp(32px, 4vw, 48px);
-  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
-}
-
-.outcome strong {
-  color: var(--fg);
-  font-weight: 560;
-}
-
 /* What I didn't expect: a smaller block under a line */
 .aside {
   margin-top: clamp(64px, 8vw, 120px);
   padding-top: clamp(32px, 4vw, 48px);
   border-top: 1px solid var(--line);
-}
-
-.subheading {
-  max-width: 20em;
-  margin-top: 12px;
-  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
-  font-weight: 560;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  text-wrap: balance;
 }
 
 /* ---------- Building it ---------- */
@@ -641,7 +685,7 @@
   display: grid;
   place-items: center;
   padding: clamp(32px, 4vw, 56px);
-  background: #dce2e3;
+  background: var(--ground);
 }
 
 .buildImage img {
@@ -649,24 +693,9 @@
   height: auto;
 }
 
-/* AI and the spec: one block under a line, text left and the spec right */
-.aiBlock {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  gap: 32px clamp(32px, 4vw, 64px);
-  align-items: start;
-  margin-top: clamp(64px, 8vw, 112px);
-  padding-top: clamp(32px, 4vw, 48px);
-  border-top: 1px solid var(--line);
-}
-
-.aiBlock .subheading + p {
-  margin-top: 20px;
-}
-
 .points h3 {
-  font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
-  font-weight: 560;
+  font-size: var(--t-subtitle);
+  font-weight: 540;
   letter-spacing: -0.015em;
 }
 
@@ -686,10 +715,10 @@
 .specFile {
   margin: 0;
   padding: 20px;
-  background: #dce2e3;
+  background: var(--ground);
   color: var(--fg-2);
   font-family: var(--font-geist-mono), ui-monospace, monospace;
-  font-size: 0.8125rem;
+  font-size: var(--t-small);
   line-height: 1.6;
   white-space: pre-wrap;
 }
@@ -714,7 +743,7 @@
   gap: 16px;
   padding: 14px 0;
   border-top: 1px solid var(--line);
-  font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
+  font-size: var(--t-subtitle);
   font-weight: 540;
   letter-spacing: -0.015em;
   counter-increment: step;
@@ -729,123 +758,40 @@
   letter-spacing: 0.06em;
 }
 
-/* An inline link with the site's drawn-in line, here always visible so it reads as a link */
-.textLink {
-  color: var(--fg);
-  font-weight: 520;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.textLink span {
-  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 100% 1px;
-}
-
-.textLink::after {
-  content: " →";
-}
-
-/* ---------- Result, at night ---------- */
-
-/* Without JS the zone paints its own night; with JS the root does (Sky) */
-:global([data-e-root]:not([data-sky])) .night {
-  --bg: #151412;
-  --fg: #eeefeb;
-  --fg-2: #b9bab3;
-  --muted: #979890;
-  --dim: #6b6c64;
-  --line: #2e2d2a;
-  --focus: var(--lamp);
-  background: var(--bg);
-  color: var(--fg);
-}
-
-.night {
-  --block: clamp(144px, 15vw, 252px);
-  margin-top: var(--block);
-  padding: var(--block) var(--gutter) 0;
-}
-
-.result {
-  display: flex;
-  flex-direction: column;
-}
-
-/* The lamp is on: the result is the moment the light comes on */
-.lamp {
-  width: 14px;
-  height: 14px;
-  margin-bottom: clamp(32px, 4vw, 56px);
-  border-radius: 50%;
-  background: var(--lamp-core);
-  box-shadow:
-    0 0 0 6px rgb(255 158 94 / 0.22),
-    0 0 40px 12px rgb(255 158 94 / 0.45);
-}
-
-/* Next case: one large link, so nobody hits a dead end */
-.next {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 320px);
-  gap: 32px clamp(32px, 4vw, 64px);
-  align-items: center;
-  margin-top: var(--block);
-  padding: clamp(32px, 4vw, 48px) 0 clamp(96px, 10vw, 160px);
-  border-top: 1px solid var(--line);
-  color: var(--fg);
-  text-decoration: none;
-}
-
-.nextText {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* The preview leans in a little on hover, as the title underlines */
-.nextImage {
-  width: 100%;
-  height: auto;
-  transition: transform 250ms var(--ease-out);
-}
-
-/* A flat screenshot instead of a device: the same small rounding as the other screens */
-.nextFlat {
-  border-radius: 4px;
-}
-
-.nextTitle {
-  font-size: clamp(2rem, 3.8vw, 3.5rem);
-  font-weight: 560;
-  font-stretch: 104%;
-  line-height: 1;
-  letter-spacing: -0.035em;
-}
-
-.nextTitle span {
-  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0% 2px;
-  transition: background-size 320ms var(--ease-out);
-}
-
-.nextTitle::after {
-  content: " →";
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .next:hover .nextTitle span {
-    background-size: 100% 2px;
-  }
-
-  .next:hover .nextImage {
-    transform: scale(1.03);
-  }
-}
-
-.next:focus-visible .nextTitle span {
-  background-size: 100% 2px;
-}
-
 /* ---------- Phone ---------- */
+
+/* ---------- Result ---------- */
+
+/* Two cards in the light of the lamp, as the results of cases 02, 03 and 04 */
+.outcome {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: clamp(32px, 4vw, 48px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.outcome li {
+  padding: clamp(24px, 3vw, 40px);
+  border: 1px solid var(--line);
+  border-top-color: rgb(255 158 94 / 0.35);
+  background: linear-gradient(to bottom, rgb(255 158 94 / 0.07), transparent 55%);
+}
+
+.outcome h3 {
+  margin-top: 8px;
+  font-size: var(--t-title);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.outcome h3 + p {
+  max-width: 34em;
+  margin-top: 12px;
+  color: var(--fg-2);
+}
 
 @media (max-width: 47.99em) {
   .hero {
@@ -856,11 +802,11 @@
 
   .problem,
   .decision,
-  .aiBlock,
   .testIntro,
   .rounds,
   .anatomy,
   .results,
+  .outcome,
   .spec,
   .changes,
   .points {
@@ -874,14 +820,6 @@
 
   .problemImage {
     width: min(240px, 70%);
-  }
-
-  .next {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .nextImage {
-    width: min(260px, 70%);
   }
 
   /* On a phone the prototype keeps a readable size and scrolls sideways */
@@ -901,12 +839,5 @@
 
   .pair {
     padding: 8px;
-  }
-}
-
-/* Reduced motion: the preview stays still */
-@media (prefers-reduced-motion: reduce) {
-  .next:hover .nextImage {
-    transform: none;
   }
 }

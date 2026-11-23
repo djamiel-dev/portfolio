@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wireframe – Incentive portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@75..125,300..800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #eeefeb; --paper: #f6f6f3; --fg: #121318; --fg-2: #45484f; --muted: #5b5e65;
+    --line: #c9cbc7; --box: #dde0dc; --box-2: #e6e7e2; --accent: #c04a00; --note: #fff;
+    --sans: "Mona Sans", system-ui, sans-serif; --mono: "Geist Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 430 16px/1.5 var(--sans); }
+  .doc { max-width: 1240px; margin: 0 auto; padding: 32px 16px 120px; }
+
+  /* Document header (Dutch, for Djamiel) */
+  .doc-head { display: grid; gap: 16px; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+  .doc-head h1 { margin: 0; font-size: 1.75rem; font-weight: 560; letter-spacing: -0.02em; }
+  .doc-head p { margin: 0; color: var(--fg-2); max-width: 70ch; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.8125rem; color: var(--fg-2); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .tag { font: 600 0.6875rem/1 var(--sans); font-stretch: 125%; text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 6px; border-radius: 3px; }
+  .t-vis { background: var(--accent); color: #fff; }
+  .t-img { background: var(--fg); color: #fff; }
+  .t-data { background: #2f5d62; color: #fff; }
+  .t-copy { background: #fff; color: var(--fg); outline: 1px solid var(--fg); }
+  .t-q { background: #f3d9a4; color: #4a3200; }
+
+  /* Row = wireframe column + notes column */
+  .row { display: grid; gap: 16px; margin-bottom: 16px; }
+  @media (min-width: 1100px) { .row { grid-template-columns: minmax(0, 1fr) 320px; gap: 32px; } }
+  .wf { background: var(--paper); border: 1px solid var(--line); padding: clamp(20px, 4vw, 48px); min-width: 0; }
+  .notes { display: grid; gap: 10px; align-content: start; }
+  .note { background: var(--note); border-left: 3px solid var(--fg); padding: 10px 12px; font-size: 0.875rem; color: var(--fg-2); }
+  .note .tag { margin-right: 6px; vertical-align: 1px; }
+  .note b { color: var(--fg); font-weight: 600; }
+  .note.vis { border-color: var(--accent); }
+  .note.data { border-color: #2f5d62; }
+  .note.q { border-color: #d9a441; }
+  @media (min-width: 1100px) { .notes { position: sticky; top: 16px; } }
+
+  /* Page typography inside the wireframe (English site copy) */
+  .label { font: 600 0.75rem/1.2 var(--sans); font-stretch: 125%; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .h-case { font-size: clamp(2.25rem, 5vw, 4.5rem); font-weight: 560; letter-spacing: -0.04em; line-height: 0.98; margin: 12px 0 16px; font-stretch: 104%; }
+  .h-sec { font-size: clamp(1.75rem, 3.2vw, 2.75rem); font-weight: 560; letter-spacing: -0.035em; line-height: 1.02; margin: 8px 0 12px; }
+  .lede { font-size: clamp(1.125rem, 1.6vw, 1.375rem); color: var(--fg-2); max-width: 46ch; margin: 0; line-height: 1.4; }
+  .body { color: var(--fg-2); max-width: 60ch; margin: 0 0 16px; }
+  .ph { color: var(--accent); }  /* placeholder in [brackets] */
+  .orange { color: var(--accent); }
+
+  /* Generic boxes */
+  .img { background: var(--box); border: 1px dashed #a9aca8; display: grid; place-items: center; text-align: center; padding: 16px; color: var(--muted); font-size: 0.8125rem; min-height: 120px; position: relative; }
+  .img::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to top right, transparent calc(50% - 0.5px), #c4c7c3 50%, transparent calc(50% + 0.5px)), linear-gradient(to top left, transparent calc(50% - 0.5px), #c4c7c3 50%, transparent calc(50% + 0.5px)); opacity: 0.5; pointer-events: none; }
+  .img span { position: relative; background: var(--box); padding: 4px 8px; }
+  .phone { aspect-ratio: 9 / 19; border-radius: 22px; min-height: 0; }
+  .hero-phones { background: #dde2e3; padding: clamp(24px, 4vw, 48px) clamp(16px, 6vw, 80px); grid-template-columns: repeat(3, minmax(0, 200px)); justify-content: center; }
+  .hero-phones .phone { background: var(--paper); }
+  .hero-phones .phone span { background: var(--paper); }
+  .grid-2 { display: grid; gap: 16px; }
+  .grid-3 { display: grid; gap: 16px; }
+  @media (min-width: 720px) { .grid-2 { grid-template-columns: 1fr 1fr; } .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+  .meta { display: grid; gap: 16px 24px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); }
+  @media (min-width: 720px) { .meta { grid-template-columns: repeat(4, 1fr); } }
+  .meta div { font-size: 0.9375rem; }
+  .meta .label { display: block; margin-bottom: 4px; }
+  .live { display: inline-flex; align-items: center; gap: 8px; font-size: 0.875rem; padding: 6px 12px 6px 10px; border: 1px solid var(--line); border-radius: 999px; background: #fff; }
+  .live i { width: 8px; height: 8px; border-radius: 50%; background: #ff9e5e; box-shadow: 0 0 0 3px rgba(255,158,94,.25), 0 0 10px #ff9e5e; }
+  .chapters { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 28px; font-size: 0.875rem; color: var(--fg-2); }
+  .chapters span::before { content: attr(data-n) " "; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  /* TL;DR */
+  .tldr { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  @media (min-width: 720px) { .tldr { grid-template-columns: repeat(3, 1fr); } }
+  .tldr > div { background: var(--paper); padding: 20px; }
+  .tldr p { margin: 8px 0 0; font-size: 1.0625rem; line-height: 1.4; }
+  .stat { font-size: clamp(2rem, 4vw, 3rem); font-weight: 560; letter-spacing: -0.04em; line-height: 1; display: block; margin-top: 12px; }
+
+  .fold { display: flex; align-items: center; gap: 12px; margin: 24px 0; color: var(--accent); font: 600 0.75rem/1 var(--sans); font-stretch: 125%; text-transform: uppercase; letter-spacing: 0.06em; }
+  .fold::before, .fold::after { content: ""; flex: 1; border-top: 2px dashed var(--accent); }
+
+  /* Before/after flow */
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0 4px; }
+  .node { border: 1px solid var(--fg); background: #fff; padding: 10px 14px; font-size: 0.9375rem; }
+  .node.soft { border-style: dashed; color: var(--fg-2); background: transparent; }
+  .node.hl { border-color: var(--accent); color: var(--accent); }
+  .arrow { color: var(--muted); }
+  .flow-row { padding: 16px 0; border-top: 1px solid var(--line); }
+  .flow-row:first-of-type { border-top: 0; }
+  .flow-row .label { margin-bottom: 8px; display: block; }
+
+  /* Project timeline */
+  .tl { margin-top: 24px; }
+  .tl-bar { display: flex; height: 44px; border: 1px solid var(--fg); }
+  .tl-bar div { display: flex; align-items: center; padding: 0 12px; font-size: 0.875rem; font-weight: 520; }
+  .tl-design { flex: 86; background: #fff; border-right: 1px solid var(--fg); }
+  .tl-build { flex: 72; background: var(--fg); color: #fff; }
+  .tl-ticks { position: relative; height: 92px; margin-top: 4px; }
+  .tick { position: absolute; top: 0; font-size: 0.75rem; color: var(--fg-2); padding-left: 6px; border-left: 1px solid var(--fg-2); height: 100%; line-height: 1.25; max-width: 110px; }
+  .tick.b { top: 46px; height: 46px; }
+  .tl-ends { display: flex; justify-content: space-between; margin-top: 6px; }
+
+  /* Filmstrip */
+  .strip { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(200px, 1fr); gap: 16px; overflow-x: auto; padding-bottom: 8px; }
+  .frame .img { aspect-ratio: 4 / 3; }
+  .frame p { margin: 8px 0 0; font-size: 0.875rem; color: var(--fg-2); }
+  .frame b { font-weight: 600; color: var(--fg); }
+
+  /* Annotated screen */
+  .anatomy { display: grid; gap: 24px; align-items: center; }
+  @media (min-width: 720px) { .anatomy { grid-template-columns: 220px 1fr; } }
+  .callouts { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .callouts li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; font-size: 0.9375rem; color: var(--fg-2); }
+  .callouts .n { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--accent); color: var(--accent); display: grid; place-items: center; font-size: 0.75rem; font-weight: 600; }
+  .callouts b { color: var(--fg); font-weight: 560; }
+  .pin { position: absolute; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 0.6875rem; font-weight: 600; display: grid; place-items: center; z-index: 1; }
+
+  /* Charts */
+  .charts { display: grid; gap: 24px; margin-top: 8px; }
+  @media (min-width: 820px) { .charts { grid-template-columns: 1.15fr 1fr; } }
+  .chart { background: #fff; border: 1px solid var(--line); padding: 16px; }
+  .chart h4 { margin: 0 0 4px; font-size: 0.9375rem; font-weight: 560; }
+  .chart .sub { margin: 0 0 8px; font-size: 0.8125rem; color: var(--muted); }
+  .chart svg { width: 100%; height: auto; display: block; font-family: var(--sans); }
+  .dots { display: flex; gap: 6px; margin: 6px 0 2px; }
+  .dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--fg); }
+  .dot.on { background: var(--fg); }
+  .dot.acc { background: var(--accent); border-color: var(--accent); }
+  .vote { display: grid; gap: 16px; }
+  .vote-row { display: grid; gap: 2px; }
+  .vote-row .big { font-size: 1.5rem; font-weight: 560; letter-spacing: -0.03em; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 0.8125rem; border: 1px solid var(--line); background: #fff; padding: 3px 10px; border-radius: 999px; color: var(--fg-2); }
+  .ab { display: grid; gap: 4px; }
+  .ab .flow { margin: 0; }
+  .ab .node { padding: 6px 10px; font-size: 0.8125rem; }
+
+  .day { margin-top: 8px; }
+  .day-bar { position: relative; height: 40px; border-bottom: 1px solid var(--fg); }
+  .shift { position: absolute; left: 8%; width: 58%; top: 6px; bottom: 0; background: var(--box); border: 1px solid var(--line); border-bottom: 0; display: flex; align-items: center; padding-left: 10px; font-size: 0.8125rem; color: var(--muted); }
+  .after { position: absolute; left: 72%; bottom: 8px; display: flex; gap: 4px; }
+  .spot { position: absolute; left: 34%; bottom: 8px; }
+  .day-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 0.8125rem; color: var(--fg-2); margin-top: 8px; }
+
+  /* Menu diff */
+  .menus { display: grid; gap: 24px; align-items: start; }
+  @media (min-width: 720px) { .menus { grid-template-columns: 1fr 40px 1fr; } }
+  .menu { border: 1px solid var(--fg); background: #fff; border-radius: 18px; padding: 16px; }
+  .menu .label { display: block; margin-bottom: 10px; }
+  .menu ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .menu li { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 0.9375rem; }
+  .menu li.cut { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--accent); border-style: dashed; }
+  .menu li small { display: block; text-decoration: none; color: var(--accent); font-size: 0.75rem; margin-top: 2px; }
+  .menus .mid { align-self: center; justify-self: center; color: var(--muted); font-size: 1.5rem; }
+
+  /* Production */
+  .tenant { border: 1px solid var(--fg); padding: 12px; background: #fff; }
+  .tenant > .label { display: block; margin-bottom: 10px; }
+  .tenants { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+  .company { border: 1px dashed var(--fg-2); padding: 10px; font-size: 0.8125rem; }
+  .company .team { margin-top: 8px; border: 1px solid var(--line); padding: 6px 8px; background: var(--paper); }
+  .company .team.me { border-color: var(--accent); color: var(--accent); }
+  .logs { display: grid; gap: 10px; }
+  .log { font: 400 0.8125rem/1.45 var(--mono); background: #151412; color: #eeefeb; padding: 12px 14px; }
+  .log .err { color: #ff9e5e; }
+  .log .ok { color: #b9bab3; }
+  .toggle { display: flex; align-items: center; gap: 10px; font-size: 0.875rem; color: var(--fg-2); margin-top: 16px; }
+  .sw { width: 44px; height: 24px; border-radius: 999px; background: var(--fg); position: relative; }
+  .sw::after { content: ""; position: absolute; right: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #ff9e5e; }
+
+  /* AI */
+  .vs { display: grid; gap: 16px; }
+  @media (min-width: 720px) { .vs { grid-template-columns: 1fr 1fr; } }
+  .vs > div { border: 1px solid var(--line); background: #fff; padding: 16px; }
+  .vs h4 { margin: 0 0 8px; font-size: 1rem; font-weight: 560; }
+  .code { font: 400 0.8125rem/1.5 var(--mono); background: var(--box-2); padding: 12px; white-space: pre-wrap; color: var(--fg-2); }
+  .blocks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 10px; }
+  .blocks i { height: 26px; background: var(--box); border: 1px solid var(--line); }
+  .blocks.messy i:nth-child(3n) { background: #fff; border-style: dashed; transform: translateY(3px); }
+  .blocks.messy i:nth-child(4n+1) { height: 18px; }
+  .blocks.clean i { background: var(--fg); border-color: var(--fg); }
+
+  /* Night section */
+  .night { background: #151412; color: #eeefeb; border-color: #2e2d2a; }
+  .night .label { color: #979890; }
+  .night .body, .night .lede { color: #b9bab3; }
+  .night .stat { color: #ff9e5e; }
+  .lamp { width: 14px; height: 14px; border-radius: 50%; background: #fff3e9; box-shadow: 0 0 0 6px rgba(255,158,94,.25), 0 0 40px 10px rgba(255,158,94,.5); margin-bottom: 28px; }
+  .results { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); margin: 24px 0 32px; }
+  .next { display: grid; gap: 16px; align-items: center; border-top: 1px solid #2e2d2a; padding-top: 24px; margin-top: 32px; }
+  @media (min-width: 720px) { .next { grid-template-columns: 1fr 240px; } }
+  .night .img { background: #232220; border-color: #45443f; color: #979890; }
+  .night .img span { background: #232220; }
+  .night .img::before { opacity: 0.15; }
+
+  .sec-head { display: flex; gap: 12px; align-items: baseline; }
+  .sec-head .label { min-width: 2.5em; }
+  hr.thin { border: 0; border-top: 1px solid var(--line); margin: 28px 0; }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <header class="doc-head">
+    <div class="label">Wireframe · lo-fi · 13 nov 2026 · niet committen</div>
+    <h1>Case 01 – Incentive portal</h1>
+    <p>Links de pagina zoals een bezoeker hem ziet (Engelse conceptcopy, placeholders <span class="ph">[tussen haken]</span>). Rechts per blok waarom deze vorm, welk beeld of welke data erachter zit, en wat nog open staat. De grafieken gebruiken de echte cijfers uit de usability test, testers anoniem als T1–T7.</p>
+    <div class="legend">
+      <span><b class="tag t-vis">Visueel</b> visueel concept</span>
+      <span><b class="tag t-img">Beeld</b> asset nodig</span>
+      <span><b class="tag t-data">Data</b> bron van een cijfer</span>
+      <span><b class="tag t-copy">Copy</b> keuze in de tekst</span>
+      <span><b class="tag t-q">Open</b> vraag voor jou</span>
+    </div>
+  </header>
+
+  <!-- 0. HERO -->
+  <section class="row">
+    <div class="wf">
+      <div class="label">Case 01 · Product design + front-end</div>
+      <h2 class="h-case">Incentive Portal</h2>
+      <p class="lede">A phone-first portal team leads use to reward their staff. I researched, designed and built it, from the first interview to live with <span class="ph">[n]</span> client companies.</p>
+      <p style="margin:20px 0 28px"><span class="live"><i></i>Live since <span class="ph">[month 2026]</span></span></p>
+      <div class="grid-3 hero-phones">
+        <div class="img phone"><span>Beloon-scherm<br>(snelle beloningen)</span></div>
+        <div class="img phone"><span>Medewerkers kiezen</span></div>
+        <div class="img phone"><span>Bevestiging met illustratie</span></div>
+      </div>
+      <div class="meta">
+        <div><span class="label">Role</span>Product designer and front-end developer</div>
+        <div><span class="label">Team</span>Product owner, backend developer <span class="ph">[+ Azure]</span></div>
+        <div><span class="label">When</span>Sep 2025 – Feb 2026, graduation internship <span class="ph">[then in-house]</span></div>
+        <div><span class="label">Built with</span>Figma, Next.js, Microsoft Entra, Azure</div>
+      </div>
+      <nav class="chapters" aria-label="Chapters (concept)">
+        <span data-n="01">The problem</span><span data-n="02">How it went</span><span data-n="03">Five moments</span><span data-n="04">How I used AI</span><span data-n="05">Result</span>
+      </nav>
+    </div>
+    <aside class="notes">
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Drie telefoons op een rustig case-vlak</b>, de beloonflow van links naar rechts: zo is in één blik zichtbaar dat het mobiel is en wat je ermee doet. Zelfde grijze vlakken als op de homepage.</div>
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>"Live"-pil met een lampje.</b> Sluit aan op het idee van de site: licht = aan. Dit is de enige case die echt live staat bij klanten; dat mag je zien voordat je leest.</div>
+      <div class="note"><b class="tag t-img">Beeld</b>Live schermen met demodata (vraag 7). Tot die er zijn: finale Figma-schermen, dia 11–12 van de eindpresentatie.</div>
+      <div class="note"><b class="tag t-copy">Copy</b>De meta-rij is wat een recruiter zoekt: rol, team, tijd, tools. Hoofdstukken eronder als ankerlinks voor de hiring manager die wil springen.</div>
+      <div class="note q"><b class="tag t-q">Open</b>Toestemming voor naam, schermen en "live" (vraag 1); aantal klanten en startmaand (vraag 2); "then in-house" (vraag 6).</div>
+    </aside>
+  </section>
+
+  <!-- TL;DR -->
+  <section class="row">
+    <div class="wf">
+      <div class="tldr">
+        <div><span class="label">Problem</span><p>Team leads couldn't reward their own people. Every point was added by hand at <span class="ph">[Company]</span>.</p></div>
+        <div><span class="label">What I did</span><p>Interviews, four design rounds, two expert reviews, a test with seven team leads. Then I built it.</p></div>
+        <div><span class="label">Result</span><span class="stat"><span class="ph">[n]</span></span><p>client companies use it, live since <span class="ph">[month]</span>.</p></div>
+      </div>
+    </div>
+    <aside class="notes">
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Drie vakken: probleem, aanpak, resultaat.</b> Recruiters kijken 3 minuten of korter; dit blok is de hele case in tien seconden. Resultaat als groot getal, het enige grote getal boven de vouw.</div>
+      <div class="note data"><b class="tag t-data">Data</b>"Added by hand": interview met de product owner, sprint 1 (puntentoekenning vereist handmatige actie).</div>
+      <div class="note q"><b class="tag t-q">Open</b>Zonder resultaatcijfer: derde vak wordt "Live with client companies since [month]" zonder getal.</div>
+    </aside>
+  </section>
+
+  <div class="fold">Recruiter leest tot hier · ± 1 minuut · daaronder de hiring manager</div>
+
+  <!-- 01 PROBLEM -->
+  <section class="row">
+    <div class="wf">
+      <div class="sec-head"><span class="label">01</span><span class="label">The problem</span></div>
+      <h3 class="h-sec">Rewarding your team meant asking someone else</h3>
+      <p class="body">[Company] lets employers reward staff with points they can spend on vouchers. But a team lead couldn't hand out those points. Every reward went through [Company], so the product couldn't grow beyond a handful of clients.</p>
+      <div class="flow-row">
+        <span class="label">Before</span>
+        <div class="flow"><span class="node">Team lead</span><span class="arrow">→</span><span class="node soft">asks [Company]</span><span class="arrow">→</span><span class="node soft">points added by hand</span><span class="arrow">→</span><span class="node">Employee</span></div>
+      </div>
+      <div class="flow-row">
+        <span class="label">After</span>
+        <div class="flow"><span class="node">Team lead</span><span class="arrow">→</span><span class="node hl">Incentive Portal, on their phone</span><span class="arrow">→</span><span class="node">Employee</span></div>
+      </div>
+    </div>
+    <aside class="notes">
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Voor/na-flow in plaats van een alinea context.</b> Twee rijen blokjes; de stappen die verdwijnen zijn gestippeld. Het probleem is in één keer te zien: er zit iemand tussen die er niet hoort.</div>
+      <div class="note"><b class="tag t-copy">Copy</b>Kop als bevinding, niet als label ("The problem"). Geldt voor alle koppen hieronder: wie alleen de koppen leest, kent het verhaal.</div>
+      <div class="note data"><b class="tag t-data">Data</b>"Couldn't grow": interview, sprint 1 (zonder self-service niet schaalbaar). Multi-tenancy bewaren voor moment 5.</div>
+    </aside>
+  </section>
+
+  <!-- 02 PROCESS -->
+  <section class="row">
+    <div class="wf">
+      <div class="sec-head"><span class="label">02</span><span class="label">How it went</span></div>
+      <h3 class="h-sec">Half the project happened before the first line of code</h3>
+      <div class="tl">
+        <div class="tl-bar"><div class="tl-design">Research and design · 12 weeks</div><div class="tl-build">Build · 10 weeks</div></div>
+        <div class="tl-ticks">
+          <span class="tick" style="left:0">Interviews + AI prototypes</span>
+          <span class="tick b" style="left:14%">Desktop dashboard (v1)</span>
+          <span class="tick" style="left:26%">Phone-first (v2)</span>
+          <span class="tick b" style="left:38%">2 expert reviews (v3)</span>
+          <span class="tick" style="left:48%">Test with 7 team leads</span>
+          <span class="tick b" style="left:55%">Flow on mock data</span>
+          <span class="tick" style="left:72%">Microsoft login + real API</span>
+          <span class="tick b" style="left:88%">Code review, live fixes</span>
+        </div>
+        <div class="tl-ends"><span class="label">1 Sep 2025</span><span class="label">26 Nov</span><span class="label">6 Feb 2026 → live <span class="ph">[month]</span></span></div>
+      </div>
+    </div>
+    <aside class="notes">
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Tijdbalk op echte verhoudingen</b> (86 dagen ontwerp, 72 bouw). Laat zonder tekst zien dat dit geen "ik heb een app gebouwd"-case is: de designhelft is net zo groot. Precies het gat in de Cursor-samenvatting.</div>
+      <div class="note"><b class="tag t-copy">Copy</b>Vervangt sprintindeling, literatuuronderzoek en frameworkvergelijking: die staan hooguit als markering op de balk.</div>
+      <div class="note data"><b class="tag t-data">Data</b>Start 1 sep, development vanaf 26 nov, einde 6 feb (stagedocumenten). Posities van de markeringen zijn geschat per sprint.</div>
+      <div class="note q"><b class="tag t-q">Open</b>Data per sprint nalopen voordat de markeringen echt geplaatst worden.</div>
+    </aside>
+  </section>
+
+  <!-- MOMENT 1 -->
+  <section class="row">
+    <div class="wf">
+      <div class="sec-head"><span class="label">03 · 1/5</span><span class="label">Five moments</span></div>
+      <h3 class="h-sec">My first design was for the wrong screen</h3>
+      <p class="body">I started with a desktop dashboard of tiles. Feedback was blunt: too many clicks for the one task that matters, and the brief asked for phone-first. So I started over from the reward itself. The app now opens on rewarding.</p>
+      <div class="strip">
+        <div class="frame"><div class="img"><span>v1 · desktop bento<br>(dia 7)</span></div><p><b>v1</b> Dashboard with tiles. Rewarding is one of six.</p></div>
+        <div class="frame"><div class="img"><span>v2 · eerste mobiel<br>(dia 8–9)</span></div><p><b>v2</b> Phone-first. Opens on rewarding.</p></div>
+        <div class="frame"><div class="img"><span>v3 · na expert reviews<br>(dia 11)</span></div><p><b>v3</b> Calmer, more human. A reason with every reward.</p></div>
+        <div class="frame"><div class="img"><span>v4 · na usability test<br>(dia 12)</span></div><p><b>v4</b> Reward-first. Menu cut to three.</p></div>
+      </div>
+    </div>
+    <aside class="notes">
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Filmstrip van vier versies</b>, horizontaal scrollbaar, met per versie één zin over wat er veranderde. Dit is de "proces"-sectie zonder tekstlap; de bezoeker ziet het ontwerp groeien.</div>
+      <div class="note"><b class="tag t-copy">Copy</b>Begin met een fout. Eerlijk ("mobile-first stond in de opdracht") en sterker dan het als eigen inzicht brengen.</div>
+      <div class="note"><b class="tag t-img">Beeld</b>Uitsnedes uit de eindpresentatie of Figma, telkens hetzelfde scherm (belonen) zodat het verschil opvalt.</div>
+      <div class="note q"><b class="tag t-q">Open</b>Klopt de indeling v1–v4 met de dia's? De "69%"-tegel in v1 wegsnijden of laten staan (geen bron)?</div>
+    </aside>
+  </section>
+
+  <!-- MOMENT 2 -->
+  <section class="row">
+    <div class="wf">
+      <div class="sec-head"><span class="label">03 · 2/5</span></div>
+      <h3 class="h-sec">Quick for what happens often, manual for what doesn't</h3>
+      <div class="anatomy">
+        <div class="img phone" style="max-width:220px">
+          <span class="pin" style="top:30%;left:-8px">1</span>
+          <span class="pin" style="top:52%;left:-8px">2</span>
+          <span class="pin" style="top:68%;left:-8px">3</span>
+          <span>Beloon-scherm<br>(finaal)</span>
+        </div>
+        <ul class="callouts">
+          <li><span class="n">1</span><span><b>Quick rewards.</b> Templates for the things that happen every week, like great teamwork. <span class="ph">[Two taps.]</span></span></li>
+          <li><span class="n">2</span><span><b>Manual points.</b> So small things that don't fit a template still get seen.</span></li>
+          <li><span class="n">3</span><span><b>A reason with every reward.</b> Added after an expert review: points mean more when people know why.</span></li>
+        </ul>
+      </div>
+    </div>
+    <aside class="notes">
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Geannoteerd scherm</b>: één telefoon met genummerde punten, uitleg ernaast. De lezer leert het product kennen zonder een demo te hoeven openen.</div>
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Optie voor later:</b> deze telefoon als klikbare mini-demo met nepdata (de flow bestond al op MSW-mocks). Sterk bewijs voor "designer die bouwt"; wel een eigen stap.</div>
+      <div class="note q"><b class="tag t-q">Open</b>"Two taps" en "points mean more when people know why" nalopen: tellen in het live product, en of de expert dit zo zei.</div>
+    </aside>
+  </section>
+
+  <!-- MOMENT 3 -->
+  <section class="row">
+    <div class="wf">
+      <div class="sec-head"><span class="label">03 · 3/5</span></div>
+      <h3 class="h-sec">Reward first, or person first? I let seven team leads decide</h3>
+      <p class="body">One prototype, two flows that differ in a single step. Seven people who lead or led a team tried both.</p>
+      <div class="chips" style="margin-bottom:20px"><span class="chip">Retail</span><span class="chip">Fast food</span><span class="chip">Logistics</span><span class="chip">IT</span><span class="chip">High-tech</span></div>
+      <div class="ab" style="margin-bottom:24px">
+        <div class="flow"><span class="label" style="width:64px">Flow A</span><span class="node hl">Pick reward</span><span class="arrow">→</span><span class="node">Pick people</span><span class="arrow">→</span><span class="node">Confirm</span></div>
+        <div class="flow"><span class="label" style="width:64px">Flow B</span><span class="node">Pick people</span><span class="arrow">→</span><span class="node hl">Pick reward</span><span class="arrow">→</span><span class="node">Confirm</span></div>
+      </div>
+      <div class="charts">
+        <div class="chart">
+          <h4>How easy was rewarding?</h4>
+          <p class="sub">Each line is one tester. 1 = hard, 5 = easy.</p>
+          <svg viewBox="0 0 360 250" role="img" aria-label="Slope chart: average ease 4.4 for flow A, 3.7 for flow B">
+            <g stroke="#c9cbc7" stroke-width="1">
+              <line x1="70" y1="30" x2="290" y2="30"/><line x1="70" y1="75" x2="290" y2="75"/><line x1="70" y1="120" x2="290" y2="120"/><line x1="70" y1="165" x2="290" y2="165"/><line x1="70" y1="210" x2="290" y2="210"/>
+            </g>
+            <g font-size="11" fill="#5b5e65" text-anchor="end">
+              <text x="62" y="34">5</text><text x="62" y="79">4</text><text x="62" y="124">3</text><text x="62" y="169">2</text><text x="62" y="214">1</text>
+            </g>
+            <!-- preferred A: dark; preferred B: grey dashed -->
+            <g stroke-width="1.5" fill="none">
+              <line x1="100" y1="30" x2="260" y2="32" stroke="#121318" opacity=".55"/>   <!-- T1 5→5 -->
+              <line x1="100" y1="30" x2="260" y2="165" stroke="#121318" opacity=".55"/>  <!-- T3 5→2 -->
+              <line x1="100" y1="30" x2="260" y2="120" stroke="#121318" opacity=".55"/>  <!-- T5 5→3 -->
+              <line x1="100" y1="75" x2="260" y2="120" stroke="#121318" opacity=".55"/>  <!-- T6 4→3 -->
+              <line x1="100" y1="32" x2="260" y2="75" stroke="#121318" opacity=".55"/>   <!-- T7 5→4 -->
+              <line x1="100" y1="142.5" x2="260" y2="28" stroke="#7d8086" stroke-dasharray="4 3"/> <!-- T2 2.5→5 -->
+              <line x1="100" y1="77" x2="260" y2="77" stroke="#7d8086" stroke-dasharray="4 3"/>    <!-- T4 4→4 -->
+            </g>
+            <line x1="100" y1="58.8" x2="260" y2="88" stroke="#c04a00" stroke-width="3"/>
+            <circle cx="100" cy="58.8" r="5" fill="#c04a00"/><circle cx="260" cy="88" r="5" fill="#c04a00"/>
+            <g font-size="13" font-weight="600" fill="#c04a00">
+              <text x="92" y="52" text-anchor="end">4.4</text><text x="268" y="92">3.7</text>
+            </g>
+            <g font-size="12" fill="#121318" text-anchor="middle" font-weight="560">
+              <text x="100" y="236">Flow A</text><text x="260" y="236">Flow B</text>
+            </g>
+            <g font-size="10" fill="#5b5e65" text-anchor="middle">
+              <text x="100" y="248">reward first</text><text x="260" y="248">person first</text>
+            </g>
+          </svg>
+          <div class="day-legend"><span>— preferred A (5)</span><span>- - preferred B (2)</span><span class="orange">— average</span></div>
+        </div>
+        <div class="chart vote">
+          <div class="vote-row">
+            <span class="label">Preferred reward first</span>
+            <div class="dots"><i class="dot acc"></i><i class="dot acc"></i><i class="dot acc"></i><i class="dot acc"></i><i class="dot acc"></i><i class="dot"></i><i class="dot"></i></div>
+            <span class="big">5 of 7</span>
+          </div>
+          <div class="vote-row">
+            <span class="label">Could use it without explanation</span>
+            <div class="dots"><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i><i class="dot on"></i></div>
+            <span class="big">7 of 7</span>
+          </div>
+          <p class="sub" style="margin:0">On the prototype, not the live product.</p>
+        </div>
+      </div>
+      <p class="body" style="margin-top:24px"><b style="color:var(--fg);font-weight:560">So reward-first became the main route.</b> Person-first didn't disappear: it's still there, from an employee's profile, for the two who think in people.</p>
+      <hr class="thin">
+      <span class="label">What I didn't expect</span>
+      <h4 style="font-size:1.375rem;font-weight:560;letter-spacing:-0.02em;margin:8px 0 4px">Most team leads reward after the shift, not in the moment</h4>
+      <div class="day">
+        <div class="day-bar">
+          <div class="shift">Shift</div>
+          <div class="spot"><i class="dot on" style="display:block;width:14px;height:14px"></i></div>
+          <div class="after"><i class="dot acc" style="width:14px;height:14px"></i><i class="dot acc" style="width:14px;height:14px"></i><i class="dot acc" style="width:14px;height:14px"></i><i class="dot acc" style="width:14px;height:14px"></i><i class="dot acc" style="width:14px;height:14px"></i></div>
+        </div>
+        <div class="day-legend"><span class="orange">● 5 after the shift</span><span>● 1 on the spot</span><span>1 wouldn't use an app like this</span></div>
+      </div>
+      <p class="body" style="margin-top:12px">"In the moment it's awkward with others around. Afterwards I can reflect on who earned what." <span class="ph">[paraphrased, check]</span> That's why the app isn't built for speed between tasks, but for a calm round of rewards at the end of the day.</p>
+    </div>
+    <aside class="notes">
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Dit is het hart van de case</b> en krijgt de meeste ruimte. Eerst de twee flows als blokjes (één stap verwisseld, oranje), dan de uitslag.</div>
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Slope chart</b>: per tester een lijn van flow A naar B, het gemiddelde dik in oranje. Eerlijker dan alleen 4,4 vs 3,7: je ziet ook de twee die B beter vonden. Dat maakt het geloofwaardig.</div>
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Zeven stippen</b> voor de stemming: kleine aantallen tonen als stippen, niet als percentages (71% klinkt als een enquête met honderden mensen).</div>
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Dagbalk</b> voor de bijvangst: de stippen staan letterlijk na de dienst. Leidt naar een ontwerpkeuze, geen losse trivia.</div>
+      <div class="note data"><b class="tag t-data">Data</b>Scores A/B per tester: 5/5, 2,5/5, 5/2, 4/4, 5/3, 4/3, 5/4 → 4,4 en 3,7. Voorkeur A: 5 (je eigen verslag zegt 4, maar noemt vijf namen). Achteraf: 5, ter plekke: 1, zou het niet gebruiken: 1. Bron: sprint 4 usability test.</div>
+      <div class="note"><b class="tag t-copy">Copy</b>Rollen in plaats van namen. "Fast food" i.p.v. de keten. Het citaat is een parafrase van één tester; als citaat alleen met toestemming, anders zonder aanhalingstekens.</div>
+      <div class="note q"><b class="tag t-q">Open</b>De laatste zin ("calm round at the end of the day"): klopt dat met hoe het live gebruikt wordt?</div>
+    </aside>
+  </section>
+
+  <!-- MOMENT 4 -->
+  <section class="row">
+    <div class="wf">
+      <div class="sec-head"><span class="label">03 · 4/5</span></div>
+      <h3 class="h-sec">Five menu items became three</h3>
+      <p class="body">The test showed what to cut, not just what to fix.</p>
+      <div class="menus">
+        <div class="menu">
+          <span class="label">Prototype</span>
+          <ul>
+            <li>Give rewards</li>
+            <li>Employees</li>
+            <li class="cut">Statistics + leaderboard<small>Testers mixed it up with history</small></li>
+            <li>Log</li>
+            <li class="cut">Tips for rewarding<small>4 of 7 said they wouldn't read it</small></li>
+          </ul>
+        </div>
+        <div class="mid" aria-hidden="true">→</div>
+        <div class="menu">
+          <span class="label">Live</span>
+          <ul>
+            <li>Reward</li>
+            <li>Employees<small style="color:var(--muted)">without add / remove <span class="ph">[reason]</span></small></li>
+            <li>Log</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Menu-diff</b>: het oude en het live menu naast elkaar, geschrapte items doorgestreept met de reden eronder. Schrappen is een designvaardigheid die recruiters zelden zien; zo is het in drie seconden te lezen.</div>
+      <div class="note"><b class="tag t-img">Beeld</b>Kan ook als twee echte menuschermen met een overlay; de CSS-versie hierboven is scherper op mobiel en zonder toestemming te tonen.</div>
+      <div class="note data"><b class="tag t-data">Data</b>Menu prototype: dia 9 (Beloningen geven, Medewerker overzicht, Statistieken, Logboek, Tips). Tips: 4 van 7. Statistiek: sprint 4. Uit menu: sprint 6.</div>
+      <div class="note q"><b class="tag t-q">Open</b>Waarom medewerkers toevoegen/verwijderen weg is (vraag 5). Het fraude-argument van een tester is een mooi verhaal, maar alleen als dat de echte reden was.</div>
+    </aside>
+  </section>
+
+  <!-- MOMENT 5 -->
+  <section class="row">
+    <div class="wf">
+      <div class="sec-head"><span class="label">03 · 5/5</span></div>
+      <h3 class="h-sec">From prototype to production, where the real bugs live</h3>
+      <div class="grid-2" style="align-items:start">
+        <div>
+          <p class="body">One app serves every client company. The company comes from the Microsoft login, and each team lead only sees their own team.</p>
+          <div class="tenant">
+            <span class="label">One portal</span>
+            <div class="tenants">
+              <div class="company">Company A<div class="team me">Your team</div><div class="team">Other team</div></div>
+              <div class="company">Company B<div class="team">Team</div><div class="team">Team</div></div>
+            </div>
+          </div>
+          <div class="toggle"><span>Mock data</span><span class="sw" aria-hidden="true"></span><span>Real API</span></div>
+          <p class="body" style="font-size:.875rem;margin-top:8px">I built the whole flow on mock data first, so it could be demoed and tested before the API existed.</p>
+        </div>
+        <div>
+          <p class="body">Three problems only showed up once it was live:</p>
+          <div class="logs">
+            <div class="log"><span class="err">431</span> Request header too large<br><span class="ok">→ login cookie was too big for the host</span></div>
+            <div class="log"><span class="err">302</span> → localhost<br><span class="ok">→ after login, users landed on my laptop</span></div>
+            <div class="log"><span class="err">25</span> of <span class="ph">[n]</span> employees<br><span class="ok">→ the API quietly paged its results</span></div>
+          </div>
+          <p class="body" style="font-size:.875rem;margin-top:12px">After a code review I also moved every API call from the browser to the server.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Geneste vakjes</b> voor multi-tenancy: één portal, bedrijven, teams, en "your team" in oranje. Legt een lastig concept uit zonder het woord te gebruiken.</div>
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Drie donkere log-kaartjes</b> voor de productiebugs. Herkenbaar voor een techlead, en ze kondigen visueel de nacht aan die bij de afsluiter begint.</div>
+      <div class="note"><b class="tag t-copy">Copy</b>Max. vier punten, zoals in het werkdocument. Geen Key Vault, OpenTelemetry of Node-versies; geen interne URL's.</div>
+      <div class="note q"><b class="tag t-q">Open</b>Statuscodes 302 en het totaal bij "25 of [n]" nalopen in je Cursor-project. Wie deed welk deel (vraag 3): "I" vs "we" hangt ervan af.</div>
+    </aside>
+  </section>
+
+  <!-- 04 AI -->
+  <section class="row">
+    <div class="wf">
+      <div class="sec-head"><span class="label">04</span><span class="label">How I used AI</span></div>
+      <h3 class="h-sec">Big prompts gave messy code. A spec fixed that</h3>
+      <div class="vs">
+        <div>
+          <h4>What didn't work</h4>
+          <p class="body" style="font-size:.9375rem">Asking for a whole screen at once. Every answer looked different.</p>
+          <div class="blocks messy" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div>
+          <h4>What did</h4>
+          <p class="body" style="font-size:.9375rem">A project spec, then one component per prompt. That code still runs in production.</p>
+          <div class="code">PROJECT_SPEC.md
+<span class="ph">[3–5 real lines: tokens, folder rules, naming]</span></div>
+        </div>
+      </div>
+      <p class="body" style="margin-top:20px">Before that, AI prototypes in Lovable, Bolt and Stitch helped start the conversation with the client. They didn't design the product; the research did. <a href="#">How I use AI →</a></p>
+    </div>
+    <aside class="notes">
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>Twee kolommen, fout tegenover goed</b>, met een klein abstract beeld: rommelige blokjes tegenover een echt stukje spec. Bewijst "hogere kwaliteit, niet sneller" met een artefact in plaats van een claim.</div>
+      <div class="note"><b class="tag t-copy">Copy</b>Kort houden en doorlinken naar /ai, zodat de twee pagina's elkaar niet herhalen.</div>
+      <div class="note q"><b class="tag t-q">Open</b>Mag een fragment van PROJECT_SPEC.md getoond worden (geen bedrijfsdetails erin)? Kan het zelf, zie jij het niet in de map hier.</div>
+    </aside>
+  </section>
+
+  <!-- 05 RESULT (night) -->
+  <section class="row">
+    <div class="wf night">
+      <div class="lamp" aria-hidden="true"></div>
+      <div class="sec-head"><span class="label">05</span><span class="label">Result</span></div>
+      <h3 class="h-sec">Live, and still growing</h3>
+      <div class="results">
+        <div><span class="label">Client companies</span><span class="stat ph">[n]</span></div>
+        <div><span class="label">Team leads</span><span class="stat ph">[n]</span></div>
+        <div><span class="label">Live since</span><span class="stat ph">[month]</span></div>
+      </div>
+      <p class="body">Since then: departments <span class="ph">[and admin settings]</span>. <span class="ph">[Short feedback from a client, if allowed]</span></p>
+      <span class="label">What I'd do differently</span>
+      <p class="lede" style="margin-top:8px">All my user research was on Figma prototypes. Next time I'd test the live product with team leads too.</p>
+      <div class="next">
+        <div><span class="label">Next case</span><div style="font-size:1.5rem;font-weight:540;letter-spacing:-.02em;margin-top:6px">02 Collaborative Strength →</div></div>
+        <div class="img" style="aspect-ratio:4/3;min-height:0"><span>case-beeld 02</span></div>
+      </div>
+    </div>
+    <aside class="notes">
+      <div class="note vis"><b class="tag t-vis">Visueel</b><b>De pagina eindigt in de nacht, met de lamp aan</b>, net als de homepage. Licht = live: het resultaat is het moment dat het licht aangaat. Optioneel: de hele pagina loopt van dag naar avond met <code>Sky.tsx</code>.</div>
+      <div class="note"><b class="tag t-copy">Copy</b>Reflectie in één zin, geen opsomming van leerdoelen. Volgende case onderaan zodat niemand doodloopt.</div>
+      <div class="note q"><b class="tag t-q">Open</b>Zonder cijfers (vraag 2) vervalt de rij met drie getallen; dan wordt de kop "Live with client companies since [month]".</div>
+    </aside>
+  </section>
+
+</div>
+</body>
+</html>

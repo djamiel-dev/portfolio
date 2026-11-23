@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import cs from "./cs.module.css";
+import c from "./case.module.css";
 
 // A short screen recording of the live site: muted, looping, and only playing while it is in view.
 // The button pauses it for good, until pressed again. With reduced motion it waits on its still
@@ -80,11 +80,11 @@ export function Clip({
   );
 
   return (
-    <div className={`${cs.clip} ${className ?? ""}`}>
+    <div className={`${c.clip} ${className ?? ""}`}>
       {href ? (
         <a
           href={href}
-          className={cs.clipLink}
+          className={c.clipLink}
           target="_blank"
           rel="noopener noreferrer"
           data-case
@@ -98,7 +98,7 @@ export function Clip({
       ) : (
         video
       )}
-      <button type="button" className={cs.clipButton} onClick={toggle} aria-pressed={!paused}>
+      <button type="button" className={c.clipButton} onClick={toggle} aria-pressed={!paused}>
         <span className="visually-hidden">Play recording</span>
         <svg viewBox="0 0 24 24" aria-hidden="true">
           {paused ? <path d="M8 5.5v13l10.5-6.5z" /> : <path d="M8.5 5.5v13M15.5 5.5v13" />}

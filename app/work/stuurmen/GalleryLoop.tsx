@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import cs from "../collaborative-strength/cs.module.css";
+import c from "@/components/case/case.module.css";
 import st from "./st.module.css";
 
 // The hero: one long screen of the gallery in a wide window, scrolling slowly down and back up, in a loop.
@@ -34,13 +34,13 @@ export function GalleryLoop({ src, alt, width, height }: { src: string; alt: str
   const playing = visible && wanted === "play";
 
   return (
-    <div className={`${cs.clip} ${st.loop}`}>
+    <div className={`${c.clip} ${st.loop}`}>
       <div ref={ref} className={st.loopView} data-playing={playing || undefined}>
         <Image className={st.loopPage} src={src} alt={alt} width={width} height={height} sizes="(max-width: 1440px) 100vw, 1440px" priority />
       </div>
       <button
         type="button"
-        className={cs.clipButton}
+        className={c.clipButton}
         onClick={() => setChosen(wanted === "play" ? "pause" : "play")}
         aria-pressed={wanted === "play"}
       >

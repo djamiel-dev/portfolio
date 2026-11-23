@@ -1,14 +1,6 @@
 // Skills and timeline content for the homepage.
 // Text in [brackets] is a placeholder and must be replaced before going live.
 
-// Four quiet greys, each a touch different, so the panes read as a set and the work does the talking.
-export const caseGrounds: Record<string, string> = {
-  "01": "#dde2e3",
-  "02": "#e1e2dc",
-  "03": "#dfe1e0",
-  "04": "#e2e2df",
-};
-
 // Page ground, quiet grey marks, the lighter shade of --accent where a swell crests
 export const heroGlyphs: [string, string, string] = ["#eeefeb", "#a3a6a3", "#da9576"];
 

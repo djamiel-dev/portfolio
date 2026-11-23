@@ -23,13 +23,9 @@
   --line: #c9cbc7;
   --focus: #121318;
   --glow: var(--accent); /* lit icons by day, lamp light at night */
+  --halo: 0 0 0 5px color-mix(in srgb, var(--glow) 18%, transparent); /* again here, see globals.css */
 
-  --accent: #c04a00; /* the one orange: 4.31:1, so icons and text of 24px and up. Hero crest is its lighter shade */
-  --lamp: #ff9e5e;
-  --lamp-core: #fff3e9;
-  --gutter: clamp(20px, 3.5vw, 56px);
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  /* The fixed tokens (--accent, --lamp, --ease-out, --gutter, …) are in :root in app/globals.css */
 
   position: relative;
   min-height: 100vh;
@@ -43,8 +39,10 @@
 }
 
 /* Night: a dark street, one warm filament */
+/* [data-zone="night"] is the night zone of a case page, which has its own class */
 .root[data-sky="night"],
 .root:not([data-sky]) .night,
+.root:not([data-sky]) [data-zone="night"],
 .root:not([data-sky]) .footer {
   --bg: #151412;
   --fg: #eeefeb;
@@ -54,10 +52,12 @@
   --line: #2e2d2a;
   --focus: var(--lamp);
   --glow: var(--lamp);
+  --halo: 0 0 0 5px color-mix(in srgb, var(--glow) 18%, transparent);
 }
 
 /* Without JS each zone paints its own sky; with JS the root does, and transitions */
 .root:not([data-sky]) .night,
+.root:not([data-sky]) [data-zone="night"],
 .root:not([data-sky]) .footer {
   background: var(--bg);
   color: var(--fg);
@@ -118,7 +118,7 @@
 .caseTitle a {
   text-decoration: none;
   background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0% 1px;
-  transition: background-size 320ms var(--ease-out);
+  transition: background-size var(--dur-line) var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -238,7 +238,7 @@
   list-style: none;
   cursor: pointer;
   user-select: none;
-  transition: transform 160ms var(--ease-out), border-color 200ms ease;
+  transition: transform var(--dur-press) var(--ease-out), border-color 200ms ease;
 }
 
 .menuButton::-webkit-details-marker {
@@ -246,7 +246,7 @@
 }
 
 .menuButton:active {
-  transform: scale(0.97);
+  transform: scale(var(--press));
 }
 
 /* Open, the menu turns the page over: by day it is night, at night it is day. Without JS it is dark. */
@@ -409,7 +409,7 @@
   flex: none;
   width: clamp(72px, 8vw, 120px);
   aspect-ratio: 5 / 6;
-  background: #d6dad9;
+  background: var(--ground);
   overflow: hidden;
 }
 
@@ -528,6 +528,7 @@
   overflow: clip;
   aspect-ratio: 4 / 3;
   container-type: inline-size;
+  background: var(--ground);
 }
 
 /* Parallax: the picture scrolls inside its frame while the card crosses the screen. It enters showing
@@ -599,7 +600,7 @@
 }
 
 .media img {
-  transition: scale 700ms var(--ease-out);
+  transition: scale var(--dur-media) var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -612,7 +613,7 @@
   }
 
   .case:hover .media img {
-    scale: 1.05;
+    scale: var(--zoom);
   }
 }
 
@@ -640,7 +641,7 @@
   font-size: 0.875rem;
   font-weight: 520;
   white-space: nowrap;
-  color: var(--fg);
+  color: #121318; /* the day --fg: the pill stays white, also over the next case at night */
   opacity: 0;
   scale: 0.6;
   transform-origin: top left;
@@ -1385,7 +1386,7 @@
     border-color 600ms ease,
     color 600ms ease,
     box-shadow 600ms ease,
-    transform 160ms var(--ease-out);
+    transform var(--dur-press) var(--ease-out);
 }
 
 /* Lit, the button is a warm dark pill whose rim catches the lamp's light as it travels round,
@@ -1484,7 +1485,7 @@
     --rim-offset 800ms var(--ease-out),
     --rim-spread 800ms var(--ease-out),
     --rim-shine 800ms var(--ease-out),
-    transform 160ms var(--ease-out);
+    transform var(--dur-press) var(--ease-out);
 }
 
 .story:not([data-live]) .mail::before,
@@ -1606,7 +1607,7 @@
 }
 
 .mail:active {
-  transform: scale(0.97);
+  transform: scale(var(--press));
 }
 
 /* ---------- Footer ---------- */

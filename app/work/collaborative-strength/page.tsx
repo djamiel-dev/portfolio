@@ -4,16 +4,19 @@ import Image from "next/image";
 import { links } from "@/content/site";
 import home from "@/components/home/home.module.css";
 import { CaseCursor } from "@/components/home/CaseCursor";
-import { Menu } from "@/components/home/Menu";
 import { Scramble } from "@/components/home/Skills";
 import { Sky } from "@/components/home/Sky";
-import about from "../../about/about.module.css";
-import ai from "../../ai/ai.module.css";
-import styles from "../incentive-portal/case.module.css";
-import { StatTile } from "../incentive-portal/StatTile";
-import { Clip } from "./Clip";
-import { Compare } from "./Compare";
-import { ScrollStage } from "./ScrollStage";
+import about from "@/app/about/about.module.css";
+import styles from "@/components/case/case.module.css";
+import { Browser } from "@/components/case/Browser";
+import { Clip } from "@/components/case/Clip";
+import { Compare } from "@/components/case/Compare";
+import { Lamp } from "@/components/case/Lamp";
+import { NextCase } from "@/components/case/NextCase";
+import { ScrollStage } from "@/components/case/ScrollStage";
+import { StatTile } from "@/components/case/StatTile";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteNav } from "@/components/site/SiteNav";
 import cs from "./cs.module.css";
 
 // Case 02. Same build-up as case 01: the short version and the site on top, then one section per thing I did.
@@ -102,49 +105,18 @@ export default function CollaborativeStrength() {
   return (
     <div className={home.root} data-e-root>
       <Sky />
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
-      <header className={home.top}>
-        <a href="/" className={home.home} data-shown="">
-          Djamiel Saou
-        </a>
-        <nav aria-label="Main" className={home.nav}>
-          <a href="/#work">
-            <span>Projects</span>
-          </a>
-          <a href={links.ai}>
-            <span>How I use AI</span>
-          </a>
-          <a href={links.about}>
-            <span>About</span>
-          </a>
-          <a href={links.resume}>
-            <span>Resume</span>
-          </a>
-          <a href={links.email}>
-            <span>Contact me</span>
-          </a>
-        </nav>
-        <Menu className={home.menu} summaryClassName={home.menuButton} panelClassName={home.menuPanel}>
-          <a href="/#work">Projects</a>
-          <a href={links.ai}>How I use AI</a>
-          <a href={links.about}>About</a>
-          <a href={links.resume}>Resume</a>
-          <a href={links.email}>Contact me</a>
-        </Menu>
-      </header>
+      <SiteNav page="projects" />
 
       <main id="main">
         <div className={about.page} data-zone="day">
           <section className={`${about.intro} ${styles.intro}`} aria-labelledby="case-title">
             <div>
-              <p className={about.eyebrow}>Case 02 · Collaborative Strength</p>
+              <p className={about.label}>Case 02 · Collaborative Strength</p>
               <h1 id="case-title" className={about.title}>
                 A coaching website that helps the right athletes say yes.
               </h1>
             </div>
-            <ol className={ai.short} aria-label="The short version">
+            <ol className={about.short} aria-label="The short version">
               {short.map((s) => (
                 <li key={s.title}>
                   <h2>{s.title}</h2>
@@ -178,14 +150,14 @@ export default function CollaborativeStrength() {
           </dl>
 
           <section className={about.section} aria-labelledby="case-problem">
-            <p className={about.eyebrow}>The problem</p>
+            <p className={about.label}>The problem</p>
             <h2 id="case-problem" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="Not knowing what to expect, from either side" />
             </h2>
             {/* The two sides of the heading as two cards: the athlete's uncertainty, then what my coaching asks */}
             <ul className={cs.sides}>
               <li>
-                <p className={styles.label}>The athlete</p>
+                <p className={about.label}>The athlete</p>
                 <h3>Doesn’t know what to expect</h3>
                 <p>
                   Most people looking for a coach don’t really know what they’re looking for, or what to expect. And
@@ -193,7 +165,7 @@ export default function CollaborativeStrength() {
                 </p>
               </li>
               <li>
-                <p className={styles.label}>My coaching</p>
+                <p className={about.label}>My coaching</p>
                 <h3>Made together, so it asks for input</h3>
                 {/* The difference in two rows; the lit dot marks mine, as light means "on" on the homepage */}
                 <dl className={cs.versus}>
@@ -215,7 +187,7 @@ export default function CollaborativeStrength() {
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-process">
-            <p className={about.eyebrow}>The process</p>
+            <p className={about.label}>The process</p>
             <h2 id="case-process" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="Strategy first, the website second" />
             </h2>
@@ -262,7 +234,7 @@ export default function CollaborativeStrength() {
             <ol className={cs.funnel} aria-label="The funnel">
               {funnel.map((f) => (
                 <li key={f.stage} data-lit={f.lit || undefined}>
-                  <p className={styles.label}>{f.stage}</p>
+                  <p className={about.label}>{f.stage}</p>
                   <h3>{f.where}</h3>
                   <p>{f.text}</p>
                 </li>
@@ -275,27 +247,22 @@ export default function CollaborativeStrength() {
             <ScrollStage
               caption="The services page as a timeline."
               visual={
-                <div className={cs.browser}>
-                  <div className={cs.browserBar} aria-hidden="true">
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                  <div className={cs.scrollyView} data-scroll-view>
-                    <div className={cs.scrollyPage} data-scroll-page>
-                      <Image
-                        src="/images/cases/collaborative-strength/services-page.webp"
-                        alt="Services page design: a vertical timeline with Gratis intake, Wekelijks schema, Reactie binnen 24 uur, Videocalls and Wedstrijdcoaching, each with a photo, such as a WhatsApp chat with technique feedback."
-                        width={1000}
-                        height={1843}
-                        sizes="(max-width: 768px) 90vw, 720px"
-                      />
-                    </div>
+                <Browser>
+                <div className={styles.scrollyView} data-scroll-view>
+                  <div className={styles.scrollyPage} data-scroll-page>
+                    <Image
+                      src="/images/cases/collaborative-strength/services-page.webp"
+                      alt="Services page design: a vertical timeline with Gratis intake, Wekelijks schema, Reactie binnen 24 uur, Videocalls and Wedstrijdcoaching, each with a photo, such as a WhatsApp chat with technique feedback."
+                      width={1000}
+                      height={1843}
+                      sizes="(max-width: 768px) 90vw, 720px"
+                    />
                   </div>
                 </div>
+                </Browser>
               }
             >
-              <p className={about.eyebrow}>Decision 1</p>
+              <p className={about.label}>Decision 1</p>
               <h2 id="case-explain" className={`${about.heading} ${styles.heading}`}>
                 <Scramble text="Explain, don’t sell, so people can choose for themselves" />
               </h2>
@@ -334,7 +301,7 @@ export default function CollaborativeStrength() {
                 />
               }
             >
-              <p className={about.eyebrow}>Decision 2</p>
+              <p className={about.label}>Decision 2</p>
               <h2 id="case-feedback" className={`${about.heading} ${styles.heading}`}>
                 <Scramble text="Five rounds of feedback, one clearer first impression" />
               </h2>
@@ -355,7 +322,7 @@ export default function CollaborativeStrength() {
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-build">
-            <p className={about.eyebrow}>Building it</p>
+            <p className={about.label}>Building it</p>
             <h2 id="case-build" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="By hand first, then back to AI" />
             </h2>
@@ -376,7 +343,7 @@ export default function CollaborativeStrength() {
                     {s.ai && (
                       <>
                         {" "}
-                        <a href={links.ai} className={styles.textLink}>
+                        <a href={links.ai} className={about.textLink}>
                           <span>How I use AI</span>
                         </a>
                       </>
@@ -439,7 +406,7 @@ export default function CollaborativeStrength() {
           </section>
 
           <section className={`${about.section} ${styles.roomy}`} aria-labelledby="case-test">
-            <p className={about.eyebrow}>The test</p>
+            <p className={about.label}>The test</p>
             <h2 id="case-test" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="Six powerlifters, one clear next step" />
             </h2>
@@ -487,15 +454,15 @@ export default function CollaborativeStrength() {
         {/* Result: the page turns to night and the lamp is on, as at the end of the homepage */}
         <div className={styles.night} data-zone="night">
           <section className={styles.result} aria-labelledby="case-result">
-            <span className={styles.lamp} aria-hidden="true" />
-            <p className={about.eyebrow}>Result</p>
+            <Lamp />
+            <p className={about.label}>Result</p>
             <h2 id="case-result" className={`${about.heading} ${styles.heading}`}>
               <Scramble text="Enough clients, and the right ones" />
             </h2>
             {/* The two halves of the heading as two cards, in the light of the lamp */}
             <ul className={cs.wins}>
               <li>
-                <p className={styles.label}>Enough clients</p>
+                <p className={about.label}>Enough clients</p>
                 <h3>New clients came quickly</h3>
                 <p>
                   I shared the site with people who were curious about coaching with me. Clients came so quickly that I
@@ -504,7 +471,7 @@ export default function CollaborativeStrength() {
                 </p>
               </li>
               <li>
-                <p className={styles.label}>The right ones</p>
+                <p className={about.label}>The right ones</p>
                 <h3>The bigger win was the fit</h3>
                 <p>
                   Some people read how I work and saw it wasn’t what they were looking for. The others took the step to
@@ -514,41 +481,17 @@ export default function CollaborativeStrength() {
             </ul>
           </section>
 
-          <a href="/work/stuurmen" className={styles.next}>
-            <span className={styles.nextText}>
-              <span className={about.eyebrow}>Next case</span>
-              <span className={styles.nextTitle}>
-                <span>03 Stuurmen</span>
-              </span>
-            </span>
-            {/* The main page of case 03, flat, without a device (as the next case on case 01); the link text already
-                says where it goes */}
-            <Image
-              className={`${styles.nextImage} ${styles.nextFlat}`}
-              src="/images/cases/stuurmen/home-preview.webp"
-              alt=""
-              width={1440}
-              height={900}
-              sizes="(max-width: 768px) 60vw, 320px"
-            />
-          </a>
+          {/* The main page of case 03, flat, without a device (as the next case on case 01); the link text already
+              says where it goes */}
+          <NextCase
+            href="/work/stuurmen"
+            title="03 Stuurmen"
+            image={{ src: "/images/cases/stuurmen/home-preview.webp", width: 1440, height: 900 }} flat
+          />
         </div>
       </main>
 
-      <footer className={home.footer}>
-        <div className={home.footerName}>
-          <span className={home.footerMark}>Djamiel Saou</span>
-          <small>© 2026 Djamiel Saou · Tilburg, NL</small>
-        </div>
-        <nav aria-label="Contact" className={home.footerNav}>
-          <a href={links.email}>
-            <span>djamielsaou@gmail.com</span>
-          </a>
-          <a href={links.phone}>
-            <span>06 83890250</span>
-          </a>
-        </nav>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

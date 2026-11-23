@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { caseGrounds, heroGlyphs, toolIcons } from "@/components/home/content";
+import { heroGlyphs, toolIcons } from "@/components/home/content";
 import styles from "@/components/home/home.module.css";
 import { Swatch, TokenText, TypeRow } from "./Live";
+import about from "@/app/about/about.module.css";
+import { links } from "@/content/site";
 import ds from "./design-system.module.css";
 
 export const metadata: Metadata = { title: "Design system – Djamiel" };
@@ -21,11 +23,25 @@ const fixedTokens = [
   ["--accent", "“product designer” and the daytime accent"],
   ["--lamp", "Filament, bulbs, mail button"],
   ["--lamp-core", "Core of the light"],
+  ["--ground", "The one grey behind every image and panel"],
+  ["--ground-light", "A lit card or light panel"],
 ];
 
 const motion = [
   ["--ease-out", "Default easing, also for hover lines"],
   ["--ease-in-out", "Second easing curve"],
+  ["--dur-press", "Pressing a button"],
+  ["--press", "Scale while pressed"],
+  ["--dur-line", "A line drawing in under a link"],
+  ["--dur-media", "An image leaning in on hover"],
+  ["--zoom", "How far it leans in"],
+];
+
+const shape = [
+  ["--r-screen", "A screen of a product: a screenshot, an export, a recording"],
+  ["--r-browser", "The browser frame"],
+  ["--shadow-device", "Physical things only: phone, browser, sign and cards"],
+  ["--halo", "The ring around a lit dot"],
 ];
 
 export default function DesignSystem() {
@@ -72,19 +88,12 @@ export default function DesignSystem() {
           </div>
 
           <div className={ds.panel}>
-            <h3 className={ds.panelTitle}>Hero glyphs and case panes</h3>
+            <h3 className={ds.panelTitle}>Hero glyphs</h3>
             <ul className={ds.plainChips}>
               {heroGlyphs.map((color, i) => (
                 <li key={color}>
                   <div className={ds.chip} style={{ background: color }} />
                   <p className={ds.token}>{["Ground", "Marks", "Crest"][i]}</p>
-                  <p className={ds.value}>{color}</p>
-                </li>
-              ))}
-              {Object.entries(caseGrounds).map(([num, color]) => (
-                <li key={num}>
-                  <div className={ds.chip} style={{ background: color }} />
-                  <p className={ds.token}>Case {num}</p>
                   <p className={ds.value}>{color}</p>
                 </li>
               ))}
@@ -117,8 +126,17 @@ export default function DesignSystem() {
             <TypeRow name="Body">
               <p>Running text is set in Mona Sans at a calm size and weight.</p>
             </TypeRow>
+            <TypeRow name="Title (--t-title, 540)">
+              <p className={ds.title}>Test early, with real people</p>
+            </TypeRow>
+            <TypeRow name="Subtitle (--t-subtitle, 540)">
+              <p className={ds.subtitle}>One name per task</p>
+            </TypeRow>
+            <TypeRow name="Small (--t-small)">
+              <p className={ds.small}>The test prototype in Figma: both routes wired up.</p>
+            </TypeRow>
             <TypeRow name="Label">
-              <p className={styles.place}>Tilburg, NL</p>
+              <p className={about.label}>Case 01 · Incentive portal</p>
             </TypeRow>
           </ul>
           <div className={`${ds.panel} ${styles.night}`}>
@@ -145,8 +163,42 @@ export default function DesignSystem() {
             <span className={styles.tool}>5-second test</span>
           </div>
           <div className={`${ds.panel} ${styles.night}`}>
-            <span className={`${styles.mail} ${ds.mailLit}`}>Contact me</span>
+            <a href={links.email} className={`${styles.mail} ${ds.mailSample}`} data-lit="">
+              <span>Contact me</span>
+              <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2.5 9.5l7-7M4 2.5h5.5V8" stroke="currentColor" strokeWidth="1.4" />
+              </svg>
+            </a>
           </div>
+        </section>
+
+        <section className={ds.section} aria-labelledby="ds-shape">
+          <h2 id="ds-shape" className={ds.heading}>
+            Shape and depth
+          </h2>
+          <p className={styles.workIntro}>
+            Square for everything that is the site itself: grey grounds, cards, photos, data marks. A small rounding only
+            for a screen of a product, devices keep their own corners, a pill only for controls, a circle for dots.
+            Shadows only for physical things.
+          </p>
+          <div className={ds.shapes} aria-hidden="true">
+            <div className={ds.groundSample}>
+              <span className={ds.screenSample} />
+            </div>
+            <div className={ds.browserSample}>
+              <span />
+            </div>
+            <span className={ds.haloSample} />
+          </div>
+          <ul className={ds.motion}>
+            {shape.map(([token, use]) => (
+              <li key={token}>
+                <p className={ds.token}>{token}</p>
+                <TokenText token={token} />
+                <p className={ds.use}>{use}</p>
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section className={ds.section} aria-labelledby="ds-motion">

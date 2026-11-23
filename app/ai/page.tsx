@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { links } from "@/content/site";
 import home from "@/components/home/home.module.css";
-import { Menu } from "@/components/home/Menu";
 import { Scramble } from "@/components/home/Skills";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteNav } from "@/components/site/SiteNav";
 import about from "../about/about.module.css";
 import { SkillTabs } from "./SkillTabs";
 import { TasteSieve } from "./TasteSieve";
@@ -92,51 +93,18 @@ const moments = [
 export default function HowIUseAI() {
   return (
     <div className={home.root} data-sky="night">
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
-      <header className={home.top}>
-        <a href="/" className={home.home} data-shown="">
-          Djamiel Saou
-        </a>
-        <nav aria-label="Main" className={home.nav}>
-          <a href="/#work">
-            <span>Projects</span>
-          </a>
-          <a href={links.ai} aria-current="page">
-            <span>How I use AI</span>
-          </a>
-          <a href={links.about}>
-            <span>About</span>
-          </a>
-          <a href={links.resume}>
-            <span>Resume</span>
-          </a>
-          <a href={links.email}>
-            <span>Contact me</span>
-          </a>
-        </nav>
-        <Menu className={home.menu} summaryClassName={home.menuButton} panelClassName={home.menuPanel}>
-          <a href="/#work">Projects</a>
-          <a href={links.ai} aria-current="page">
-            How I use AI
-          </a>
-          <a href={links.about}>About</a>
-          <a href={links.resume}>Resume</a>
-          <a href={links.email}>Contact me</a>
-        </Menu>
-      </header>
+      <SiteNav page="ai" />
 
       <main id="main">
         <div className={about.page}>
           <section className={`${about.intro} ${styles.intro}`} aria-labelledby="ai-title">
             <div>
-              <p className={about.eyebrow}>How I use AI</p>
+              <p className={about.label}>How I use AI</p>
               <h1 id="ai-title" className={about.title}>
                 I use AI to build better solutions, not just faster ones.
               </h1>
             </div>
-            <ol className={styles.short} aria-label="The short version">
+            <ol className={about.short} aria-label="The short version">
               {short.map((s) => (
                 <li key={s.title}>
                   <h2>{s.title}</h2>
@@ -211,20 +179,7 @@ export default function HowIUseAI() {
         </div>
       </main>
 
-      <footer className={home.footer}>
-        <div className={home.footerName}>
-          <span className={home.footerMark}>Djamiel Saou</span>
-          <small>© 2026 Djamiel Saou · Tilburg, NL</small>
-        </div>
-        <nav aria-label="Contact" className={home.footerNav}>
-          <a href={links.email}>
-            <span>djamielsaou@gmail.com</span>
-          </a>
-          <a href={links.phone}>
-            <span>06 83890250</span>
-          </a>
-        </nav>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

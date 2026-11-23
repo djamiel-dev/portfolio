@@ -49,9 +49,9 @@
   place-items: center;
   aspect-ratio: 4 / 3;
   padding: 24px;
-  background: #dfe1e0;
+  background: var(--ground);
   color: var(--muted);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   text-align: center;
 }
 
@@ -80,8 +80,9 @@
   object-position: 100% 50%;
 }
 
-/* Label above the statement, as the greeting sits above the hero line */
-.eyebrow {
+/* The one label: above a statement or heading (as the greeting sits above the hero line), on cards and in
+   captions. Mona Sans at its widest, small and upper case */
+.label {
   color: var(--muted);
   font-size: 0.75rem;
   font-weight: 600;
@@ -89,6 +90,7 @@
   line-height: 1.35;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Same size and cut as the hero statement */
@@ -129,7 +131,47 @@
 .note {
   margin-top: 24px;
   color: var(--muted);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
+}
+
+/* The 30-second version beside the title, as three ruled lines (How I use AI and the cases) */
+.short {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--line);
+}
+
+.short li {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.short h2 {
+  font-size: var(--t-subtitle);
+  font-weight: 540;
+  letter-spacing: -0.015em;
+}
+
+.short p {
+  margin-top: 4px;
+  color: var(--fg-2);
+}
+
+/* An inline link with the site's drawn-in line, here always visible so it reads as a link */
+.textLink {
+  color: var(--fg);
+  font-weight: 520;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.textLink span {
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 100% 1px;
+}
+
+.textLink::after {
+  content: " →";
 }
 
 /* Heading on the left, the principles as rows on the right, like a short spec */
@@ -157,7 +199,7 @@
 }
 
 .principles h3 {
-  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-size: var(--t-title);
   font-weight: 540;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -198,7 +240,7 @@
   min-width: 0;
   padding: clamp(20px, 2vw, 28px);
   overflow: hidden;
-  background: #dfe1e0;
+  background: var(--ground);
   cursor: pointer;
   transition: flex-grow 600ms var(--ease-out);
 }
@@ -226,7 +268,7 @@
   place-items: center;
   padding: 24px;
   color: var(--muted);
-  font-size: 0.875rem;
+  font-size: var(--t-small);
   text-align: center;
 }
 
@@ -318,7 +360,7 @@
 }
 
 .cardTitle {
-  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-size: var(--t-title);
   font-weight: 540;
   letter-spacing: -0.02em;
   white-space: nowrap;
