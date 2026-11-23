@@ -40,9 +40,9 @@ export const cases: Case[] = [
   {
     num: "03",
     label: "Stuurmen",
-    href: "#case-3",
-    outcome: "An inspiration tool clients use to prepare for a branding session",
-    meta: "Stuurmen · [Project] [Year]",
+    href: "/work/stuurmen",
+    outcome: "An inspiration tool that lets clients prepare for their branding workshop",
+    meta: "Stuurmen · Internship",
     media: { aspect: "4 / 3", caption: "[Work overview with wishlist]", image: "/images/cases/stuurmen-laptop.png" },
   },
   {

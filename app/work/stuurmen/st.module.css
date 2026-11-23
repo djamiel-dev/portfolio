@@ -1,0 +1,761 @@
+/* Case 03 – Stuurmen. Builds on case.module.css (case 01), cs.module.css (case 02) and about.module.css.
+   The screens are 1920-wide desktop designs, many of them long, so they are never shown whole. */
+
+/* ---------- Hero: the whole gallery page in a wide window, scrolling down and back up ---------- */
+
+/* Full width and the same height as the hero of case 02 */
+.loop {
+  margin-top: clamp(48px, 6vw, 96px);
+}
+
+.loopView {
+  overflow: hidden;
+  aspect-ratio: 32 / 10;
+  border-radius: 4px;
+  background: #f9f9f9; /* the page's own ground, while the image loads */
+}
+
+.loopPage {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: gallery 56s infinite paused;
+}
+
+.loopView[data-playing] .loopPage {
+  animation-play-state: running;
+}
+
+/*
+ * Down slowly, a rest on the last row, back up a little faster, a rest on the title.
+ * The end point is in % of the page's own height, so it holds at every width:
+ * window 32:10 (0.3125 × width) on a page of 2400 × 3420 (1.425 × width) → 1 − 0.3125 / 1.425 = 78.07%.
+ */
+@keyframes gallery {
+  0%,
+  5% {
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  }
+  57%,
+  64% {
+    transform: translate3d(0, -78.07%, 0);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  95%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ---------- Problem: the workshop, what it was for against where the time went ---------- */
+
+.workshop {
+  margin-top: clamp(40px, 5vw, 64px);
+  padding: clamp(24px, 3vw, 40px);
+  background: #dce2e3;
+}
+
+.split {
+  margin: 20px 0 0;
+}
+
+/* Two ruled rows, like the facts: the label on the left, the activities large on the right */
+.split > div {
+  display: grid;
+  grid-template-columns: 9em minmax(0, 1fr);
+  gap: 8px 24px;
+  align-items: baseline;
+  padding: clamp(16px, 2vw, 24px) 0;
+  border-top: 1px solid var(--line);
+}
+
+.split > div:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.split dt {
+  color: var(--muted);
+  font-weight: 560;
+}
+
+.split dd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px clamp(24px, 4vw, 56px);
+  margin: 0;
+}
+
+/* Each activity with a dot before it: unlit for where the time went, lit for what it was meant for */
+.split span {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--fg-2);
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.split span::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #b4bbbd;
+  translate: 0 0.05em;
+}
+
+.split [data-on] dt,
+.split [data-on] span {
+  color: var(--fg);
+}
+
+.split [data-on] span::before {
+  background: var(--glow);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--glow) 18%, transparent);
+}
+
+.workshopNote {
+  max-width: 36em;
+  margin-top: 20px;
+  color: var(--fg-2);
+}
+
+@media (max-width: 47.99em) {
+  .split > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .split dd {
+    flex-direction: column;
+  }
+}
+
+/* ---------- Research: three findings side by side ---------- */
+
+.findings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px clamp(24px, 3vw, 48px);
+  margin: clamp(48px, 6vw, 88px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each finding spans two rows of the list (heading, text), shared across the columns, so the three
+   texts start on one line however long the heading above is */
+.findings li {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  align-content: start;
+  padding-top: 20px;
+  border-top: 1px solid var(--fg);
+}
+
+.findings h3 {
+  max-width: 12em;
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.findings p {
+  margin-top: 12px;
+  color: var(--fg-2);
+}
+
+@media (max-width: 47.99em) {
+  .findings {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+
+/* ---------- Concept: the client's route, with the tool as the lit stop ---------- */
+
+/*
+ * Six stops along one line. Each stop draws its own piece of line to the next one (::before is the track,
+ * ::after the drawn line), so the line works in a row on desktop and in a column on a phone.
+ * The tool gets a wider stop, its label above the line (so all six titles share one line), a small screen of
+ * itself, and its lamp lights the piece of line to the workshop: that is what it prepares.
+ * The default is the end state: line drawn, tool lit, screen shown. Only with scroll-driven animation and motion
+ * allowed does it start undrawn and follow the scroll.
+ */
+.route {
+  --dot: 9px;
+  --pad: clamp(12px, 1.4vw, 20px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.5fr) repeat(2, minmax(0, 1fr));
+  margin: clamp(56px, 7vw, 104px) 0 0;
+  padding: 0;
+  list-style: none;
+  view-timeline-name: --route;
+}
+
+.route > li {
+  position: relative;
+  padding: 36px var(--pad) 0;
+}
+
+/* The line: from this stop's dot to the next one's */
+.route > li:not(:last-child)::before,
+.route > li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: calc(12px + var(--dot) / 2);
+  left: var(--pad);
+  width: 100%;
+  height: 1px;
+  background: var(--line);
+}
+
+.route > li:not(:last-child)::after {
+  background: var(--fg);
+  transform-origin: left center;
+}
+
+/* From the tool to the workshop the line carries the lamp's light */
+.route > li[data-tool]::after {
+  height: 2px;
+  margin-top: -0.5px;
+  background: linear-gradient(to right, var(--glow), color-mix(in srgb, var(--glow) 35%, var(--fg)));
+}
+
+.stop {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  left: var(--pad);
+  width: var(--dot);
+  height: var(--dot);
+  border-radius: 50%;
+  background: var(--fg);
+}
+
+.route h3 {
+  max-width: 12em;
+  font-size: clamp(1.0625rem, 1.25vw, 1.25rem);
+  font-weight: 560;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.route h3 + p {
+  max-width: 17em;
+  margin-top: 6px;
+  color: var(--fg-2);
+}
+
+/* The tool's label sits above the line, next to its lamp, so its title starts where the others do */
+.toolLabel {
+  position: absolute;
+  top: -14px;
+  left: var(--pad);
+}
+
+.route [data-tool] .stop {
+  background: var(--glow);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--glow) 20%, transparent);
+}
+
+/* A small screen of the tool under its text: the top of the gallery */
+.toolScreen {
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  max-width: 320px;
+  margin-top: 20px;
+  border-radius: 4px;
+  background: #dce2e3;
+  box-shadow:
+    0 1px 2px rgb(18 19 24 / 0.1),
+    0 12px 24px -12px rgb(18 19 24 / 0.24);
+}
+
+.toolScreen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* Following the scroll: each piece of line draws in its own stretch of the section's way through the screen,
+   one after the other (--i is the stop's place); a stop turns on as the line reaches it */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .route > li:not(:last-child)::after {
+      animation: draw linear both;
+      animation-timeline: --route;
+      animation-range: cover calc(22% + var(--i) * 6%) cover calc(28% + var(--i) * 6%);
+    }
+
+    .stop {
+      animation: reach linear both;
+      animation-timeline: --route;
+      animation-range: cover calc(21% + var(--i) * 6%) cover calc(22% + var(--i) * 6%);
+    }
+
+    .route [data-tool] .stop {
+      animation: lampOn linear both;
+      animation-timeline: --route;
+      animation-range: cover calc(21% + var(--i) * 6%) cover calc(25% + var(--i) * 6%);
+    }
+
+    /* A stop's text only comes in once its dot is reached: a short fade up out of a slight blur */
+    .route > li > :is(h3, p) {
+      animation: arrive linear both;
+      animation-timeline: --route;
+      animation-range: cover calc(21.5% + var(--i) * 6%) cover calc(24% + var(--i) * 6%);
+    }
+
+    /* The screen rises into view from its bottom edge as the lamp holds */
+    .toolScreen {
+      animation: reveal linear both;
+      animation-timeline: --route;
+      animation-range: cover calc(23% + var(--i) * 6%) cover calc(29% + var(--i) * 6%);
+    }
+  }
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes reach {
+  from {
+    background: var(--line);
+  }
+  to {
+    background: var(--fg);
+  }
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0);
+  }
+}
+
+@keyframes reveal {
+  from {
+    clip-path: inset(100% 0 0 0 round 4px);
+    translate: 0 12px;
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 4px);
+    translate: 0 0;
+  }
+}
+
+/* A short flicker before it holds, as the lamps on the homepage timeline */
+@keyframes lampOn {
+  0% {
+    background: var(--line);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  30% {
+    background: var(--glow);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--glow) 20%, transparent);
+  }
+  45% {
+    background: var(--line);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  100% {
+    background: var(--glow);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--glow) 20%, transparent);
+  }
+}
+
+/* A phone: the same route, down the left side; the tool's label back above its title */
+@media (max-width: 47.99em) {
+  .route {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .route > li {
+    padding: 16px 0 32px 44px;
+  }
+
+  .route > li:not(:last-child)::before,
+  .route > li:not(:last-child)::after {
+    top: calc(22px + var(--dot) / 2);
+    left: calc(20px + var(--dot) / 2);
+    width: 1px;
+    height: 100%;
+  }
+
+  .route > li[data-tool]::after {
+    width: 2px;
+    height: 100%;
+    margin: 0 0 0 -0.5px;
+    background: linear-gradient(to bottom, var(--glow), color-mix(in srgb, var(--glow) 35%, var(--fg)));
+  }
+
+  .route > li:not(:last-child)::after {
+    transform-origin: center top;
+  }
+
+  .stop {
+    top: 22px;
+    left: 20px;
+  }
+
+  .toolLabel {
+    position: static;
+    margin-bottom: 6px;
+  }
+
+  .toolScreen {
+    max-width: none;
+  }
+
+  @keyframes draw {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+}
+
+/* The flowchart: what it shows on the left, the chart on the grey on the right */
+.flow {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: 24px clamp(32px, 5vw, 96px);
+  align-items: start;
+  margin: clamp(120px, 15vw, 232px) 0 0;
+}
+
+/* Level with the inside of the grey, not its edge: the same padding as .flowChart */
+.flowText {
+  padding-top: clamp(20px, 4vw, 56px);
+}
+
+.flowText p {
+  max-width: 22em;
+  color: var(--fg-2);
+}
+
+/* The chart is the link to the full size. Hover as the hero of case 02: dims and leans in a little;
+   CaseCursor says "View full flowchart" */
+.flowChart {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  padding: clamp(20px, 4vw, 56px);
+  background: #dce2e3;
+}
+
+.flowChart img {
+  display: block;
+  width: 100%;
+  max-width: 760px;
+  height: auto;
+  margin-inline: auto;
+  mix-blend-mode: multiply;
+  transition: scale 700ms var(--ease-out);
+}
+
+.flowChart::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(18 19 24 / 0.28);
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .flowChart:hover::after {
+    opacity: 1;
+  }
+
+  .flowChart:hover img {
+    scale: 1.03;
+  }
+}
+
+.flowChart:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+@media (max-width: 47.99em) {
+  .flow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The text after the chart, as a caption */
+  .flowText {
+    order: 1;
+    padding-top: 0;
+  }
+}
+
+/* ---------- Decisions: crops of the screens instead of whole pages ---------- */
+
+/* Two crops side by side that read as one move (save → list), each with a label and a line under it */
+.pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px clamp(12px, 1.5vw, 24px);
+  margin-top: clamp(48px, 6vw, 88px);
+}
+
+.pair figure {
+  margin: 0;
+}
+
+.crop {
+  overflow: hidden;
+  aspect-ratio: 6 / 5;
+  border-radius: 4px;
+  background: #dce2e3;
+}
+
+.crop img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
+.pair figcaption {
+  display: grid;
+  gap: 4px;
+  margin-top: 14px;
+  color: var(--fg-2);
+}
+
+@media (max-width: 47.99em) {
+  .pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Three crops in a row for a sequence; each a little wider than the pair */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px clamp(12px, 1.5vw, 24px);
+  margin: clamp(48px, 6vw, 88px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stepLabel {
+  margin-top: 14px;
+}
+
+.steps li > p:last-child {
+  margin-top: 4px;
+  color: var(--fg-2);
+}
+
+.wide {
+  aspect-ratio: 4 / 3;
+}
+
+@media (max-width: 47.99em) {
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Decision 3: the main page's four categories in a 2 × 2, each crop a 16:9 slice of the page */
+.categories {
+  margin: clamp(48px, 6vw, 88px) 0 0;
+}
+
+.categories ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.5vw, 24px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.categories figcaption {
+  margin-top: 14px;
+}
+
+.screen {
+  aspect-ratio: 16 / 9;
+}
+
+@media (max-width: 47.99em) {
+  .categories ul {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Building it: the handover, mine on the left, theirs on the right ---------- */
+
+.handover {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 48px clamp(32px, 5vw, 96px);
+  margin-top: clamp(48px, 6vw, 88px);
+}
+
+/* Mine on the grey of the images, theirs on the page */
+.handover > section:first-child {
+  padding: clamp(24px, 3vw, 40px);
+  background: #dce2e3;
+}
+
+.handover > section:last-child {
+  padding: clamp(24px, 3vw, 40px) 0;
+}
+
+/* The column heading with a dot: lit for what I built, unlit for what their team connects */
+.side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: clamp(1.125rem, 1.4vw, 1.3125rem);
+  font-weight: 560;
+  letter-spacing: -0.015em;
+}
+
+.side::before {
+  content: "";
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--muted);
+}
+
+.side[data-on]::before {
+  border-color: var(--glow);
+  background: var(--glow);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--glow) 20%, transparent);
+}
+
+.handover ul {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--line);
+}
+
+.handover li {
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.handover h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 540;
+}
+
+.handover h4 + p {
+  margin-top: 4px;
+  color: var(--fg-2);
+}
+
+/* Their side is a checklist without text, so its rows are lighter */
+.handover > section:last-child h4 {
+  color: var(--fg-2);
+}
+
+@media (max-width: 47.99em) {
+  .handover {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Result: what was handed over, three cards in the light of the lamp (as case 02's result) ---------- */
+
+.handed {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: clamp(32px, 4vw, 48px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.handed li {
+  padding: clamp(24px, 3vw, 40px);
+  border: 1px solid var(--line);
+  border-top-color: rgb(255 158 94 / 0.35);
+  background: linear-gradient(to bottom, rgb(255 158 94 / 0.07), transparent 55%);
+}
+
+.handed h3 {
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.handed h3 + p {
+  margin-top: 12px;
+  color: var(--fg-2);
+}
+
+@media (max-width: 47.99em) {
+  .handed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Research: the text with a photo beside it ---------- */
+
+.researchIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: 40px clamp(40px, 6vw, 120px);
+  align-items: start;
+}
+
+/* On the same line as the lead */
+.photo {
+  margin: clamp(24px, 3vw, 40px) 0 0;
+}
+
+.photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+@media (max-width: 47.99em) {
+  .researchIntro {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .photo {
+    margin-top: 0;
+  }
+}

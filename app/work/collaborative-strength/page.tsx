@@ -514,20 +514,21 @@ export default function CollaborativeStrength() {
             </ul>
           </section>
 
-          <a href="/#work" className={styles.next}>
+          <a href="/work/stuurmen" className={styles.next}>
             <span className={styles.nextText}>
               <span className={about.eyebrow}>Next case</span>
               <span className={styles.nextTitle}>
                 <span>03 Stuurmen</span>
               </span>
             </span>
-            {/* The same preview as case 03 on the homepage; the link text already says where it goes */}
+            {/* The main page of case 03, flat, without a device (as the next case on case 01); the link text already
+                says where it goes */}
             <Image
-              className={styles.nextImage}
-              src="/images/cases/stuurmen-laptop.png"
+              className={`${styles.nextImage} ${styles.nextFlat}`}
+              src="/images/cases/stuurmen/home-preview.webp"
               alt=""
-              width={1818}
-              height={1824}
+              width={1440}
+              height={900}
               sizes="(max-width: 768px) 60vw, 320px"
             />
           </a>
