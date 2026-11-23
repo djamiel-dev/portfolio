@@ -537,7 +537,7 @@ export default function Stuurmen() {
             </ul>
           </section>
 
-          <a href="/#work" className={styles.next}>
+          <a href="/work/moraira" className={styles.next}>
             <span className={styles.nextText}>
               <span className={about.eyebrow}>Next case</span>
               <span className={styles.nextTitle}>

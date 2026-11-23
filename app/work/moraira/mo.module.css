@@ -1,0 +1,1504 @@
+/* Case 04, Moraira Dream Villas: the parts of its own design. Shared parts come from cases 01 and 03. */
+
+/* ---------- Problem: the two goals, each with its own picture of the gap ---------- */
+
+/*
+ * Two goals side by side. Each spans four rows of the list (plate, label, heading, text), shared across both
+ * columns via subgrid, so the plates are one height and the headings start on one line.
+ */
+.goals {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 clamp(24px, 3vw, 48px);
+  margin: clamp(48px, 6vw, 88px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.goals > li {
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  align-content: start;
+}
+
+/* The plate: the same quiet grey as the image frames, so the picture reads as a figure, not a card */
+.plate {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(24px, 3vw, 40px) clamp(20px, 2.6vw, 36px);
+  border-radius: 4px;
+  background: #dce2e3;
+}
+
+.goals .goalLabel {
+  margin-top: 24px;
+}
+
+.goals h3 {
+  max-width: 14em;
+  margin-top: 8px;
+  font-size: clamp(1.25rem, 1.75vw, 1.6875rem);
+  font-weight: 540;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.goals p {
+  max-width: 36em;
+  margin-top: 12px;
+  color: var(--fg-2);
+}
+
+@media (max-width: 47.99em) {
+  .goals {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 48px;
+  }
+
+  .goals > li {
+    grid-row: auto;
+    grid-template-rows: none;
+  }
+
+  /* Stacked, the plates no longer need to line up */
+  .direct .barLabels {
+    margin-top: 20px;
+  }
+}
+
+/* ---------- Goal 1: the year as 52 weeks ---------- */
+
+.year {
+  --off: color-mix(in srgb, var(--fg) 14%, transparent);
+}
+
+.weeks {
+  display: flex;
+  gap: clamp(1.5px, 0.25vw, 3px);
+  height: clamp(56px, 6vw, 80px);
+}
+
+.week {
+  flex: 1;
+  border-radius: 1px;
+  background: var(--off);
+}
+
+.week[data-on] {
+  background: var(--glow);
+}
+
+/* Twelve months under 52 weeks: close enough to find summer at a glance, no more */
+.months {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-stretch: 125%;
+  line-height: 1;
+}
+
+.legend,
+.barLabels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--fg-2);
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend li::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 1px;
+  background: var(--off);
+}
+
+.legend li[data-on]::before {
+  background: var(--glow);
+}
+
+/* Switching on: dark while waiting, then each holiday catches with the flicker of the homepage lamps */
+@media (prefers-reduced-motion: no-preference) {
+  .year[data-state="waiting"] .week[data-on] {
+    background: var(--off);
+  }
+
+  .year[data-state="lit"] .week[data-on] {
+    animation: catch 420ms steps(1, end) both;
+    animation-delay: var(--d);
+  }
+}
+
+@keyframes catch {
+  0% {
+    background: var(--off);
+  }
+  25% {
+    background: var(--glow);
+  }
+  45% {
+    background: color-mix(in srgb, var(--glow) 45%, var(--off));
+  }
+  70%,
+  100% {
+    background: var(--glow);
+  }
+}
+
+/* ---------- Goal 2: all bookings as one bar ---------- */
+
+.bar {
+  position: relative;
+  overflow: hidden;
+  height: clamp(56px, 6vw, 80px);
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--fg) 14%, transparent);
+}
+
+.fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--share);
+  background: var(--glow);
+}
+
+/* Under the bar, the share on the left, Booking.com on the right. The extra space stands in for the months
+   line under the strip, so the bar and the strip sit at one height and both legends on one line */
+.barLabels {
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.barLabels strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+/* ---------- Where it started: the audit as a short report, then the scope it grew into ---------- */
+
+/* Three findings as numbered lines of one report, not three more cards: number, finding, why it matters */
+.report {
+  margin: clamp(40px, 5vw, 64px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--fg);
+}
+
+.report li {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 0.9fr) minmax(0, 1.3fr);
+  gap: 4px clamp(16px, 2.4vw, 40px);
+  align-items: baseline;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.report h3 {
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  font-weight: 540;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.report p {
+  max-width: 34em;
+  color: var(--fg-2);
+}
+
+@media (max-width: 47.99em) {
+  .report li {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+  }
+
+  .report p {
+    grid-column: 2;
+  }
+}
+
+/*
+ * The scope: what the owner asked for (the audit) and what it turned into (brand, website, print), as four
+ * plates in a row under two brackets. Scrolling through, the three new plates slide out of the audit one by one:
+ * the scope growing. The default is the end state; only with scroll-driven animation and motion allowed does it
+ * start with the audit alone.
+ */
+.scopeWrap {
+  margin: clamp(32px, 4vw, 48px) 0 0;
+  view-timeline-name: --scope;
+}
+
+.brackets,
+.scope {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.scope {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The brackets: a label over a line with ends turned down, one over the audit, one over the rest */
+.bracket {
+  position: relative;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+}
+
+.bracket::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 6px;
+  border: 1px solid var(--fg);
+  border-bottom: 0;
+}
+
+.asked {
+  grid-column: 1;
+}
+
+.grew {
+  grid-column: 2 / -1;
+}
+
+.scope > li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 9rem;
+  padding: clamp(16px, 2vw, 24px);
+  border-radius: 4px;
+  background: #dce2e3;
+}
+
+.scope > li:first-of-type {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.scope > li:first-of-type p {
+  color: color-mix(in srgb, var(--bg) 78%, var(--fg));
+}
+
+.scope h3 {
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  font-weight: 560;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.scope p {
+  color: var(--fg-2);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scope > li:not(:first-of-type),
+    .grew {
+      animation: grow linear both;
+      animation-timeline: --scope;
+      animation-range: cover calc(16% + var(--i, 0) * 7%) cover calc(28% + var(--i, 0) * 7%);
+    }
+
+    .grew {
+      --i: 0;
+      animation-name: fadeIn;
+    }
+  }
+}
+
+@keyframes grow {
+  from {
+    opacity: 0;
+    translate: -24px 0;
+    clip-path: inset(0 100% 0 0 round 4px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    clip-path: inset(0 0 0 0 round 4px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* A phone: the four plates in two rows, the brackets fall away and the labels sit on the plates instead */
+@media (max-width: 47.99em) {
+  .scope {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .brackets {
+    display: none;
+  }
+
+  .scope > li {
+    min-height: 0;
+  }
+}
+
+/* On a phone the bracket's words move onto the plates; on a wider screen only screen readers get them there */
+.tag {
+  margin-bottom: 4px;
+}
+
+.scope > li:first-of-type .tag {
+  color: color-mix(in srgb, var(--bg) 78%, var(--fg));
+}
+
+@media (min-width: 48em) {
+  .tag {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* ---------- Decision 1: the guests to win, the palette without sea blue ---------- */
+
+/* The guests switch on: over each one's line a lit line draws in as the list scrolls through, one by one.
+   Default: lit. */
+.guests {
+  view-timeline-name: --guests;
+}
+
+.guests > li {
+  position: relative;
+}
+
+.guests > li::before {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 3px;
+  background: var(--glow);
+  transform-origin: left center;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .guests > li::before {
+      animation: draw linear both;
+      animation-timeline: --guests;
+      animation-range: cover calc(14% + var(--i) * 8%) cover calc(26% + var(--i) * 8%);
+    }
+  }
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/*
+ * The palette as tall swatches, the way a brand guide shows them, and a sixth place for the colour that was left
+ * out: sea blue, as an empty dashed outline with a line through it. Scrolling in, the five colours rise one by one,
+ * the sea blue rises full like the rest and then drains away. Default: the end state.
+ */
+.palette {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(8px, 1.2vw, 16px);
+  margin: clamp(24px, 3vw, 40px) 0 clamp(32px, 4vw, 48px);
+  padding: 0;
+  list-style: none;
+  view-timeline-name: --palette;
+}
+
+.swatch {
+  display: block;
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+}
+
+.palette p {
+  margin-top: 10px;
+  color: var(--fg);
+  font-size: 0.875rem;
+  font-weight: 540;
+  line-height: 1.3;
+}
+
+.palette p + p {
+  margin-top: 2px;
+}
+
+/* The one left out: an outline where the colour would be, a line through it, its name struck */
+.left .swatch {
+  box-shadow: none;
+  outline: 1px dashed var(--muted);
+  outline-offset: -1px;
+}
+
+.left .swatch::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #1f86c9;
+  clip-path: inset(100% 0 0 0);
+}
+
+/* The strike: a line from corner to corner, drawn as an SVG so it fits the swatch at any shape */
+.strike {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.strike line {
+  stroke: var(--fg);
+  /* No non-scaling stroke: that would turn the dash below (used to draw the line) into real dashes */
+  stroke-width: 1.5;
+  stroke-dasharray: 1;
+}
+
+.left p:first-of-type {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .palette > li {
+      animation: rise linear both;
+      animation-timeline: --palette;
+      animation-range: cover calc(8% + var(--i) * 5%) cover calc(20% + var(--i) * 5%);
+    }
+
+    /* Sea blue comes in full, like a real option, holds a moment, then drains from the top and is struck */
+    .left .swatch::before {
+      animation: drain linear both;
+      animation-timeline: --palette;
+      animation-range: cover 30% cover 48%;
+    }
+
+    .strike line {
+      animation: strike linear both;
+      animation-timeline: --palette;
+      animation-range: cover 44% cover 52%;
+    }
+  }
+}
+
+@keyframes strike {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes drain {
+  0% {
+    clip-path: inset(0 0 0 0);
+  }
+  35% {
+    clip-path: inset(0 0 0 0);
+  }
+  100% {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+
+@media (max-width: 47.99em) {
+  .palette {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 24px;
+  }
+
+  .swatch {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* The story of the palette under it, in two columns on a wide screen */
+.paletteText {
+  columns: 2 20em;
+  column-gap: clamp(24px, 3vw, 48px);
+}
+
+.paletteText p {
+  break-inside: avoid;
+}
+
+.paletteText p + p {
+  margin-top: 16px;
+}
+
+/* Insider tips: the homepage section with the same tips, small under the text */
+.outingsFigure {
+  max-width: 560px;
+  margin-top: clamp(32px, 4vw, 48px);
+}
+
+.outingsFigure figcaption {
+  margin-top: 12px;
+}
+
+.outings {
+  overflow: hidden;
+  border-radius: 4px;
+  background: #dce2e3;
+}
+
+.outings img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---------- Decision 2: the homepage scrolling, the reason in view lit ---------- */
+
+/* The three reasons, ruled like the report above. While the stage moves, the one whose part of the homepage is in
+   the window is lit (a short orange line over it, full colour); the others wait, dimmed. Still: all lit. */
+.reasons {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reasons li {
+  position: relative;
+  padding: 16px 0 20px;
+  border-top: 1px solid var(--line);
+}
+
+.reasons :is(h3, p) {
+  transition: color 320ms var(--ease-out, ease-out);
+}
+
+.reasons li::before {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 3px;
+  background: var(--glow);
+  transform-origin: left center;
+  transition: transform 420ms var(--ease-out, ease-out);
+}
+
+.reasons h3 {
+  margin-top: 6px;
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  font-weight: 540;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.reasons p {
+  margin-top: 6px;
+  color: var(--fg-2);
+}
+
+/* Waiting reasons step back in colour, not in opacity: muted still reads at 4.5:1 or more. Until the stage is
+   reached (no reason active yet) all three stay lit */
+[data-on] .reasons:has([data-active]) li:not([data-active]) :is(h3, p) {
+  color: var(--muted);
+}
+
+[data-on] .reasons:has([data-active]) li:not([data-active])::before {
+  transform: scaleX(0);
+}
+
+/* The parts of the homepage, one under the other */
+.part {
+  position: relative;
+}
+
+
+/* On a laptop the reasons need more room than the text column of case 02 gives; from 1280px up the window
+   gets its full 720px again */
+@media (min-width: 48em) and (max-width: 79.99em) {
+  .directStage [data-side="right"] > div:first-child {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  }
+}
+
+/* ---------- Beyond the screen: the print as objects on a table ---------- */
+
+/*
+ * One table, 16 : 10, with the objects placed in % of it: the sign large on the left, the two sides of the
+ * business card overlapping it bottom right, each turned a little, as if put down by hand. Real objects, so a real
+ * shadow: a contact shadow and a soft one, both from above. The lines are drawn in the same 160 x 100 frame.
+ */
+.desk {
+  margin: clamp(40px, 5vw, 64px) 0 0;
+}
+
+.table {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  view-timeline-name: --desk;
+}
+
+.table img {
+  position: absolute;
+  height: auto;
+  border-radius: 3px;
+  box-shadow:
+    0 1px 2px rgb(18 19 24 / 0.16),
+    0 18px 36px -14px rgb(18 19 24 / 0.32);
+}
+
+.sign {
+  top: 4%;
+  left: 0;
+  width: 64%;
+  rotate: -1.5deg;
+}
+
+.cardFront {
+  z-index: 1;
+  top: 44%;
+  left: 52%;
+  width: 34%;
+  rotate: -6deg;
+}
+
+.cardBack {
+  z-index: 2;
+  top: 59%;
+  left: 47%;
+  width: 40%;
+  rotate: 3.5deg;
+}
+
+.qrLines {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.qrLines path {
+  fill: none;
+  stroke: var(--glow);
+  /* The frame has the table's own shape, so the stroke scales evenly: 0.25 of 160 is about 1.5px on a laptop */
+  stroke-width: 0.25;
+  stroke-dasharray: 1;
+}
+
+.qrLabel {
+  position: absolute;
+  top: 13%;
+  left: 74%;
+  max-width: 11em;
+  translate: 0 -50%;
+  font-size: clamp(1.0625rem, 1.5vw, 1.375rem);
+  font-weight: 540;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.qrLabel > span {
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* The captions under the table, side by side */
+.deskCaption {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px clamp(24px, 3vw, 48px);
+  margin-top: clamp(24px, 3vw, 40px);
+  color: var(--fg-2);
+}
+
+.deskCaption span {
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Scrolling in: the objects come down onto the table one after another, then the lines run from the QR codes
+   to the label. Default: everything in place and drawn */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* The ranges below need .table in front: they must outrank this shorthand, which resets them */
+    .table img {
+      animation: putDown linear both;
+      animation-timeline: --desk;
+    }
+
+    .table .sign {
+      animation-range: cover 6% cover 22%;
+    }
+
+    .table .cardFront {
+      animation-range: cover 12% cover 28%;
+    }
+
+    .table .cardBack {
+      animation-range: cover 18% cover 34%;
+    }
+
+    .qrLines path {
+      animation: strike linear both;
+      animation-timeline: --desk;
+      animation-range: cover 32% cover 46%;
+    }
+
+    .qrLabel {
+      animation: fadeIn linear both;
+      animation-timeline: --desk;
+      animation-range: cover 40% cover 48%;
+    }
+  }
+}
+
+@keyframes putDown {
+  from {
+    opacity: 0;
+    translate: 0 -24px;
+    scale: 1.03;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+/* A phone: the sign on its own, the two card sides next to each other under it, no lines, the label as a line of
+   text under the objects */
+@media (max-width: 47.99em) {
+  .table {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 12px;
+    aspect-ratio: auto;
+  }
+
+  .table img {
+    position: static;
+    width: 100%;
+  }
+
+  .sign {
+    grid-column: 1 / -1;
+  }
+
+  .cardFront {
+    rotate: -3deg;
+  }
+
+  .cardBack {
+    rotate: 3deg;
+  }
+
+  .qrLines {
+    display: none;
+  }
+
+  .qrLabel {
+    grid-column: 1 / -1;
+    position: static;
+    max-width: none;
+    margin-top: 8px;
+    translate: none;
+  }
+
+  .deskCaption {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- How I worked: the way through the project, then the four uses of AI ---------- */
+
+/*
+ * Five stops on one line under two brackets: my four (lit dots, a solid line) and the build by another developer
+ * (an open dot, reached by a dashed line: the handover). Scrolling through, the line runs from stop to stop and
+ * each of my dots switches on as it's reached. Default: drawn and lit. A phone: the same, down the left side.
+ */
+.flowWrap {
+  margin-top: clamp(40px, 5vw, 64px);
+  view-timeline-name: --flow;
+}
+
+.flowBrackets {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  gap: 8px;
+}
+
+.theirs::after {
+  border-style: dashed;
+}
+
+.flow {
+  --dot: 11px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flow > li {
+  position: relative;
+  padding: 32px 12px 0 0;
+}
+
+/* The line from this stop to the next */
+.flow > li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: calc(4px + var(--dot) / 2);
+  left: var(--dot);
+  width: calc(100% - var(--dot) + 8px);
+  height: 2px;
+  margin-top: -1px;
+  background: var(--glow);
+  transform-origin: left center;
+}
+
+/* The handover: from my last stop to theirs, dashed */
+.flow > li:nth-last-child(2)::after {
+  height: 0;
+  margin-top: 0;
+  border-top: 1px dashed var(--muted);
+  background: none;
+}
+
+.stop {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: var(--dot);
+  height: var(--dot);
+  border-radius: 50%;
+  border: 1px solid var(--muted);
+  background: var(--bg);
+}
+
+.flow > li[data-mine] .stop {
+  border-color: var(--glow);
+  background: var(--glow);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--glow) 18%, transparent);
+}
+
+.flow h3 {
+  font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
+  font-weight: 560;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.flow p {
+  margin-top: 6px;
+  color: var(--fg-2);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.flow > li:not([data-mine]) h3 {
+  color: var(--fg-2);
+}
+
+.flowNote {
+  max-width: 38em;
+  margin-top: clamp(24px, 3vw, 40px);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .flow > li:not(:last-child)::after {
+      animation: draw linear both;
+      animation-timeline: --flow;
+      animation-range: cover calc(18% + var(--i) * 6%) cover calc(24% + var(--i) * 6%);
+    }
+
+    .flow > li[data-mine] .stop {
+      animation: stopOn linear both;
+      animation-timeline: --flow;
+      animation-range: cover calc(14% + var(--i) * 6%) cover calc(18% + var(--i) * 6%);
+    }
+  }
+}
+
+/* A short flicker before it holds, as the lamps on the homepage timeline */
+@keyframes stopOn {
+  0% {
+    background: var(--bg);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  30% {
+    background: var(--glow);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--glow) 18%, transparent);
+  }
+  45% {
+    background: var(--bg);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  100% {
+    background: var(--glow);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--glow) 18%, transparent);
+  }
+}
+
+@media (max-width: 47.99em) {
+  .flowBrackets {
+    display: none;
+  }
+
+  .flow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .flow > li {
+    padding: 0 0 28px 32px;
+  }
+
+  .flow > li:not(:last-child)::after {
+    top: calc(4px + var(--dot) / 2);
+    left: calc(var(--dot) / 2);
+    width: 2px;
+    height: 100%;
+    margin: 0 0 0 -1px;
+    transform-origin: center top;
+  }
+
+  .flow > li:nth-last-child(2)::after {
+    width: 0;
+    margin: 0;
+    border-top: 0;
+    border-left: 1px dashed var(--muted);
+  }
+
+  /* Drawing down instead of across */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .flow > li:not(:last-child)::after {
+        animation-name: drawDown;
+      }
+    }
+  }
+}
+
+@keyframes drawDown {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* The four uses of AI as four tiles, two by two, each switching on in the order of the project: a lit line over it */
+.aiRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  view-timeline-name: --ai;
+}
+
+.aiRow li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 6.5rem;
+  padding: 18px 20px;
+  border-radius: 4px;
+  background: #dce2e3;
+  font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
+  font-weight: 540;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.aiRow li::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  border-radius: 4px 4px 0 0;
+  background: var(--glow);
+  transform-origin: left center;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .aiRow li::before {
+      animation: draw linear both;
+      animation-timeline: --ai;
+      animation-range: cover calc(18% + var(--i) * 7%) cover calc(28% + var(--i) * 7%);
+    }
+  }
+}
+
+/* The villa list after the route: a new topic, but within the same section */
+.villaIntro {
+  margin-top: clamp(48px, 6vw, 88px);
+}
+
+/* ---------- How I worked: two layouts of the villa list, the one that came out on top lit ---------- */
+
+.layouts {
+  margin: clamp(32px, 4vw, 48px) 0 0;
+  view-timeline-name: --layouts;
+}
+
+.layouts ol {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 24px);
+  align-items: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.layoutShot {
+  overflow: hidden;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.layoutShot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.layouts li p {
+  margin-top: 10px;
+}
+
+/* The winner: an orange ring and its label in the accent; the other a step back */
+.layouts li[data-won] .layoutShot {
+  box-shadow:
+    0 0 0 2px var(--glow),
+    0 0 0 7px color-mix(in srgb, var(--glow) 16%, transparent);
+}
+
+.layouts li[data-won] p {
+  color: var(--fg);
+}
+
+.layouts li:not([data-won]) .layoutShot {
+  opacity: 0.6;
+}
+
+.layouts figcaption {
+  max-width: 38em;
+  margin-top: clamp(20px, 2.4vw, 32px);
+  color: var(--fg-2);
+}
+
+.layouts figcaption span {
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Scrolling in: both start equal, then the other steps back and the winner's ring comes on */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .layouts li:not([data-won]) .layoutShot {
+      animation: stepBack linear both;
+      animation-timeline: --layouts;
+      animation-range: cover 30% cover 42%;
+    }
+
+    .layouts li[data-won] .layoutShot {
+      animation: ringOn linear both;
+      animation-timeline: --layouts;
+      animation-range: cover 34% cover 44%;
+    }
+  }
+}
+
+@keyframes stepBack {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.6;
+  }
+}
+
+@keyframes ringOn {
+  from {
+    box-shadow:
+      0 0 0 1px var(--line),
+      0 0 0 1px transparent;
+  }
+  to {
+    box-shadow:
+      0 0 0 2px var(--glow),
+      0 0 0 7px color-mix(in srgb, var(--glow) 16%, transparent);
+  }
+}
+
+@media (max-width: 47.99em) {
+  .layouts ol {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+}
+
+/* ---------- Result: both goals met, in the light of the lamp ---------- */
+
+/* The direct-bookings goal leads: it has the number. Both cards carry the lamp's light from the top, as on case 03 */
+.met {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 12px;
+  margin: clamp(32px, 4vw, 48px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.met > li {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(24px, 3vw, 40px);
+  border: 1px solid var(--line);
+  border-top-color: rgb(255 158 94 / 0.35);
+  background: linear-gradient(to bottom, rgb(255 158 94 / 0.07), transparent 55%);
+}
+
+.metLabel {
+  margin-bottom: 16px;
+}
+
+.met h3 {
+  font-size: clamp(2rem, 3.8vw, 3.5rem);
+  font-weight: 560;
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.met > li > p:last-child {
+  margin-top: 16px;
+  color: var(--fg-2);
+}
+
+/* The number above the bar, as large as the section heading, in the lamp's colour */
+.resultNumber {
+  color: var(--glow);
+  font-size: clamp(3rem, 6.6vw, 6rem);
+  font-weight: 560;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.resultNumber span {
+  margin-left: 0.15em;
+  color: var(--fg);
+  font-size: 0.4em;
+  letter-spacing: -0.02em;
+}
+
+.result .bar {
+  margin-top: clamp(20px, 2.4vw, 32px);
+}
+
+.result .fill {
+  background: var(--lamp);
+  box-shadow: 0 0 24px 2px rgb(255 158 94 / 0.35);
+}
+
+/* Where it used to be: a thin mark at about 20% */
+.was {
+  position: absolute;
+  inset: 0 auto 0 var(--was);
+  width: 2px;
+  margin-left: -1px;
+  background: var(--bg);
+  opacity: 0.8;
+}
+
+.result .barLabels {
+  margin-top: 12px;
+}
+
+@media (max-width: 47.99em) {
+  .met {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- The hero as the way into the design: "View designs" at the pointer, then the pages full screen ---------- */
+
+/* The whole hero is the button. Hover exactly as the hero of case 02: the frame stays put and clips, the video
+   and the design layer inside it lean in from the top, and a dark layer comes over it; "View designs" at the pointer */
+.heroOpen {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+}
+
+.heroOpen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(18 19 24 / 0.28);
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+
+.heroOpen > div {
+  transform-origin: top center;
+  transition: scale 700ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .heroOpen:hover::after {
+    opacity: 1;
+  }
+
+  .heroOpen:hover > div {
+    scale: 1.03;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroOpen:hover > div {
+    scale: none;
+  }
+}
+
+.heroOpen:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+/* Touch screens have no pointer to follow, so the button says it in the corner, as on case 02 */
+@media not ((hover: hover) and (pointer: fine)) {
+  .heroOpen::before {
+    content: "View designs";
+    position: absolute;
+    z-index: 1;
+    top: 12px;
+    left: 12px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--fg);
+    font-size: 0.875rem;
+    font-weight: 520;
+  }
+}
+
+/* The viewer: full screen, night colours, the page itself is the only light */
+.viewer {
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #151412;
+  color: #eeefeb;
+  overscroll-behavior: contain;
+}
+
+.viewer::backdrop {
+  background: #151412;
+}
+
+.viewer[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .viewer[open] {
+    animation: viewerIn 320ms var(--ease-out) both;
+  }
+}
+
+@keyframes viewerIn {
+  from {
+    opacity: 0;
+    scale: 0.985;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.viewerBar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px var(--gutter, 24px);
+  border-bottom: 1px solid #2e2d2a;
+}
+
+.viewerTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 1.125rem;
+  font-weight: 540;
+  letter-spacing: -0.015em;
+}
+
+.viewerCount {
+  color: #b9bab3;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.viewerControls {
+  display: flex;
+  gap: 8px;
+}
+
+.viewerControls button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #2e2d2a;
+  border-radius: 999px;
+  background: #1c1814;
+  color: #eeefeb;
+  cursor: pointer;
+  transition:
+    border-color 200ms ease,
+    opacity 200ms ease;
+}
+
+.viewerControls button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .viewerControls button:not(:disabled):hover {
+    border-color: #ff9e5e;
+  }
+}
+
+.viewerControls button:active:not(:disabled) {
+  scale: 0.96;
+}
+
+.viewerControls button:focus-visible,
+.viewerSlide:focus-visible {
+  outline: 2px solid #ff9e5e;
+  outline-offset: -2px;
+}
+
+.viewerControls svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The pages side by side, one per screen width; each snaps into place and scrolls down on its own */
+.viewerTrack {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.viewerTrack::-webkit-scrollbar {
+  display: none;
+}
+
+.viewerSlide {
+  flex: 0 0 100%;
+  overflow-y: auto;
+  padding: clamp(16px, 3vw, 40px) var(--gutter, 24px) clamp(40px, 6vw, 80px);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overscroll-behavior-y: contain;
+}
+
+.viewerSlide img {
+  display: block;
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  margin-inline: auto;
+  border-radius: 4px;
+  box-shadow: 0 24px 64px -24px rgb(0 0 0 / 0.6);
+}

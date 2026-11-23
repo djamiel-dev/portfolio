@@ -7,6 +7,8 @@ import cs from "./cs.module.css";
 // A section that holds still while you scroll through it: the text on one side, a window on the other in
 // which a whole page scrolls past. The visual marks its window with [data-scroll-view] and what scrolls
 // in it with [data-scroll-page]; several pages scroll together, each over its own length.
+// Optionally, parts of the page ([data-scroll-mark]) can each have a step in the text ([data-scroll-step], same
+// order): the step whose part has reached the middle of the window gets [data-active], and so does that part.
 // Only on wide screens with motion allowed. Otherwise (phone, reduced motion, no JS) nothing moves and
 // the section is laid out as a normal text and image.
 
@@ -43,8 +45,16 @@ export function ScrollStage({
     const el = wrap.current;
     const view = el?.querySelector<HTMLElement>("[data-scroll-view]");
     const pages = el ? [...el.querySelectorAll<HTMLElement>("[data-scroll-page]")] : [];
+    const marks = el ? [...el.querySelectorAll<HTMLElement>("[data-scroll-mark]")] : [];
+    const steps = el ? [...el.querySelectorAll<HTMLElement>("[data-scroll-step]")] : [];
+    const activate = (index: number) => {
+      [marks, steps].forEach((list) =>
+        list.forEach((item, i) => item.toggleAttribute("data-active", i === index)),
+      );
+    };
     if (!on || !el || !view) {
       pages.forEach((p) => (p.style.transform = ""));
+      activate(-1);
       return;
     }
 
@@ -60,6 +70,14 @@ export function ScrollStage({
       for (const page of pages) {
         const y = p * Math.max(0, page.offsetHeight - shown);
         page.style.transform = `translate3d(0, ${-y}px, 0)`;
+      }
+      if (marks.length) {
+        const middle = view.getBoundingClientRect().top + shown / 2;
+        let index = 0;
+        marks.forEach((m, i) => {
+          if (m.getBoundingClientRect().top <= middle) index = i;
+        });
+        activate(index);
       }
     };
     const onScroll = () => {

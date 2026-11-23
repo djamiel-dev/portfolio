@@ -48,9 +48,9 @@ export const cases: Case[] = [
   {
     num: "04",
     label: "Moraira Dream Villas",
-    href: "#case-4",
-    outcome: "A website for renting holiday villas in Moraira",
-    meta: "Moraira Dream Villas · [Project] [Year]",
+    href: "/work/moraira",
+    outcome: "A brand and website that fill the villas outside the holidays",
+    meta: "Moraira Dream Villas · Freelance",
     media: { aspect: "4 / 3", caption: "[Homepage and villa pages]", image: "/images/cases/moraira-laptop.png" },
   },
 ];

@@ -413,3 +413,118 @@ Vraag: design system van heronaiapp.com, concept en layout van belleduffner.com.
 - **Bijgesteld (19 nov):** de hero is half zo hoog en bovenaan uitgelijnd (menu in beeld). Ik vond dat de opname stopte en weer verder ging; opnieuw opgenomen als één doorlopende, langzame scroll van 24 s (sinus-easing, alleen stil bij de hero), met de pointer stil zodat Diensten en Over mij oplichten als ze eronder door schuiven. Alleen de bovenste helft bewaard (1440×450), laatste 0,8 s vloeit over in het begin: 26 s, bijna overal 60 unieke frames per seconde, 3,3 MB.
 - **Bijgesteld (19 nov), Decision 1 en 2:** bij Decision 1 staan de kop en de tekst rechts, het venster is hoger, de dienstenlijst met oplichten is weg ("dat zien mensen zelf") en het bijschrift noemt Figma niet meer. Decision 2 volgt dezelfde opzet gespiegeld: tekst links, rechts de slider, die nu beide hele homepage-ontwerpen laat meescrollen (`design-first/after.webp`, uit Figma). Pins en nummers weg; de twee wijzigingen heten nu "Two examples of what changed". Beide gebruiken `ScrollStage.tsx` (vervangt `ServicesScroll.tsx`). `slider-before/after.webp` worden niet meer gebruikt.
 - **Bijgewerkt (19 nov), typfout "STRENTH":** ik heb de typfout op de live site en in Figma verbeterd en de site uitgebreid (pop-up gratis schema, echte blogposts). De vier opnames (hero-rondgang, menu, knop, A–D) zijn opnieuw gemaakt op dezelfde manier; de stappen nu vanaf hoger op de pagina, zodat het uitvouwen in beeld is. `design-first`, `design-after` en `services` opnieuw uit Figma geëxporteerd. Nog open: in `powerlifting-laptop.png` (homepagekaart en "Next case" op case 01) staat nog "powerlifing".
+
+### Stap 27 – Moraira Dream Villas: casepagina, alleen inhoud (23 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Context | Alle documenten in `~/Downloads/moraira docs/`, het drukwerk in `~/Downloads/spaans nummer/` en de Figma-pagina "moraira" gelezen. Voorstel: het verhaal draait om één strategische keuze (de gasten buiten de schoolvakanties winnen, geen zeeblauw in het palet) en elke ontwerpkeuze hangt aan een van de twee doelen van de eigenaar | Akkoord. Aangevuld: 21% direct vooraf (op de pagina "about 20%"), betaald freelancewerk zonder jaar, logo bestond al, alles mag getoond worden, testers onbekend, AI voor inspiratie, transcripties, copy en kwaliteitscontrole |
+| Opbouw | Intro (kernzin met 70%) → Problem (twee doelen) → Where it started (audit) → Decision 1 (sell the village) → Decision 2 (reasons to book direct) → Beyond the screen (bord en visitekaartje) → How I worked (homepage eerst, AI, overdracht) → Result (both goals met) | [nog te beoordelen] |
+| Kritisch op claims | Zelf teruggedraaid: "every section ends in one orange button" (klopt niet), "the old site said it all in paragraphs" (de audit prees juist de villapagina's), "empty in spring, autumn and winter" (in de winter huren gepensioneerden maanden), "A/B test" en aantallen testers. QR-code op bord en kaart uitgelezen: leidt naar de eigen site | [nog te beoordelen] |
+| Figma | Tikfouten verbeterd ("mediterranian", "boookings", ook "beautifull"); de hero-kop paste daarna niet meer op twee regels, het tekstvak is breder gemaakt (1149 → 1300) | [nog te beoordelen] |
+
+- **Beelden:** `public/images/cases/moraira/` (homepage in stukken, villalijst, insider tips, bord, visitekaartje voor- en achterkant), uit Figma en de drukbestanden. `card-front.webp` staat er ook, maar wordt nog niet gebruikt.
+- **Ook aangepast:** de homepagekaart linkt naar `/work/moraira` ("Moraira Dream Villas · Freelance") en "Next case" op Stuurmen linkt ernaartoe.
+- **Toetsing:** typecheck; ingebouwde browser op desktop en 375px (geen horizontale scroll, alle beelden laden, geen consolefouten). Vormgeving en animatie bewust nog niet gedaan. `npm run build`, `audit` en `keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
+- **Bijgewerkt (23 nov), hero met video:** ik had destijds een video gemaakt als achtergrond voor de hero, maar kreeg die niet in Figma. Nu staat het ontwerp in twee lagen op de pagina: de video (bijgesneden tot de hero, 1440 breed, zonder geluid, 3,4 MB, `hero.mp4` + `hero.jpg`) en daarover de Figma-export zonder foto (`hero-layer.webp`). Doorzichtig gemaakt door de hero één keer op zwart en één keer op wit te exporteren en de transparantie daaruit te berekenen; de donkere laag van 50% uit Figma blijft zo intact. Figma is daarna teruggezet. `HeroVideo.tsx`: speelt in een lus zolang hij in beeld is, pauzeknop van 44px, met reduced motion stil tot je op play drukt. In Decision 1 een zin dat de video het hele dorp laat zien, niet één strandfoto. `home-top.webp` wordt niet meer gebruikt. Getest in de ingebouwde browser: speelt, pauzeert en hervat, geen consolefouten.
+
+### Stap 28 – Moraira Dream Villas: kritiek als recruiter en Problem vormgegeven (23 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Kritiek | Als scannende recruiter: na Problem drie rijen tekstkolommen achter elkaar (doelen, bevindingen, gasten) zonder beeld, daar haakt de lezer af. "Where it started" is de saaiste sectie. Verder: de draad "elke keuze hangt aan een doel" is onzichtbaar, "geen zeeblauw" staat begraven in een alinea, Result is te klein voor de payoff, "about 20%" staat in lopende tekst, de uitsneden in Decision 2 zijn te klein, het bord is afgesneden op "Holiday renta", "three layouts" wordt beloofd maar er is er één te zien | [nog te beoordelen] |
+| Problem | Elk doel een eigen beeld op een grijze plaat, met het label "Goal 1/2" (zodat de decisions er later naar kunnen verwijzen). Doel 1: een jaar als 52 weken waarin alleen de gebruikelijke schoolvakanties oplichten (kerst, Pasen, zomer, herfst; schematisch, uit de kalender, geen boekingsdata). Doel 2: één balk met ongeveer 20% direct, de rest Booking.com, bewust stil: dezelfde balk vult zich in Result tot 70% | Akkoord met het voorstel ("Ja, bouw het"); algemene vakantiekalender zonder getallen |
+| Beweging (Emil) | De vakanties gaan één keer aan als de strip in beeld komt, met de flikkering van de lampjes op de homepage (420 ms). De eerste versie liet de vakanties 140 ms na elkaar aangaan; na de Emil-review gaat het per vakantie 100 ms na elkaar, en binnen een vakantie gaan de weken 25 ms na elkaar aan, zodat de zomer van links naar rechts aanspringt. Met reduced motion of zonder JS staan de vakanties meteen aan | [nog te beoordelen] |
+
+- **Bestanden:** `app/work/moraira/visuals.tsx` (`YearStrip`, `DirectBar`) en `mo.module.css`, het eigen stijlbestand van deze case. De tekst is niet veranderd.
+- **Toetsing:** typecheck; ingebouwde browser op desktop en 375px (geen horizontale scroll, geen consolefouten, strip gaat aan bij in beeld komen). Reduced motion niet nagebootst in de browser, alleen in de code nagelopen. `build`, `audit` en `keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 29 – Moraira Dream Villas: Where it started vormgegeven (23 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Bevindingen | Niet nog een rij van drie kaarten, maar één kort rapport: genummerde regels (01–03) met de bevinding links en de toelichting rechts, tussen dunne lijnen. Tekst ongewijzigd. Op een telefoon staat de toelichting onder de bevinding | [nog te beoordelen] |
+| Visueel moment | De kop zegt "an audit that turned into a redesign", dus het beeld laat de opdracht groeien: vier vlakken op een rij onder twee haken, "Asked for" (de audit, donker) en "What it turned into" (brand, website design, print). Bij het scrollen schuiven de drie nieuwe vlakken één voor één uit de audit (scroll-driven, met clip-path). Zonder ondersteuning of met reduced motion staan ze er gewoon. De korte regels op de vlakken komen uit de bestaande tekst. Op een telefoon twee bij twee, de haken vallen weg en "Asked for" / "Then" staat op de vlakken zelf | [nog te beoordelen] |
+| Beweging (Emil) | Gekoppeld aan het scrollen, dus lineair (geen easing op een scroll-tijdlijn); alleen clip-path, translate en opacity; de tweede haak fadet mee met het eerste nieuwe vlak | [nog te beoordelen] |
+
+- **Toetsing:** typecheck; ingebouwde browser op desktop en 375px (geen horizontale scroll, geen consolefouten, de vlakken schuiven in bij scrollen). `build`, `audit` en `keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 30 – Moraira Dream Villas: Decision 1 vormgegeven (23 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Gasten | De drie gasten houden hun kolommen, maar gaan "aan": bij het scrollen trekt over elke gast een oranje lijn, één voor één (scroll-driven, standaard staan ze aan) | [nog te beoordelen] |
+| Palet | Het visuele moment van de sectie: het palet als hoge stalen zoals in een brandguide, met een zesde plek voor zeeblauw. Bij het scrollen komen de vijf kleuren één voor één op; zeeblauw komt vol binnen als een echte optie, loopt dan leeg en wordt doorgestreept ("Sea blue / Left out"). Daaronder de drie alinea's in twee kolommen (tekst ongewijzigd). Op een telefoon drie bij twee | [nog te beoordelen] |
+| Insider tips | De Insider tips-pagina scrolt in een browservenster naast de tekst (ScrollStage uit case 02, hergebruikt, geen nieuw bestand). De homepage-uitsnede met dezelfde tips staat er klein onder, met het bijschrift "On the homepage: the same tips, one scroll away from the villas." (de twee oude bijschriften samengevoegd) | [nog te beoordelen] |
+| Fouten onderweg | Stalen eerst onzichtbaar (inline span zonder `display: block`); de doorstreping eerst als gedraaide lijn, die naast de staal uitkwam, en daarna als SVG met non-scaling stroke, wat stippels gaf. Nu een SVG-lijn van hoek tot hoek | — |
+
+- **Toetsing:** typecheck; ingebouwde browser op desktop en 375px (geen horizontale scroll, geen consolefouten). `build`, `audit` en `keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 31 – Moraira Dream Villas: Decision 2 vormgegeven (23 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Opbouw | Kop en lead blijven boven; daaronder scrolt de homepage (vertrouwen → combideals → featured villas, de drie bestaande uitsneden onder elkaar) in een browservenster, met de drie redenen ernaast. De reden waarvan het stuk in het midden van het venster staat licht op (oranje lijn, volle kleur); de andere zijn gedimd. Op een telefoon, met reduced motion of zonder JS staan alle drie aan en staat de homepage als één beeld. Tekst ongewijzigd, wel genummerd 01–03 zoals het rapport | [nog te beoordelen] |
+| Kaart | Bij de combideals gaan op de vier villa's op de kaart lampjes aan, kort na elkaar met de flikkering van de homepage, zodra de kaart in beeld is, en ze blijven daarna aan. De lampjes liggen over de bestaande pins (geen nieuwe export uit Figma) | [nog te beoordelen] |
+| Hergebruik | `ScrollStage` (case 02) heeft er een optie bij: delen van de pagina (`data-scroll-mark`) en stappen in de tekst (`data-scroll-step`) krijgen `data-active`. Zonder die attributen verandert er niets; case 02 gecontroleerd. Op laptopbreedte (tot 1280px) krijgt de tekstkolom hier meer ruimte (2 : 3), anders paste de lijst niet in het scherm | [nog te beoordelen] |
+| Fouten onderweg | Het venster was even leeg tijdens het schuiven (lazy loading): de drie beelden laden nu meteen | — |
+
+- **Toetsing:** typecheck; ingebouwde browser op desktop (1024) en 375px, geen horizontale scroll, geen consolefouten; Collaborative Strength laadt zonder fouten. Breed scherm (1440) niet bekeken. `build`, `audit` en `keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 32 – Moraira Dream Villas: Beyond the screen vormgegeven (23 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Objecten | Bord en visitekaartje (voor- en achterkant; `card-front.webp` wordt nu gebruikt) als drukwerk op tafel: elk iets gedraaid, met een echte schaduw (contactschaduw en zachte schaduw van boven), de kaartjes overlappen het bord rechtsonder. Het bord is niet meer afgesneden. Op een telefoon het bord boven en de twee kaartzijden naast elkaar | [nog te beoordelen] |
+| Lijnen | Vanaf de QR-code op het bord en die op de achterkant van het kaartje loopt een oranje lijn naar één label: "Both QR codes lead to / Their own website, not a platform" (uit de lead). Op een telefoon geen lijnen, het label als tekst onder de objecten. De bijschriften van bord en kaart staan eronder, tekst ongewijzigd | [nog te beoordelen] |
+| Beweging | Scrollend worden de drie objecten één voor één neergelegd (van iets boven en groter naar hun plek), daarna lopen de lijnen naar het label. Standaard: alles ligt er en de lijnen staan | [nog te beoordelen] |
+| Fout onderweg | De `animation`-shorthand zette de eigen `animation-range` per object terug, waardoor alles even half doorzichtig bleef; de ranges staan nu met hogere specificiteit. De andere scroll-animaties van deze case nagelopen: daar staan shorthand en range in één regel, dus geen last van | — |
+
+- **Toetsing:** typecheck; ingebouwde browser op desktop (1024) en 375px, geen horizontale scroll, geen consolefouten. `build`, `audit` en `keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 33 – Moraira Dream Villas: How I worked vormgegeven (23 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Route | De werkwijze als vijf haltes op één lijn onder twee haken: "My part" (homepage first → presented → the other pages → handed over, oranje lampjes en een doorgetrokken lijn) en "Another developer" (built in WordPress, open stip, gestippelde lijn = de overdracht), zoals de overdracht bij Stuurmen. De korte regels komen uit de tekst van de sectie; het losse overdrachtsblok is nu de zin onder de route (tekst ongewijzigd). Scrollend loopt de lijn van halte naar halte en flikkeren de lampjes aan. Op een telefoon verticaal | [nog te beoordelen] |
+| AI | De vier toepassingen als vier tegels (twee bij twee) naast de tekst, genummerd in de volgorde van het project; over elke tegel trekt na elkaar een oranje lijn | [nog te beoordelen] |
+| Drie layouts | Voorstel was de drie villakaart-varianten uit Figma (groepen 2096:4865, 4896, 4912, 4928). Bij het openen bleken dat de foto's met de verticale icoonstrook van de vier villa's in de definitieve layout te zijn. Daarna de pagina doorzocht: drie versies van de villalijst (2096:1099, 2096:1304, 2096:3620; de laatste is de basis van de definitieve 2096:4646). Van elke versie dezelfde villa uitgesneden (Luces del Mar; bij Maravilla Solar waren in versie 3 de punten leeg) als `villa-layout-1/2/3.webp`. Op de pagina drie naast elkaar, de winnaar met een oranje ring en "Came out on top"; bij het inscrollen stappen de andere twee terug. Versie 1 en 2 lijken op kaartniveau bijna gelijk. `villas.webp` (de hele lijst) wordt niet meer gebruikt | Bevestigd: dit zijn de drie layouts |
+
+- **Toetsing:** typecheck; ingebouwde browser op desktop (1024) en 375px, geen horizontale scroll. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 34 – Moraira Dream Villas: Result vormgegeven (23 nov)
+| Onderdeel | Wat AI voorstelde of bouwde | Wat ik besliste |
+|---|---|---|
+| Doelen gehaald | De twee doelen uit Problem komen terug als twee kaarten in het licht van de lamp, met "Goal 2 · Met" en "Goal 1 · Met". Direct boeken gaat voor, want daar hoort het getal bij (breder) | [nog te beoordelen] |
+| 20% → 70% | Dezelfde balk als in Problem, nu in lamplicht: zodra hij in beeld komt, vult hij van ongeveer 20% naar 70% en telt het grote getal mee (1,4 s, sterke ease-out, requestAnimationFrame). Een dun streepje blijft op 20% staan ("Was about 20%"). Met reduced motion of zonder JS staat er meteen 70%. Het getal is verborgen voor schermlezers, de balk zegt het in één zin; de kop "70% direct" staat er onzichtbaar bij. Tekst eronder ongewijzigd | [nog te beoordelen] |
+| Jaarstrip terug | Bewust niet gedaan: er is geen data over welke weken nu voller zijn, dus een strip met "meer weken aan" zou een verzonnen grafiek zijn. "Much fuller" blijft tekst | [nog te beoordelen] |
+
+- **Toetsing:** typecheck; ingebouwde browser op desktop (1024) en 375px, geen horizontale scroll, geen consolefouten, de teller eindigt op 70%. Reduced motion niet in de browser nagebootst. `build`, `audit` en `keyboard` niet gedraaid. Niet gecommit.
+- **Tijd:** [invullen]
+
+### Stap 35 – Moraira Dream Villas: checks over de hele case (23 nov)
+- **Build:** geslaagd. Next.js stopte de build twee keer met een melding over een bekende kwetsbaarheid in de geïnstalleerde versie (16.4.3); bij opnieuw draaien ging hij door. Niet geüpgraded.
+- **Audit (eerste ronde):** axe desktop 1 fout: de gedimde redenen in Decision 2 (opacity 0,45) haalden het contrast niet (2,2–2,9:1). Opgelost: wachtende redenen worden `--muted` (≥ 4,5:1) in plaats van doorzichtig, en zolang er nog geen reden actief is, staan ze alle drie aan. Ook de `loading="eager"` op de beelden in het venster teruggedraaid (concurreerde met de LCP op mobiel).
+- **Audit (na de fix):** axe desktop 0, mobiel 0. Lighthouse desktop 100/100/100/100, mobiel Performance 91 (LCP 3,5 s; het LCP-element is de h1 van de case, dus tekst en geen beeld), Accessibility 100, Best Practices 100. SEO 63 door de `noindex`. Eén meting, niet herhaald.
+- **Keyboard:** 12 tabstops, focus overal zichtbaar, alles 44px hoog behalve de tekstlink "How I use AI" in de lopende tekst. De canvascheck aan het eind hoort bij versie J en zegt hier niets.
+- **Reduced motion (Playwright):** jaarstrip direct aan, ScrollStage staat stil, teller staat op 70%, zeeblauw in de eindstand, geen lopende animaties, video gepauzeerd.
+- **Niet getest:** 1440px in de browser bekeken (alleen via de audit), Safari, Firefox, echte telefoon.
+
+### Stap 36 – Moraira Dream Villas: feedback op de vormgeving (23 nov)
+| Onderdeel | Mijn feedback | Wat AI aanpaste |
+|---|---|---|
+| Kaart (Decision 2) | De lampjes met flikkering over de pins zijn dubbelop | Weggehaald (pins-data, overlay en CSS); de kaart staat er zoals in het ontwerp |
+| Beyond the screen | Lead kort houden, maar uitleggen dat het bord bij de villa's mijn voorstel was en dat ik ze daarom mocht maken | Nieuwe lead: "I suggested a sign at each villa, so anyone walking past can scan its QR code and book on their own website, not on a platform. The owner liked the idea and let me design the signs, and business cards in the same look." |
+| How I worked | Layout 1 en 2 zijn exact hetzelfde: toon alleen layout 1 en de winnaar | Twee naast elkaar (layout 1 en "Came out on top"); `villa-layout-2.webp` verwijderd. In de zin erboven "three layouts" → "a few layouts", zodat tekst en beeld kloppen |
+
+- **Toetsing:** typecheck; ingebouwde browser op desktop, geen consolefouten. Niet gecommit.
+
+### Stap 37 – Moraira Dream Villas: de hero opent alle pagina's van het ontwerp (23 nov)
+| Onderdeel | Wat ik vroeg | Wat AI bouwde |
+|---|---|---|
+| Hover | Bij de video "View designs" bij de muis, zoals "View website" bij de andere cases | De hele hero is een knop met `data-cursor="View designs"` (CaseCursor) en dezelfde hover als het flowchart bij Stuurmen: iets donkerder en een fractie ingezoomd. De pauzeknop staat ernaast, niet erin. De beschrijving van de hero staat voor schermlezers in een verborgen alinea, de knop heet "View all pages of the website design" |
+| Viewer | Alle Figma-pagina's fullscreen, links-rechts doorklikken als carrousel, en scrollen | `DesignViewer.tsx`: een modale `<dialog>` in de nachtkleuren met de zes definitieve pagina's (Home, Villas, Villa, About Moraira, Insider tips, Contact; Figma 2096:4409, 4646, 4945, 5179, 5290, 5404, als webp van 1440 breed in `public/images/cases/moraira/pages/`). Eén pagina per scherm, die op zichzelf scrolt; vorige/volgende met knoppen van 44px, pijltjestoetsen, swipe of trackpad (scroll-snap). Bovenaan de paginanaam en "2 / 6". Escape of het kruisje sluit, de focus gaat terug naar de hero, de pagina erachter scrolt niet mee. Beelden laden pas bij openen. Met reduced motion geen inzoom en geen soepel schuiven |
+
+- **Let op:** op de Villa-pagina staat "Available from 1 July 2025" en een kalender van juni 2025. Dat is een jaartal in het ontwerp; niet aangepast in Figma (alleen tikfouten mocht ik zelf oplossen). Het brandbook staat niet in de viewer.
+- **Toetsing:** typecheck; ingebouwde browser op desktop (hover, klik, pijltje, scrollen, knoppen, Escape, focus terug) en 375px. Niet gecommit.
+- **Bijgewerkt (23 nov), hover:** de eerste hover schaalde het hele frame buiten de knop uit, waardoor de donkere laag en de rand niet meer klopten. Nu precies als de hero van case 02: de knop knipt af (`overflow: hidden`), alleen de inhoud leunt vanaf de bovenkant 3% naar voren en de donkere laag ligt er strak overheen. Op touchscreens staat "View designs" als label linksboven, zoals "View website" bij case 02. Met reduced motion geen zoom.
