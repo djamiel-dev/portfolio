@@ -24,6 +24,9 @@ const NIGHT: [string, string, string] = ["#151412", "#4a4943", "#ff9e5e"];
 
 type Wave = { x: number; y: number; colors: [string, string, string] };
 
+// The static export ends every page in a slash (trailingSlash), links may not: compare without it
+const same = (a: string, b: string) => (a.replace(/\/+$/, "") || "/") === (b.replace(/\/+$/, "") || "/");
+
 // Both ease out: the ring leaves the pointer at once, so the click feels answered from the
 // first frame. Quadratic rather than cubic, so the far corners don't trail.
 const easeOut = (p: number) => 1 - (1 - p) ** 2;
@@ -39,6 +42,24 @@ export function PageTransition() {
     covered: Promise<void>;
   } | null>(null);
 
+  // Fetch the pages this page links to once it is idle, so the wave never waits for the network
+  useEffect(() => {
+    const prefetch = () => {
+      const seen = new Set<string>();
+      document.querySelectorAll<HTMLAnchorElement>("a[href]").forEach((a) => {
+        const url = new URL(a.href, location.href);
+        if (url.origin !== location.origin || same(url.pathname, location.pathname)) return;
+        if (/\.[a-z0-9]+$/i.test(url.pathname) || seen.has(url.pathname)) return;
+        seen.add(url.pathname);
+        router.prefetch(url.pathname);
+      });
+    };
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 200));
+    const cancel = window.cancelIdleCallback ?? window.clearTimeout;
+    const id = idle(prefetch);
+    return () => cancel(id);
+  }, [router, pathname]);
+
   // Intercept clicks on page links
   useEffect(() => {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
@@ -48,7 +69,7 @@ export function PageTransition() {
       const a = (e.target as Element).closest?.("a");
       if (!a || (a.target && a.target !== "_self") || a.hasAttribute("download")) return;
       const url = new URL(a.href, location.href);
-      if (url.origin !== location.origin || url.pathname === location.pathname) return;
+      if (url.origin !== location.origin || same(url.pathname, location.pathname)) return;
       if (/\.[a-z0-9]+$/i.test(url.pathname)) return; // files such as resume.pdf
 
       e.preventDefault();
@@ -74,7 +95,7 @@ export function PageTransition() {
       covered.then(() => {
         router.push(href);
         // If the new page never arrives, fall back to a normal page load
-        setTimeout(() => pending.current?.path === url.pathname && location.assign(url.href), 4000);
+        setTimeout(() => pending.current?.path === url.pathname && !same(url.pathname, location.pathname) && location.assign(url.href), 4000);
       });
     };
     document.addEventListener("click", onClick);
@@ -84,7 +105,7 @@ export function PageTransition() {
   // The new page is in: clear the field and hand focus to the page
   useEffect(() => {
     const p = pending.current;
-    if (!p || p.path !== pathname) return;
+    if (!p || !same(p.path, pathname)) return;
     let gone = false;
     // The new page is committed when this effect runs, so no need to wait for a frame
     p.covered.then(() => {

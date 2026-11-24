@@ -603,9 +603,9 @@ export default function Moraira() {
 
           {/* The same preview as case 01 on the homepage; the link text already says where it goes */}
           <NextCase
-            href="/work/incentive-portal"
+            href="/work/incentive-portal/"
             title="01 Incentive portal"
-            image={{ src: "/images/cases/jobrewards.png", width: 2019, height: 2649 }}
+            image={{ src: "/images/cases/jobrewards.webp", width: 1600, height: 2099 }}
           />
         </div>
       </main>

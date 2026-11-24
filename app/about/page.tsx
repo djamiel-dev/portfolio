@@ -50,7 +50,7 @@ const hobbies: Hobby[] = [
     title: "Powerlifting",
     text: "I’m building towards the 2027 national championships.",
     photo: "(Photo: me on the platform, mid-lift)",
-    image: "/images/about/powerlifting.jpg",
+    image: "/images/about/powerlifting.webp",
     alt: "Djamiel smiling under a loaded barbell in a squat rack, ready to squat",
     focus: "50% 15%",
     focusSm: "50% 15%",
@@ -59,7 +59,7 @@ const hobbies: Hobby[] = [
     title: "Coaching",
     text: "Bringing out the best version of each person, working around their own obstacles and challenges.",
     photo: "(Photo: me coaching a client)",
-    image: "/images/about/coaching.jpg",
+    image: "/images/about/coaching.webp",
     alt: "Djamiel and a lifter he coaches, both flexing, at a powerlifting meet",
     focus: "50% 60%",
     focusSm: "50% 37%",
@@ -68,7 +68,7 @@ const hobbies: Hobby[] = [
     title: "Cooking",
     text: "Beating the average Western diet every day, with better flavours.",
     photo: "(Photo: something I cooked)",
-    image: "/images/about/cooking.jpg",
+    image: "/images/about/cooking.webp",
     alt: "A plate of spiced chicken with chilli, rice and a fresh carrot and cucumber salad",
     focus: "50% 55%",
     focusSm: "50% 55%",
@@ -77,7 +77,7 @@ const hobbies: Hobby[] = [
     title: "Travel",
     text: "I’m adventurous, so I’d rather try something new than go back to what I know.",
     photo: "(Photo: a place I visited)",
-    image: "/images/about/travel-2.jpg",
+    image: "/images/about/travel-2.webp",
     alt: "Djamiel pulling a surprised face in front of the Colosseum in Rome",
     focus: "50% 20%",
     focusSm: "50% 24%",
@@ -86,7 +86,7 @@ const hobbies: Hobby[] = [
     title: "Gaming",
     text: "Less than I used to, but I’ve recently started sim racing.",
     photo: "(Photo: my sim racing setup)",
-    image: "/images/about/gaming.jpg",
+    image: "/images/about/gaming.webp",
     alt: "Djamiel's sim racing rig with a steering wheel, and his ginger cat sitting in the seat",
     focus: "60% 50%",
     focusSm: "50% 40%",
@@ -95,7 +95,7 @@ const hobbies: Hobby[] = [
     title: "Keyboards",
     text: "I build custom mechanical keyboards, picking and putting together every part myself.",
     photo: "(Photo: one of my keyboards)",
-    image: "/images/about/keyboards.jpg",
+    image: "/images/about/keyboards.webp",
     alt: "Hands typing on a custom mechanical keyboard with a green case and colourful keycaps",
     focus: "50% 100%",
     focusSm: "50% 61%",
@@ -104,7 +104,7 @@ const hobbies: Hobby[] = [
     title: "Still curious",
     text: "I turned my hobby into my work, and I still go looking for inspiration in my own time.",
     photo: "(Photo: a side experiment on my screen)",
-    image: "/images/about/curious.jpg",
+    image: "/images/about/curious.webp",
     alt: "Djamiel at his desk at home with a headset on, working across two monitors",
     focus: "50% 30%",
     focusSm: "50% 10%",
@@ -139,7 +139,7 @@ export default function About() {
             </div>
             <div className={styles.photo} data-tall>
               <Image
-                src="/images/about/restaurant.jpg"
+                src="/images/about/restaurant.webp"
                 alt="Djamiel smiling at a table in a colourful Japanese restaurant"
                 fill
                 sizes="(max-width: 48em) 100vw, 34vw"
@@ -167,7 +167,7 @@ export default function About() {
           <section className={styles.split} aria-labelledby="about-person">
             <div className={styles.photo}>
               <Image
-                src="/images/about/terrace.jpg"
+                src="/images/about/terrace.webp"
                 alt="Djamiel smiling in a wicker chair on a sunny terrace"
                 fill
                 sizes="(max-width: 48em) 100vw, 50vw"

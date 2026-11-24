@@ -510,9 +510,9 @@ export default function Stuurmen() {
 
           {/* The same preview as case 04 on the homepage; the link text already says where it goes */}
           <NextCase
-            href="/work/moraira"
+            href="/work/moraira/"
             title="04 Moraira Dream Villas"
-            image={{ src: "/images/cases/moraira-laptop.png", width: 1600, height: 1680 }}
+            image={{ src: "/images/cases/moraira-laptop.webp", width: 1600, height: 1680 }}
           />
         </div>
       </main>

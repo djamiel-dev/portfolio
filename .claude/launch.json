@@ -31,6 +31,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["next", "start", "-p", "3100"],
       "port": 3100
+    },
+    {
+      "name": "static-out",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd /private/tmp/claude-501/-Users-djamielsaou-Documents-development-personal-portfolio/64e41548-7011-4e73-815a-6cfdf79690d8/scratchpad/build/out && python3 -m http.server ${PORT:-3200}"],
+      "port": 3200
     }
   ]
 }

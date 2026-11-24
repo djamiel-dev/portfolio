@@ -484,7 +484,7 @@ export default function CollaborativeStrength() {
           {/* The main page of case 03, flat, without a device (as the next case on case 01); the link text already
               says where it goes */}
           <NextCase
-            href="/work/stuurmen"
+            href="/work/stuurmen/"
             title="03 Stuurmen"
             image={{ src: "/images/cases/stuurmen/home-preview.webp", width: 1440, height: 900 }} flat
           />

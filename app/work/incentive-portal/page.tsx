@@ -44,17 +44,17 @@ const facts = [
 const heroScreens: Screen[] = [
   {
     name: "Reward",
-    src: "/images/cases/incentive-portal/reward.png",
+    src: "/images/cases/incentive-portal/reward.webp",
     alt: "Reward screen: the points left this month, four quick rewards and a manual reward with a reason field.",
   },
   {
     name: "Pick employees",
-    src: "/images/cases/incentive-portal/pick-employees.png",
+    src: "/images/cases/incentive-portal/pick-employees.webp",
     alt: "Picking employees for the quick reward Great teamwork, with search, select all and each person’s points.",
   },
   {
     name: "Confirmation",
-    src: "/images/cases/incentive-portal/confirmation.png",
+    src: "/images/cases/incentive-portal/confirmation.webp",
     alt: "Confirmation: three employees rewarded with 10 points each, 30 points used in total.",
     // the pop-up dims the app, so the status bar dims with it
     screen: "#7c7c7c",
@@ -232,7 +232,7 @@ export default function IncentivePortal() {
               </div>
               <div className={styles.anatomy}>
                 <Phone
-                  src="/images/cases/incentive-portal/reward.png"
+                  src="/images/cases/incentive-portal/reward.webp"
                   alt="The reward screen: quick rewards at the top, manual points below, then a field for the reason."
                   sizes="(max-width: 768px) 70vw, 280px"
                 >
@@ -325,10 +325,10 @@ export default function IncentivePortal() {
               </div>
               <div className={styles.buildImage}>
                 <Image
-                  src="/images/cases/jobrewards.png"
+                  src="/images/cases/jobrewards.webp"
                   alt="Two phones with the built portal: the reward screen and picking employees for a quick reward."
-                  width={2019}
-                  height={2649}
+                  width={1600}
+                  height={2099}
                   sizes="(max-width: 768px) 80vw, 420px"
                 />
               </div>
@@ -400,7 +400,7 @@ export default function IncentivePortal() {
 
           {/* The homepage of case 02, flat, without a device; the link text already says where it goes */}
           <NextCase
-            href="/work/collaborative-strength"
+            href="/work/collaborative-strength/"
             title="02 Collaborative Strength"
             image={{ src: "/images/cases/collaborative-strength/home-preview.webp", width: 1440, height: 900 }} flat
           />
