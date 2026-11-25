@@ -74,7 +74,7 @@ export function HeroGreeting({ className, photoClassName }: { className: string;
       </span>
       <span className={photoClassName}>
         {/* The name is right beside it, so the photo needs no text of its own */}
-        <Image src="/images/djamiel.jpg" alt="" fill sizes="(max-width: 48em) 72px, 120px" priority />
+        <Image src="/images/djamiel-2026.jpg" alt="" fill sizes="(max-width: 48em) 72px, 120px" priority />
       </span>
       <span aria-hidden="true">
         <Letters text={INTRO} />
